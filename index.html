@@ -1,1 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ellie Kleinheinz — US Luge Tracker</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #070F1E; }
+:root {
+  --ice: #5BB8F5; --ice-dark: #1A6FAF; --gold: #F0B429;
+  --silver: #9BA3AF; --bronze: #C67B3A; --green: #22D46E;
+  --track-bg: #070F1E; --card-border: rgba(91,184,245,0.18);
+  --text-main: #E8F4FD; --text-muted: #7BA7CC;
+  --radius-md: 8px; --radius-lg: 12px;
+}
+#app { background: var(--track-bg); color: var(--text-main); min-height: 100vh; }
 
+/* Header */
+.header { background: #0A1628; border-bottom: 1px solid var(--card-border); padding: 14px 22px; display: flex; align-items: center; justify-content: space-between; }
+.header-left { display: flex; align-items: center; gap: 12px; }
+.avatar { width: 42px; height: 42px; border-radius: 50%; border: 2px solid var(--ice); overflow: hidden; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 26px; background: #0A1A35; }
+.h-name { font-size: 16px; font-weight: 500; color: var(--text-main); }
+.h-sub { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
+.usa-pill { background: rgba(0,40,104,0.5); border: 0.5px solid rgba(178,34,52,0.5); border-radius: 20px; padding: 5px 12px; font-size: 12px; color: #E8F4FD; display: flex; align-items: center; gap: 5px; }
+
+/* Nav */
+.nav { display: flex; gap: 0; padding: 0 22px; border-bottom: 1px solid var(--card-border); background: #0A1628; overflow-x: auto; }
+.nav-btn { background: none; border: none; padding: 10px 14px; font-size: 12px; color: var(--text-muted); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; white-space: nowrap; font-family: inherit; transition: color 0.15s; display: flex; align-items: center; gap: 5px; }
+.nav-btn.active { color: var(--ice); border-bottom-color: var(--ice); }
+.nav-btn:hover { color: var(--text-main); }
+
+/* Views */
+.view { display: none; padding: 18px 22px; }
+.view.active { display: block; }
+
+/* Stats */
+.stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 18px; }
+.stat-card { background: rgba(91,184,245,0.05); border: 0.5px solid var(--card-border); border-radius: var(--radius-md); padding: 11px 14px; }
+.stat-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+.stat-value { font-size: 20px; font-weight: 500; }
+.stat-value.green { color: var(--green); }
+.stat-value.gold  { color: var(--gold); }
+.stat-value.ice   { color: var(--ice); }
+
+/* Cards */
+.card { background: rgba(91,184,245,0.04); border: 0.5px solid var(--card-border); border-radius: var(--radius-lg); padding: 14px 16px; margin-bottom: 14px; }
+.card-title { font-size: 11px; font-weight: 500; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
+.split-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+/* Tables */
+.run-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.run-table th { text-align: left; color: var(--text-muted); padding: 5px 9px; font-weight: 400; border-bottom: 0.5px solid var(--card-border); font-size: 10px; text-transform: uppercase; letter-spacing: 0.4px; }
+.run-table td { padding: 7px 9px; border-bottom: 0.5px solid rgba(91,184,245,0.06); color: var(--text-main); }
+.run-table tr:last-child td { border-bottom: none; }
+.run-table tr:hover td { background: rgba(91,184,245,0.04); }
+
+/* Badges */
+.badge { display: inline-block; padding: 1px 7px; border-radius: 10px; font-size: 10px; font-weight: 500; }
+.badge-gold   { background: rgba(240,180,41,0.15);  color: var(--gold); }
+.badge-silver { background: rgba(155,163,175,0.15); color: var(--silver); }
+.badge-bronze { background: rgba(198,123,58,0.15);  color: var(--bronze); }
+.badge-blue   { background: rgba(91,184,245,0.12);  color: var(--ice); }
+.pb-tag { color: var(--green); font-size: 10px; margin-left: 3px; }
+
+/* Leaderboard */
+.lb-row { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: var(--radius-md); margin-bottom: 3px; }
+.lb-row.me { background: rgba(91,184,245,0.09); border: 0.5px solid var(--card-border); }
+.lb-pos { width: 22px; font-size: 13px; font-weight: 500; color: var(--text-muted); text-align: center; }
+.lb-pos.p1 { color: var(--gold); } .lb-pos.p2 { color: var(--silver); } .lb-pos.p3 { color: var(--bronze); }
+.lb-name { flex: 1; font-size: 13px; }
+.lb-pts  { font-size: 13px; font-weight: 500; color: var(--ice); font-variant-numeric: tabular-nums; }
+.lb-diff { font-size: 11px; color: var(--text-muted); margin-left: 6px; }
+
+/* Map */
+.world-map { position: relative; width: 100%; height: 340px; border-radius: var(--radius-md); overflow: hidden; }
+#worldSvg { width: 100%; height: 100%; background: #0A1628; }
+.track-popup { position: absolute; background: #0D2140; border: 0.5px solid var(--ice); border-radius: var(--radius-md); padding: 10px 13px; font-size: 12px; pointer-events: none; z-index: 10; min-width: 155px; display: none; }
+.track-popup strong { font-size: 13px; color: var(--ice); display: block; margin-bottom: 3px; }
+
+/* Photos */
+.photo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; margin-bottom: 14px; }
+.photo-slot { aspect-ratio: 1; background: rgba(91,184,245,0.04); border: 0.5px dashed var(--card-border); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; cursor: pointer; overflow: hidden; position: relative; transition: border-color 0.15s; }
+.photo-slot:hover { border-color: var(--ice); }
+.photo-slot img { width: 100%; height: 100%; object-fit: cover; }
+.photo-caption { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(7,15,30,0.82); font-size: 10px; padding: 3px 6px; color: var(--text-muted); text-align: center; }
+.upload-btn { background: rgba(91,184,245,0.07); border: 0.5px solid var(--card-border); color: var(--ice); border-radius: var(--radius-md); padding: 7px 14px; font-size: 12px; cursor: pointer; font-family: inherit; display: flex; align-items: center; gap: 5px; }
+.upload-btn:hover { background: rgba(91,184,245,0.14); }
+
+/* Forms */
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+.form-group { display: flex; flex-direction: column; gap: 3px; }
+.form-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.4px; }
+.form-input, .form-select { background: rgba(91,184,245,0.07); border: 0.5px solid var(--card-border); color: var(--text-main); border-radius: var(--radius-md); padding: 7px 10px; font-size: 12px; font-family: inherit; }
+.form-select option { background: #0D2140; color: var(--text-main); }
+.form-input:focus, .form-select:focus { outline: none; border-color: var(--ice); }
+.btn-primary { background: var(--ice-dark); border: none; color: #fff; border-radius: var(--radius-md); padding: 8px 18px; font-size: 12px; cursor: pointer; font-family: inherit; }
+.btn-primary:hover { background: #2280C0; }
+
+/* Filters */
+.filter-row { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; }
+.filter-chip { background: rgba(91,184,245,0.05); border: 0.5px solid var(--card-border); color: var(--text-muted); border-radius: 20px; padding: 3px 11px; font-size: 11px; cursor: pointer; font-family: inherit; transition: all 0.15s; }
+.filter-chip.active { background: rgba(91,184,245,0.16); border-color: var(--ice); color: var(--ice); }
+.filter-chip:hover { color: var(--text-main); }
+
+/* Speed bars */
+.speed-bar-wrap { margin-bottom: 9px; }
+.speed-bar-label { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); margin-bottom: 3px; }
+.speed-bar-track { height: 3px; background: rgba(91,184,245,0.1); border-radius: 2px; overflow: hidden; }
+.speed-bar-fill  { height: 100%; background: var(--ice); border-radius: 2px; transition: width 0.5s; }
+
+/* Section header */
+.section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 11px; }
+.section-tag { font-size: 10px; color: var(--ice); background: rgba(91,184,245,0.1); padding: 2px 8px; border-radius: 10px; }
+
+/* Achievement grid */
+.achieve-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
+.achieve-card { background: rgba(91,184,245,0.05); border: 0.5px solid var(--card-border); border-radius: var(--radius-md); padding: 12px; text-align: center; }
+.achieve-icon  { font-size: 22px; margin-bottom: 4px; }
+.achieve-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.4px; }
+.achieve-val   { font-size: 13px; font-weight: 500; color: var(--text-main); margin-top: 2px; }
+
+/* Legend dots */
+.legend-dot { width: 10px; height: 3px; border-radius: 2px; display: inline-block; }
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <div class="avatar">🇺🇸</div>
+    <div>
+      <div class="h-name">Ellie Kleinheinz</div>
+      <div class="h-sub">Junior Women's Singles · Santa Clara, CA</div>
+    </div>
+  </div>
+  <div class="usa-pill">🇺🇸 Team USA · Junior National Team</div>
+</div>
+
+<!-- NAV -->
+<div class="nav">
+  <button class="nav-btn active" onclick="showView('overview',this)"><i class="ti ti-layout-dashboard"></i> Overview</button>
+  <button class="nav-btn" onclick="showView('runs',this)"><i class="ti ti-list"></i> Run Log</button>
+  <button class="nav-btn" onclick="showView('standings',this)"><i class="ti ti-trophy"></i> WC Standings</button>
+  <button class="nav-btn" onclick="showView('map',this)"><i class="ti ti-map-pin"></i> Tracks</button>
+  <button class="nav-btn" onclick="showView('photos',this)"><i class="ti ti-camera"></i> Photos</button>
+  <button class="nav-btn" onclick="showView('log',this)"><i class="ti ti-circle-plus"></i> Add Run</button>
+</div>
+
+<!-- OVERVIEW -->
+<div id="view-overview" class="view active">
+  <div class="stat-row">
+    <div class="stat-card"><div class="stat-label">Season PB</div><div class="stat-value green">46.821s</div></div>
+    <div class="stat-card"><div class="stat-label">JWC overall rank</div><div class="stat-value ice">#29</div></div>
+    <div class="stat-card"><div class="stat-label">US Junior rank</div><div class="stat-value gold">#1</div></div>
+    <div class="stat-card"><div class="stat-label">National titles</div><div class="stat-value" style="color:#F0B429">4 🥇</div></div>
+  </div>
+
+  <div class="achieve-grid" style="margin-bottom:14px;">
+    <div class="achieve-card"><div class="achieve-icon">🏆</div><div class="achieve-label">2025 Junior Nationals</div><div class="achieve-val">Champion</div></div>
+    <div class="achieve-card"><div class="achieve-icon">🛷</div><div class="achieve-label">2024 Youth Olympics</div><div class="achieve-val">Gangwon, KOR</div></div>
+    <div class="achieve-card"><div class="achieve-icon">⚡</div><div class="achieve-label">Junior WC debut</div><div class="achieve-val">Winterberg '24</div></div>
+  </div>
+
+  <div class="card">
+    <div class="section-header">
+      <div class="card-title">Season time trend — all tracks</div>
+      <div class="section-tag">2024–25 JWC</div>
+    </div>
+    <div style="position:relative;height:185px;">
+      <canvas id="trendChart" role="img" aria-label="Ellie's run times across the 2024-25 season showing improvement toward a PB of 46.821s">Season trend</canvas>
+    </div>
+  </div>
+
+  <div class="split-grid">
+    <div class="card">
+      <div class="card-title">Best times by track</div>
+      <div id="trackBars"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Sector comparison — latest vs PB</div>
+      <div style="position:relative;height:160px;">
+        <canvas id="splitChart" role="img" aria-label="Sector split comparison between latest run and personal best">Splits</canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RUN LOG -->
+<div id="view-runs" class="view">
+  <div class="filter-row" id="runFilter">
+    <button class="filter-chip active" onclick="filterRuns(this,'all')">All</button>
+    <button class="filter-chip" onclick="filterRuns(this,'Lillehammer')">Lillehammer</button>
+    <button class="filter-chip" onclick="filterRuns(this,'Sigulda')">Sigulda</button>
+    <button class="filter-chip" onclick="filterRuns(this,'Oberhof')">Oberhof</button>
+    <button class="filter-chip" onclick="filterRuns(this,'Lake Placid')">Lake Placid</button>
+    <button class="filter-chip" onclick="filterRuns(this,'Park City')">Park City</button>
+    <button class="filter-chip" onclick="filterRuns(this,'Bludenz')">Bludenz</button>
+    <button class="filter-chip" onclick="filterRuns(this,'Königssee')">Königssee</button>
+  </div>
+  <div class="card" style="padding:0;overflow:hidden;">
+    <table class="run-table">
+      <thead><tr>
+        <th>Date</th><th>Track</th><th>Run</th><th>Time</th><th>S1 | S2 | S3</th><th>Rank</th><th>Notes</th>
+      </tr></thead>
+      <tbody id="runTableBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- WC STANDINGS -->
+<div id="view-standings" class="view">
+  <div class="filter-row" id="standFilter">
+    <button class="filter-chip active" onclick="filterStandings(this,'overall')">Overall JWC</button>
+    <button class="filter-chip" onclick="filterStandings(this,'Lillehammer')">Lillehammer</button>
+    <button class="filter-chip" onclick="filterStandings(this,'Oberhof')">Oberhof</button>
+    <button class="filter-chip" onclick="filterStandings(this,'Lake Placid')">Lake Placid</button>
+    <button class="filter-chip" onclick="filterStandings(this,'Park City')">Park City</button>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start;">
+
+    <!-- International standings -->
+    <div class="card" style="padding:12px;">
+      <div class="card-title" style="display:flex;align-items:center;gap:6px;">
+        <i class="ti ti-world" style="font-size:13px;"></i> International standings
+      </div>
+      <div id="leaderboard"></div>
+    </div>
+
+    <!-- USA-only standings -->
+    <div class="card" style="padding:12px;border-color:rgba(178,34,52,0.35);">
+      <div class="card-title" style="display:flex;align-items:center;gap:6px;">
+        🇺🇸 <span>USA standings</span>
+      </div>
+      <div id="usa-leaderboard"></div>
+    </div>
+
+  </div>
+
+  <div class="card" style="margin-top:12px;">
+    <div class="card-title">JWC points progression — top competitors</div>
+    <div style="display:flex;gap:16px;margin-bottom:8px;flex-wrap:wrap;">
+      <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text-muted)"><span class="legend-dot" style="background:#F0B429"></span>Jänicke (GER)</span>
+      <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text-muted)"><span class="legend-dot" style="background:#9BA3AF"></span>Müller (AUT)</span>
+      <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text-muted)"><span class="legend-dot" style="background:#C67B3A"></span>Tonn (USA)</span>
+      <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text-muted)"><span class="legend-dot" style="background:#5BB8F5"></span>Ellie (USA)</span>
+    </div>
+    <div style="position:relative;height:185px;">
+      <canvas id="pointsChart" role="img" aria-label="JWC points progression for Ellie vs top 3 competitors across the season">Points chart</canvas>
+    </div>
+  </div>
+</div>
+
+<!-- MAP -->
+<div id="view-map" class="view">
+  <p style="font-size:12px;color:var(--text-muted);margin-bottom:12px;">Hover a pin to preview results. Click to load full run history for that track.</p>
+  <div class="world-map" id="mapWrap">
+    <svg id="worldSvg" viewBox="0 0 900 460"></svg>
+    <div class="track-popup" id="trackPopup"></div>
+  </div>
+  <div id="trackDetail" style="margin-top:12px;"></div>
+</div>
+
+<!-- PHOTOS -->
+<div id="view-photos" class="view">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+    <label class="upload-btn" for="photoInput"><i class="ti ti-upload"></i> Upload photo</label>
+    <input type="file" id="photoInput" accept="image/*" multiple style="display:none">
+    <span style="font-size:11px;color:var(--text-muted)">Competition photos, podium moments, track shots</span>
+  </div>
+  <div class="photo-grid" id="photoGrid">
+    <div class="photo-slot" style="grid-column:span 2;aspect-ratio:2/1;">
+      <img src="https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=600&q=80" alt="Luge track">
+      <div class="photo-caption">Lillehammer World Cup opener · Nov 2024</div>
+    </div>
+    <div class="photo-slot">
+      <img src="https://images.unsplash.com/photo-1520166012956-add9ba0835cb?w=400&q=80" alt="Winter track">
+      <div class="photo-caption">Winterberg training · Dec 2024</div>
+    </div>
+    <div class="photo-slot add-new" onclick="document.getElementById('photoInput').click()">
+      <i class="ti ti-circle-plus" style="color:var(--text-muted);font-size:24px;"></i>
+    </div>
+    <div class="photo-slot add-new" onclick="document.getElementById('photoInput').click()">
+      <i class="ti ti-circle-plus" style="color:var(--text-muted);font-size:24px;"></i>
+    </div>
+    <div class="photo-slot add-new" onclick="document.getElementById('photoInput').click()">
+      <i class="ti ti-circle-plus" style="color:var(--text-muted);font-size:24px;"></i>
+    </div>
+  </div>
+</div>
+
+<!-- ADD RUN -->
+<div id="view-log" class="view">
+  <div class="card">
+    <div class="card-title">Log a new run</div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Track</label>
+        <select class="form-select" id="logTrack">
+          <option>Lillehammer</option><option>Sigulda</option><option>Oberhof</option>
+          <option>Lake Placid</option><option>Park City</option><option>Bludenz</option><option>Königssee</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Date</label>
+        <input type="date" class="form-input" id="logDate">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Run #</label>
+        <input type="number" class="form-input" id="logRun" placeholder="1" min="1">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Total time (s)</label>
+        <input type="number" class="form-input" id="logTime" placeholder="46.850" step="0.001">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Sector 1 (s)</label>
+        <input type="number" class="form-input" id="logS1" placeholder="12.10" step="0.001">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Sector 2 (s)</label>
+        <input type="number" class="form-input" id="logS2" placeholder="11.95" step="0.001">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Sector 3 (s)</label>
+        <input type="number" class="form-input" id="logS3" placeholder="22.77" step="0.001">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Finish rank</label>
+        <input type="number" class="form-input" id="logRank" placeholder="16" min="1">
+      </div>
+    </div>
+    <div class="form-group" style="margin-bottom:12px;">
+      <label class="form-label">Notes</label>
+      <input type="text" class="form-input" id="logNotes" placeholder="Ice conditions, start timing, equipment changes...">
+    </div>
+    <button class="btn-primary" onclick="addRun()">Save run</button>
+    <span id="logMsg" style="font-size:12px;color:var(--green);margin-left:10px;"></span>
+  </div>
+</div>
+
+</div><!-- end #app -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+<script>
+const TRACKS = [
+  { name:"Lillehammer", country:"Norway",   lat:61.11,  lon:10.46,   myBest:"47.204", rank:14, races:2 },
+  { name:"Sigulda",     country:"Latvia",   lat:57.15,  lon:24.86,   myBest:"48.112", rank:18, races:2 },
+  { name:"Oberhof",     country:"Germany",  lat:50.70,  lon:10.74,   myBest:"47.631", rank:16, races:2 },
+  { name:"Lake Placid", country:"USA",      lat:44.27,  lon:-73.98,  myBest:"46.821", rank:12, races:3 },
+  { name:"Park City",   country:"USA",      lat:40.65,  lon:-111.49, myBest:"47.003", rank:15, races:3 },
+  { name:"Bludenz",     country:"Austria",  lat:47.15,  lon:9.82,    myBest:"48.440", rank:20, races:1 },
+  { name:"Königssee",   country:"Germany",  lat:47.60,  lon:12.98,   myBest:"47.889", rank:18, races:2 },
+];
+
+let runData = [
+  { date:"2024-11-30", track:"Lillehammer", run:1, time:47.821, s1:12.40, s2:12.05, s3:23.37, rank:18, notes:"First JWC race of season" },
+  { date:"2024-11-30", track:"Lillehammer", run:2, time:47.204, s1:12.21, s2:11.98, s3:22.99, rank:14, notes:"Better S-curve entry" },
+  { date:"2024-12-07", track:"Sigulda",     run:1, time:48.550, s1:12.68, s2:12.40, s3:23.46, rank:22, notes:"Challenging start curve" },
+  { date:"2024-12-07", track:"Sigulda",     run:2, time:48.112, s1:12.52, s2:12.29, s3:23.31, rank:18, notes:"Improved line mid-track" },
+  { date:"2024-12-21", track:"Oberhof",     run:1, time:48.101, s1:12.58, s2:12.31, s3:23.21, rank:20, notes:"Team event — 4th USA" },
+  { date:"2024-12-21", track:"Oberhof",     run:2, time:47.631, s1:12.39, s2:12.14, s3:23.10, rank:16, notes:"Best Oberhof run" },
+  { date:"2025-01-04", track:"Lake Placid", run:1, time:47.312, s1:12.20, s2:11.99, s3:23.10, rank:14, notes:"Home track — strong start" },
+  { date:"2025-01-04", track:"Lake Placid", run:2, time:47.011, s1:12.10, s2:11.90, s3:23.01, rank:13, notes:"Clean runs through Shady" },
+  { date:"2025-01-05", track:"Lake Placid", run:1, time:46.821, s1:12.01, s2:11.85, s3:22.97, rank:12, notes:"Season PB! Perfect lower section" },
+  { date:"2025-01-18", track:"Park City",   run:1, time:47.522, s1:12.35, s2:12.12, s3:23.07, rank:17, notes:"First run at UOP" },
+  { date:"2025-01-18", track:"Park City",   run:2, time:47.201, s1:12.22, s2:12.00, s3:22.98, rank:15, notes:"Better upper section" },
+  { date:"2025-01-19", track:"Park City",   run:1, time:47.003, s1:12.15, s2:11.94, s3:22.89, rank:15, notes:"Junior Nationals final — champion!" },
+  { date:"2024-11-15", track:"Bludenz",     run:1, time:48.440, s1:12.71, s2:12.50, s3:23.22, rank:20, notes:"Development run — early season" },
+  { date:"2025-02-01", track:"Königssee",   run:1, time:48.211, s1:12.60, s2:12.38, s3:23.22, rank:20, notes:"First time on this track" },
+  { date:"2025-02-01", track:"Königssee",   run:2, time:47.889, s1:12.44, s2:12.22, s3:23.22, rank:18, notes:"Better on curves 8–10" },
+];
+
+const STANDINGS = {
+  overall: [
+    { name:"Anka Jänicke",      flag:"🇩🇪", pts:0, pos:1,  diff:"" },
+    { name:"Viktoria Müller",   flag:"🇦🇹", pts:0, pos:2,  diff:"" },
+    { name:"Naomi Klink",       flag:"🇩🇪", pts:0, pos:3,  diff:"" },
+    { name:"Lena Glöckl",       flag:"🇩🇪", pts:0, pos:4,  diff:"" },
+    { name:"Nicola Lanthaler",  flag:"🇮🇹", pts:0, pos:5,  diff:"" },
+    { name:"Anna Berreiter",    flag:"🇩🇪", pts:0, pos:6,  diff:"" },
+    { name:"Sofia Kucherenko",  flag:"🇺🇦", pts:0, pos:7,  diff:"" },
+    { name:"Kathrin Müller",    flag:"🇦🇹", pts:0, pos:8,  diff:"" },
+    { name:"Talia Tonn",        flag:"🇺🇸", pts:0, pos:10,  diff:"" },
+    { name:"Brianna Gosnell",   flag:"🇺🇸", pts:0, pos:11, diff:"" },
+    { name:"Ellie Kleinheinz",  flag:"🇺🇸", pts:0, pos:9, diff:"", me:true },
+    { name:"Kendall Achen",     flag:"🇺🇸", pts:0, pos:12, diff:"" },
+    { name:"Breckan Luedke",    flag:"🇺🇸", pts:0, pos:13, diff:"" },
+  ],
+  Lillehammer: [
+    { name:"Anka Jänicke",     flag:"🇩🇪", pts:0, pos:1,  diff:"" },
+    { name:"Naomi Klink",      flag:"🇩🇪", pts:0, pos:2,  diff:"" },
+    { name:"Viktoria Müller",  flag:"🇦🇹", pts:0, pos:3,  diff:"" },
+    { name:"Lena Glöckl",      flag:"🇩🇪", pts:0, pos:4,  diff:"" },
+    { name:"Anna Berreiter",   flag:"🇩🇪", pts:0, pos:5,  diff:"" },
+    { name:"Talia Tonn",       flag:"🇺🇸", pts:0, pos:7,  diff:"" },
+    { name:"Ellie Kleinheinz", flag:"🇺🇸", pts:0, pos:6,  diff:"", me:true },
+  ],
+  Oberhof: [
+    { name:"Anka Jänicke",     flag:"🇩🇪", pts:0, pos:1,  diff:"" },
+    { name:"Viktoria Müller",  flag:"🇦🇹", pts:0, pos:2,  diff:"" },
+    { name:"Nicola Lanthaler", flag:"🇮🇹", pts:0, pos:3,  diff:"" },
+    { name:"Lena Glöckl",      flag:"🇩🇪", pts:0, pos:4,  diff:"" },
+    { name:"Sofia Kucherenko", flag:"🇺🇦", pts:0, pos:5,  diff:"" },
+    { name:"Talia Tonn",       flag:"🇺🇸", pts:0, pos:7,  diff:"" },
+    { name:"Ellie Kleinheinz", flag:"🇺🇸", pts:0, pos:6,  diff:"", me:true },
+  ],
+  "Lake Placid": [
+    { name:"Talia Tonn",       flag:"🇺🇸", pts:0, pos:2,  diff:"" },
+    { name:"Anka Jänicke",     flag:"🇩🇪", pts:0, pos:3,  diff:"" },
+    { name:"Naomi Klink",      flag:"🇩🇪", pts:0, pos:4,  diff:"" },
+    { name:"Kathrin Müller",   flag:"🇦🇹", pts:0, pos:5,  diff:"" },
+    { name:"Anna Berreiter",   flag:"🇩🇪", pts:0, pos:6,  diff:"" },
+    { name:"Ellie Kleinheinz", flag:"🇺🇸", pts:0, pos:1,  diff:"", me:true },
+  ],
+  "Park City": [
+    { name:"Viktoria Müller",  flag:"🇦🇹", pts:0, pos:7,  diff:"" },
+    { name:"Anka Jänicke",     flag:"🇩🇪", pts:0, pos:6,  diff:"" },
+    { name:"Lena Glöckl",      flag:"🇩🇪", pts:0, pos:5,  diff:"" },
+    { name:"Nicola Lanthaler", flag:"🇮🇹", pts:0, pos:4,  diff:"" },
+    { name:"Sofia Kucherenko", flag:"🇺🇦", pts:0, pos:3,  diff:"" },
+    { name:"Talia Tonn",       flag:"🇺🇸", pts:0, pos:2,  diff:"" },
+    { name:"Ellie Kleinheinz", flag:"🇺🇸", pts:0, pos:1,  diff:"", me:true },
+  ],
+};
+
+const USA_STANDINGS = {
+  overall: [
+    { name:"Ellie Kleinheinz",  flag:"🇺🇸", pts:0, pos:1, diff:"", me:true },
+    { name:"Talia Tonn",        flag:"🇺🇸", pts:0, pos:2, diff:"" },
+    { name:"Brianna Gosnell",   flag:"🇺🇸", pts:0, pos:3, diff:"" },
+    { name:"Kendall Achen",     flag:"🇺🇸", pts:0, pos:5, diff:"" },
+    { name:"Breckan Luedke",    flag:"🇺🇸", pts:0, pos:6, diff:"" },
+  ],
+  Lillehammer: [
+    { name:"Ellie Kleinheinz", flag:"🇺🇸", pts:0, pos:1, diff:"", me:true },
+    { name:"Talia Tonn",       flag:"🇺🇸", pts:0, pos:2, diff:"" },
+    { name:"Brianna Gosnell",  flag:"🇺🇸", pts:0, pos:3, diff:"" },
+    { name:"Kendall Achen",     flag:"🇺🇸", pts:0, pos:5, diff:"" },
+    { name:"Breckan Luedke",    flag:"🇺🇸", pts:0, pos:6, diff:"" },
+  ],
+  Oberhof: [
+    { name:"Talia Tonn",       flag:"🇺🇸", pts:0, pos:2, diff:"" },
+    { name:"Ellie Kleinheinz", flag:"🇺🇸", pts:0, pos:1, diff:"", me:true },
+    { name:"Brianna Gosnell",  flag:"🇺🇸", pts:0, pos:3, diff:"" },
+    { name:"Kendall Achen",     flag:"🇺🇸", pts:0, pos:5, diff:"" },
+    { name:"Breckan Luedke",    flag:"🇺🇸", pts:0, pos:6, diff:"" },
+  ],
+  "Lake Placid": [
+    { name:"Talia Tonn",       flag:"🇺🇸", pts:0, pos:2, diff:"" },
+    { name:"Ellie Kleinheinz", flag:"🇺🇸", pts:0, pos:1, diff:"", me:true },
+    { name:"Brianna Gosnell",  flag:"🇺🇸", pts:0, pos:3, diff:"" },
+     { name:"Kendall Achen",     flag:"🇺🇸", pts:0, pos:5, diff:"" },
+    { name:"Breckan Luedke",    flag:"🇺🇸", pts:0, pos:6, diff:"" },
+  ],
+  "Park City": [
+    { name:"Talia Tonn",        flag:"🇺🇸", pts:0, pos:2, diff:"" },
+    { name:"Ellie Kleinheinz",  flag:"🇺🇸", pts:0, pos:1, diff:"", me:true },
+    { name:"Brianna Gosnell",   flag:"🇺🇸", pts:0, pos:3, diff:"" },
+    { name:"Kendall Achen",     flag:"🇺🇸", pts:0, pos:5, diff:"" },
+    { name:"Breckan Luedke",    flag:"🇺🇸", pts:0, pos:6, diff:"" },
+  ],
+};
+
+/* ── Navigation ── */
+function showView(id, btn) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('view-' + id).classList.add('active');
+  btn.classList.add('active');
+  if (id === 'overview')   setTimeout(initOverview, 50);
+  if (id === 'runs')       renderRunTable('all');
+  if (id === 'standings')  { renderLeaderboard('overall'); renderUSALeaderboard('overall'); setTimeout(initPointsChart, 50); }
+  if (id === 'map')        setTimeout(initMap, 50);
+}
+
+/* ── Overview charts ── */
+let ovDone = false;
+function initOverview() {
+  if (ovDone) return; ovDone = true;
+
+  const sorted = [...runData].sort((a,b) => a.date.localeCompare(b.date));
+  const labels = sorted.map(r => r.date.slice(5) + ' ' + r.track.slice(0,3));
+  const times  = sorted.map(r => r.time);
+
+  new Chart(document.getElementById('trendChart'), {
+    type: 'line',
+    data: { labels, datasets: [{ label:'Time', data:times, borderColor:'#5BB8F5', backgroundColor:'rgba(91,184,245,0.07)', pointBackgroundColor:'#5BB8F5', pointRadius:4, tension:0.35, borderWidth:2 }] },
+    options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } },
+      scales: { y:{ min:45.5, max:49.5, ticks:{ color:'#7BA7CC', font:{ size:10 } }, grid:{ color:'rgba(91,184,245,0.07)' } },
+                x:{ ticks:{ color:'#7BA7CC', font:{ size:9 }, maxRotation:40, autoSkip:true }, grid:{ display:false } } } }
+  });
+
+  const pbByTrack = {};
+  runData.forEach(r => { if (!pbByTrack[r.track] || r.time < pbByTrack[r.track]) pbByTrack[r.track] = r.time; });
+  const best = TRACKS.slice().sort((a,b) => parseFloat(a.myBest) - parseFloat(b.myBest));
+  const min  = parseFloat(best[0].myBest);
+  const max  = parseFloat(best[best.length-1].myBest);
+  document.getElementById('trackBars').innerHTML = best.map(t => {
+    const pct = Math.round(((parseFloat(t.myBest) - min) / (max - min)) * 65 + 20);
+    return `<div class="speed-bar-wrap">
+      <div class="speed-bar-label"><span>${t.name}</span><span style="color:#5BB8F5">${t.myBest}s</span></div>
+      <div class="speed-bar-track"><div class="speed-bar-fill" style="width:${pct}%"></div></div>
+    </div>`;
+  }).join('');
+
+  new Chart(document.getElementById('splitChart'), {
+    type: 'bar',
+    data: { labels: ['S1','S2','S3'], datasets: [
+      { label:'Latest', data:[12.01,11.85,22.97], backgroundColor:'rgba(91,184,245,0.45)', borderColor:'#5BB8F5', borderWidth:1 },
+      { label:'PB',     data:[12.01,11.85,22.97], backgroundColor:'rgba(34,212,110,0.4)',  borderColor:'#22D46E', borderWidth:1 },
+    ]},
+    options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } },
+      scales: { y:{ min:10, ticks:{ color:'#7BA7CC', font:{ size:10 } }, grid:{ color:'rgba(91,184,245,0.07)' } },
+                x:{ ticks:{ color:'#7BA7CC', font:{ size:11 } }, grid:{ display:false } } } }
+  });
+}
+
+/* ── Run log ── */
+function filterRuns(el, track) {
+  document.querySelectorAll('#runFilter .filter-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  renderRunTable(track);
+}
+function renderRunTable(track) {
+  const rows  = track === 'all' ? runData : runData.filter(r => r.track === track);
+  const sorted = [...rows].sort((a,b) => b.date.localeCompare(a.date));
+  const pbByTrack = {};
+  runData.forEach(r => { if (!pbByTrack[r.track] || r.time < pbByTrack[r.track]) pbByTrack[r.track] = r.time; });
+  document.getElementById('runTableBody').innerHTML = sorted.map(r => {
+    const isPB = r.time === pbByTrack[r.track];
+    const bc   = r.rank <= 3 ? ['badge-gold','badge-silver','badge-bronze'][r.rank-1] : 'badge-blue';
+    return `<tr>
+      <td>${r.date}</td><td>${r.track}</td><td>Run ${r.run}</td>
+      <td style="font-variant-numeric:tabular-nums;color:${isPB?'#22D46E':'inherit'}">${r.time.toFixed(3)}s${isPB?' <span class="pb-tag">PB</span>':''}</td>
+      <td style="color:#7BA7CC;font-size:11px">${r.s1.toFixed(2)} | ${r.s2.toFixed(2)} | ${r.s3.toFixed(2)}</td>
+      <td><span class="badge ${bc}">#${r.rank}</span></td>
+      <td style="font-size:11px;color:#7BA7CC">${r.notes}</td>
+    </tr>`;
+  }).join('');
+}
+
+/* ── Standings ── */
+let ptsDone = false;
+function initPointsChart() {
+  if (ptsDone) return; ptsDone = true;
+  new Chart(document.getElementById('pointsChart'), {
+    type: 'line',
+    data: { labels: ['Nov','Dec','Jan','Feb','Mar'], datasets: [
+      { label:'Jänicke', data:[100,220,360,460,520], borderColor:'#F0B429', borderDash:[4,3], borderWidth:2, tension:0.3, pointRadius:3, pointBackgroundColor:'#F0B429' },
+      { label:'Müller',  data:[80, 180,310,420,488], borderColor:'#9BA3AF', borderDash:[4,3], borderWidth:2, tension:0.3, pointRadius:3, pointBackgroundColor:'#9BA3AF' },
+      { label:'Tonn',    data:[50, 120,200,260,298], borderColor:'#C67B3A', borderDash:[4,3], borderWidth:2, tension:0.3, pointRadius:3, pointBackgroundColor:'#C67B3A' },
+      { label:'Ellie',   data:[40,  95,180,230,265], borderColor:'#5BB8F5', borderWidth:2.5,  tension:0.3, pointRadius:4, pointBackgroundColor:'#5BB8F5' },
+    ]},
+    options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } },
+      scales: { y:{ ticks:{ color:'#7BA7CC', font:{ size:10 } }, grid:{ color:'rgba(91,184,245,0.07)' } },
+                x:{ ticks:{ color:'#7BA7CC', font:{ size:10 } }, grid:{ display:false } } } }
+  });
+}
+function filterStandings(el, key) {
+  document.querySelectorAll('#standFilter .filter-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  renderLeaderboard(key);
+  renderUSALeaderboard(key);
+}
+function buildLbRows(rows) {
+  return rows.map(r => {
+    const pc    = r.pos===1?'p1':r.pos===2?'p2':r.pos===3?'p3':'';
+    const medal = r.pos===1?'🥇':r.pos===2?'🥈':r.pos===3?'🥉':r.pos;
+    return `<div class="lb-row ${r.me?'me':''}">
+      <div class="lb-pos ${pc}">${medal}</div>
+      <div class="lb-name"><span style="font-size:15px;margin-right:4px">${r.flag}</span>${r.name}${r.me?' <span style="font-size:10px;color:#5BB8F5">(Ellie)</span>':''}</div>
+      <div class="lb-pts">${r.pts} pts<span class="lb-diff">${r.diff}</span></div>
+    </div>`;
+  }).join('');
+}
+function renderLeaderboard(key) {
+  const rows = STANDINGS[key] || STANDINGS.overall;
+  document.getElementById('leaderboard').innerHTML = buildLbRows(rows);
+}
+function renderUSALeaderboard(key) {
+  const rows = USA_STANDINGS[key] || USA_STANDINGS.overall;
+  document.getElementById('usa-leaderboard').innerHTML = buildLbRows(rows);
+}
+
+/* ── Map ── */
+let mapDone = false;
+function initMap() {
+  if (mapDone) return; mapDone = true;
+  const svg    = d3.select('#worldSvg');
+  const proj   = d3.geoNaturalEarth1().scale(155).translate([450, 240]);
+  const path   = d3.geoPath(proj);
+  const popup  = document.getElementById('trackPopup');
+
+  d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json').then(world => {
+    svg.selectAll('path')
+      .data(topojson.feature(world, world.objects.countries).features)
+      .join('path').attr('d', path)
+      .attr('fill','#0D2140').attr('stroke','rgba(91,184,245,0.2)').attr('stroke-width',0.5);
+
+    TRACKS.forEach(t => {
+      const xy = proj([t.lon, t.lat]);
+      if (!xy || !xy[0]) return;
+      const [x, y] = xy;
+      const g = svg.append('g').style('cursor','pointer');
+      g.append('circle').attr('cx',x).attr('cy',y).attr('r',9).attr('fill','rgba(91,184,245,0.12)').attr('stroke','#5BB8F5').attr('stroke-width',1.5);
+      g.append('circle').attr('cx',x).attr('cy',y).attr('r',3.5).attr('fill','#5BB8F5');
+      g.append('text').attr('x',x+11).attr('y',y+4).attr('fill','#7BA7CC').attr('font-size','9').text(t.name);
+
+      g.on('mouseover', () => {
+        popup.style.display = 'block';
+        popup.style.left = Math.min(x+10, 680) + 'px';
+        popup.style.top  = (y - 15) + 'px';
+        popup.innerHTML  = `<strong>${t.name}, ${t.country}</strong>
+          <div style="color:#E8F4FD;margin-top:3px">Best: <b style="color:#22D46E">${t.myBest}s</b></div>
+          <div style="color:#7BA7CC">JWC rank: <span style="color:#F0B429">#${t.rank}</span></div>
+          <div style="color:#7BA7CC">${t.races} race(s) logged</div>`;
+      }).on('mouseout', () => { popup.style.display = 'none'; })
+        .on('click', () => {
+          const tr = runData.filter(r => r.track === t.name);
+          const pbByTrack = {};
+          runData.forEach(r => { if (!pbByTrack[r.track] || r.time < pbByTrack[r.track]) pbByTrack[r.track] = r.time; });
+          if (!tr.length) {
+            document.getElementById('trackDetail').innerHTML = `<div class="card"><p style="color:var(--text-muted);font-size:12px">No runs logged at ${t.name} yet.</p></div>`;
+            return;
+          }
+          const rows = tr.sort((a,b) => b.date.localeCompare(a.date)).map(r => {
+            const isPB = r.time === pbByTrack[r.track];
+            const bc   = r.rank <= 3 ? ['badge-gold','badge-silver','badge-bronze'][r.rank-1] : 'badge-blue';
+            return `<tr>
+              <td>${r.date}</td><td>Run ${r.run}</td>
+              <td style="color:${isPB?'#22D46E':'#E8F4FD'}">${r.time.toFixed(3)}s${isPB?' <span class="pb-tag">PB</span>':''}</td>
+              <td><span class="badge ${bc}">#${r.rank}</span></td>
+              <td style="font-size:11px;color:#7BA7CC">${r.notes}</td>
+            </tr>`;
+          }).join('');
+          document.getElementById('trackDetail').innerHTML = `<div class="card">
+            <div class="card-title">${t.name} · ${t.country} &nbsp;|&nbsp; PB: ${t.myBest}s &nbsp;|&nbsp; Best rank: #${t.rank}</div>
+            <table class="run-table">
+              <thead><tr><th>Date</th><th>Run</th><th>Time</th><th>Rank</th><th>Notes</th></tr></thead>
+              <tbody>${rows}</tbody>
+            </table>
+          </div>`;
+        });
+    });
+  });
+}
+
+/* ── Photo upload ── */
+document.getElementById('photoInput').addEventListener('change', function () {
+  const grid = document.getElementById('photoGrid');
+  Array.from(this.files).forEach(file => {
+    const url  = URL.createObjectURL(file);
+    const slot = document.createElement('div');
+    slot.className = 'photo-slot';
+    slot.innerHTML = `<img src="${url}" alt="${file.name}"><div class="photo-caption">${file.name.slice(0,22)}</div>`;
+    const adds = grid.querySelectorAll('.add-new');
+    if (adds.length) grid.insertBefore(slot, adds[0]); else grid.appendChild(slot);
+  });
+});
+
+/* ── Add run ── */
+function addRun() {
+  const track = document.getElementById('logTrack').value;
+  const date  = document.getElementById('logDate').value;
+  const run   = parseInt(document.getElementById('logRun').value) || 1;
+  const time  = parseFloat(document.getElementById('logTime').value);
+  const s1    = parseFloat(document.getElementById('logS1').value) || 0;
+  const s2    = parseFloat(document.getElementById('logS2').value) || 0;
+  const s3    = parseFloat(document.getElementById('logS3').value) || 0;
+  const rank  = parseInt(document.getElementById('logRank').value) || 99;
+  const notes = document.getElementById('logNotes').value;
+  if (!date || !time) { document.getElementById('logMsg').textContent = 'Please fill in date and time.'; return; }
+  runData.push({ date, track, run, time, s1, s2, s3, rank, notes });
+  ovDone = false; ptsDone = false;
+  document.getElementById('logMsg').textContent = 'Run saved! ✓';
+  setTimeout(() => { document.getElementById('logMsg').textContent = ''; }, 2500);
+}
+
+/* ── Init ── */
+initOverview();
+renderLeaderboard('overall');
+renderUSALeaderboard('overall');
+</script>
+</body>
+</html>
