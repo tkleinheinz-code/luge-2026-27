@@ -131,13 +131,16 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 <!-- HEADER -->
 <div class="header">
   <div class="header-left">
-    <div class="avatar">🇺🇸</div>
     <div>
-      <div class="h-name">Ellie Kleinheinz</div>
-      <div class="h-sub">Junior Women's Singles · Santa Clara, CA</div>
+      <div class="h-name">🇺🇸 Ellie Kleinheinz</div>
+      <div class="h-sub">Junior Women's Singles · Santa Clara, CA · Team USA Junior National Team</div>
     </div>
   </div>
-  <div class="usa-pill">🇺🇸 Team USA · Junior National Team</div>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <div style="font-size:11px;color:var(--text-muted);text-align:right;line-height:1.5;">4× National Champion<br>2024 Youth Olympian</div>
+    <div style="width:1px;height:32px;background:var(--card-border);"></div>
+    <div style="font-size:11px;color:var(--text-muted);text-align:right;line-height:1.5;">2025–26 Season<br><span style="color:var(--ice)">Junior World Cup</span></div>
+  </div>
 </div>
 
 <!-- NAV -->
@@ -248,7 +251,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
       <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text-muted)"><span class="legend-dot" style="background:#F0B429"></span>Jänicke (GER)</span>
       <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text-muted)"><span class="legend-dot" style="background:#9BA3AF"></span>Müller (AUT)</span>
       <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text-muted)"><span class="legend-dot" style="background:#C67B3A"></span>Tonn (USA)</span>
-      <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text-muted)"><span class="legend-dot" style="background:#5BB8F5"></span>Ellie (USA)</span>
+      <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text-muted)"><span class="legend-dot" style="background:#5BB8F5"></span>Kleinheinz (USA)</span>
     </div>
     <div style="position:relative;height:185px;">
       <canvas id="pointsChart" role="img" aria-label="JWC points progression for Ellie vs top 3 competitors across the season">Points chart</canvas>
@@ -388,7 +391,8 @@ const STANDINGS = {
     { name:"Talia Tonn",        flag:"🇺🇸", pts:0, pos:9,  diff:"" },
     { name:"Brianna Gosnell",   flag:"🇺🇸", pts:0, pos:10, diff:"" },
     { name:"Ellie Kleinheinz",  flag:"🇺🇸", pts:0, pos:11, diff:"", me:true },
-    { name:"Maggie Richardson", flag:"🇺🇸", pts:0, pos:12, diff:"" },
+    { name:"Achen",             flag:"🇺🇸", pts:0, pos:12, diff:"" },
+    { name:"Luedke",            flag:"🇺🇸", pts:0, pos:13, diff:"" },
   ],
   Lillehammer: [
     { name:"Anka Jänicke",     flag:"🇩🇪", pts:0, pos:1,  diff:"" },
@@ -429,39 +433,39 @@ const STANDINGS = {
 
 const USA_STANDINGS = {
   overall: [
-    { name:"Ellie Kleinheinz",  flag:"🇺🇸", pts:0, pos:1, diff:"", me:true },
-    { name:"Talia Tonn",        flag:"🇺🇸", pts:0, pos:2, diff:"" },
-    { name:"Brianna Gosnell",   flag:"🇺🇸", pts:0, pos:3, diff:"" },
-    { name:"Kendall Achen",     flag:"🇺🇸", pts:0, pos:4, diff:"" },
-    { name:"Breckan Luedke",    flag:"🇺🇸", pts:0, pos:5, diff:"" },
+    { name:"Ellie Kleinheinz", flag:"🇺🇸", pts:0, pos:1, diff:"", me:true },
+    { name:"Talia Tonn",       flag:"🇺🇸", pts:0, pos:2, diff:"" },
+    { name:"Brianna Gosnell",  flag:"🇺🇸", pts:0, pos:3, diff:"" },
+    { name:"Achen",            flag:"🇺🇸", pts:0, pos:4, diff:"" },
+    { name:"Luedke",           flag:"🇺🇸", pts:0, pos:5, diff:"" },
   ],
   Lillehammer: [
     { name:"Ellie Kleinheinz", flag:"🇺🇸", pts:0, pos:1, diff:"", me:true },
     { name:"Talia Tonn",       flag:"🇺🇸", pts:0, pos:2, diff:"" },
     { name:"Brianna Gosnell",  flag:"🇺🇸", pts:0, pos:3, diff:"" },
-    { name:"Kendall Achen",    flag:"🇺🇸", pts:0, pos:4, diff:"" },
-    { name:"Breckan Luedke",   flag:"🇺🇸", pts:0, pos:5, diff:"" },
+    { name:"Achen",            flag:"🇺🇸", pts:0, pos:4, diff:"" },
+    { name:"Luedke",           flag:"🇺🇸", pts:0, pos:5, diff:"" },
   ],
   Oberhof: [
-    { name:"Talia Tonn",       flag:"🇺🇸", pts:0, pos:2, diff:"" },
     { name:"Ellie Kleinheinz", flag:"🇺🇸", pts:0, pos:1, diff:"", me:true },
+    { name:"Talia Tonn",       flag:"🇺🇸", pts:0, pos:2, diff:"" },
     { name:"Brianna Gosnell",  flag:"🇺🇸", pts:0, pos:3, diff:"" },
-    { name:"Kendall Achen",    flag:"🇺🇸", pts:0, pos:4, diff:"" },
-    { name:"Breckan Luedke",   flag:"🇺🇸", pts:0, pos:5, diff:"" },
+    { name:"Achen",            flag:"🇺🇸", pts:0, pos:4, diff:"" },
+    { name:"Luedke",           flag:"🇺🇸", pts:0, pos:5, diff:"" },
   ],
   "Lake Placid": [
-    { name:"Talia Tonn",       flag:"🇺🇸", pts:0, pos:2, diff:"" },
     { name:"Ellie Kleinheinz", flag:"🇺🇸", pts:0, pos:1, diff:"", me:true },
+    { name:"Talia Tonn",       flag:"🇺🇸", pts:0, pos:2, diff:"" },
     { name:"Brianna Gosnell",  flag:"🇺🇸", pts:0, pos:3, diff:"" },
-    { name:"Kendall Achen",    flag:"🇺🇸", pts:0, pos:4, diff:"" },
-    { name:"Breckan Luedke",   flag:"🇺🇸", pts:0, pos:5, diff:"" },
+    { name:"Achen",            flag:"🇺🇸", pts:0, pos:4, diff:"" },
+    { name:"Luedke",           flag:"🇺🇸", pts:0, pos:5, diff:"" },
   ],
   "Park City": [
-    { name:"Talia Tonn",        flag:"🇺🇸", pts:0, pos:1, diff:"" },
-    { name:"Ellie Kleinheinz",  flag:"🇺🇸", pts:0, pos:2, diff:"", me:true },
+    { name:"Ellie Kleinheinz", flag:"🇺🇸", pts:0, pos:1, diff:"", me:true },
+    { name:"Talia Tonn",       flag:"🇺🇸", pts:0, pos:2, diff:"" },
     { name:"Brianna Gosnell",  flag:"🇺🇸", pts:0, pos:3, diff:"" },
-    { name:"Kendall Achen",    flag:"🇺🇸", pts:0, pos:4, diff:"" },
-    { name:"Breckan Luedke",   flag:"🇺🇸", pts:0, pos:5, diff:"" },
+    { name:"Achen",            flag:"🇺🇸", pts:0, pos:4, diff:"" },
+    { name:"Luedke",           flag:"🇺🇸", pts:0, pos:5, diff:"" },
   ],
 };
 
@@ -575,13 +579,13 @@ function initPointsChart() {
   new Chart(document.getElementById('pointsChart'), {
     type: 'line',
     data: { labels: ['Nov','Dec','Jan','Feb','Mar'], datasets: [
-      { label:'Jänicke', data:[100,220,360,460,520], borderColor:'#F0B429', borderDash:[4,3], borderWidth:2, tension:0.3, pointRadius:3, pointBackgroundColor:'#F0B429' },
-      { label:'Müller',  data:[80, 180,310,420,488], borderColor:'#9BA3AF', borderDash:[4,3], borderWidth:2, tension:0.3, pointRadius:3, pointBackgroundColor:'#9BA3AF' },
-      { label:'Tonn',    data:[50, 120,200,260,298], borderColor:'#C67B3A', borderDash:[4,3], borderWidth:2, tension:0.3, pointRadius:3, pointBackgroundColor:'#C67B3A' },
-      { label:'Ellie',   data:[40,  95,180,230,265], borderColor:'#5BB8F5', borderWidth:2.5,  tension:0.3, pointRadius:4, pointBackgroundColor:'#5BB8F5' },
+      { label:'Jänicke',    data:[0,0,0,0,0], borderColor:'#F0B429', borderDash:[4,3], borderWidth:2, tension:0.3, pointRadius:3, pointBackgroundColor:'#F0B429' },
+      { label:'Müller',     data:[0,0,0,0,0], borderColor:'#9BA3AF', borderDash:[4,3], borderWidth:2, tension:0.3, pointRadius:3, pointBackgroundColor:'#9BA3AF' },
+      { label:'Tonn',       data:[0,0,0,0,0], borderColor:'#C67B3A', borderDash:[4,3], borderWidth:2, tension:0.3, pointRadius:3, pointBackgroundColor:'#C67B3A' },
+      { label:'Kleinheinz', data:[0,0,0,0,0], borderColor:'#5BB8F5', borderWidth:2.5,  tension:0.3, pointRadius:4, pointBackgroundColor:'#5BB8F5' },
     ]},
     options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } },
-      scales: { y:{ ticks:{ color:'#7BA7CC', font:{ size:10 } }, grid:{ color:'rgba(91,184,245,0.07)' } },
+      scales: { y:{ min:0, ticks:{ color:'#7BA7CC', font:{ size:10 } }, grid:{ color:'rgba(91,184,245,0.07)' } },
                 x:{ ticks:{ color:'#7BA7CC', font:{ size:10 } }, grid:{ display:false } } } }
   });
 }
