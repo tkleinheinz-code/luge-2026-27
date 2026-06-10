@@ -219,8 +219,10 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 <div id="view-standings" class="view">
   <div class="filter-row" id="standFilter">
     <button class="filter-chip active" onclick="filterStandings(this,'overall')">Overall JWC</button>
+    <button class="filter-chip" onclick="filterStandings(this,'Bludenz')">Bludenz</button>
+    <button class="filter-chip" onclick="filterStandings(this,'Winterberg')">Winterberg</button>
     <button class="filter-chip" onclick="filterStandings(this,'Lillehammer')">Lillehammer</button>
-    <button class="filter-chip" onclick="filterStandings(this,'Oberhof')">Oberhof</button>
+    <button class="filter-chip" onclick="filterStandings(this,'Sigulda')">Sigulda</button>
     <button class="filter-chip" onclick="filterStandings(this,'Lake Placid')">Lake Placid</button>
     <button class="filter-chip" onclick="filterStandings(this,'Park City')">Park City</button>
   </div>
@@ -248,9 +250,9 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   <div class="card" style="margin-top:12px;">
     <div class="card-title">JWC points progression — top competitors</div>
     <div style="display:flex;gap:16px;margin-bottom:8px;flex-wrap:wrap;">
-      <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text-muted)"><span class="legend-dot" style="background:#F0B429"></span>Jänicke (GER)</span>
-      <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text-muted)"><span class="legend-dot" style="background:#9BA3AF"></span>Müller (AUT)</span>
-      <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text-muted)"><span class="legend-dot" style="background:#C67B3A"></span>Tonn (USA)</span>
+      <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text-muted)"><span class="legend-dot" style="background:#F0B429"></span>Oberstolz (ITA)</span>
+      <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text-muted)"><span class="legend-dot" style="background:#9BA3AF"></span>Pietschmann (GER)</span>
+      <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text-muted)"><span class="legend-dot" style="background:#C67B3A"></span>Gosnell (USA)</span>
       <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text-muted)"><span class="legend-dot" style="background:#5BB8F5"></span>Kleinheinz (USA)</span>
     </div>
     <div style="position:relative;height:185px;">
@@ -378,95 +380,66 @@ const TRACKS = [
 
 let runData = [];
 
+const ALL_ATHLETES = [
+  { name:"Oberstolz Alexandra",       flag:"🇮🇹", pts:0, pos:1  },
+  { name:"Pietschmann Antonia",       flag:"🇩🇪", pts:0, pos:2  },
+  { name:"Koch Laura",                flag:"🇩🇪", pts:0, pos:3  },
+  { name:"Buse Josephine",            flag:"🇩🇪", pts:0, pos:4  },
+  { name:"Schmidt Mona",              flag:"🇦🇹", pts:0, pos:5  },
+  { name:"Jänicke Anka",              flag:"🇩🇪", pts:0, pos:6  },
+  { name:"Sirsnina Margita",          flag:"🇱🇻", pts:0, pos:7  },
+  { name:"Kofler Katharina Sofie",    flag:"🇮🇹", pts:0, pos:8  },
+  { name:"Riedl Marie",               flag:"🇦🇹", pts:0, pos:9  },
+  { name:"Hartmann Lara",             flag:"🇩🇪", pts:0, pos:10 },
+  { name:"Grundböck Annina",          flag:"🇦🇹", pts:0, pos:11 },
+  { name:"Zimmermann Lena",           flag:"🇦🇹", pts:0, pos:12 },
+  { name:"Bleiner Lina",              flag:"🇦🇹", pts:0, pos:13 },
+  { name:"Zimmermann Lara",           flag:"🇦🇹", pts:0, pos:14 },
+  { name:"Dobrean Ionela Madalina",   flag:"🇷🇴", pts:0, pos:15 },
+  { name:"Chaiyapantho Sunita",       flag:"🇹🇭", pts:0, pos:16 },
+  { name:"Panchuk Khrystyna",         flag:"🇺🇦", pts:0, pos:17 },
+  { name:"Nosal Emilia",              flag:"🇵🇱", pts:0, pos:18 },
+  { name:"Kleinheinz Elizabeth",      flag:"🇺🇸", pts:0, pos:19, me:true },
+  { name:"Gosnell Brianna",           flag:"🇺🇸", pts:0, pos:20 },
+  { name:"Zvilna Selina",             flag:"🇱🇻", pts:0, pos:21 },
+  { name:"Richardson Margaret",       flag:"🇺🇸", pts:0, pos:22 },
+  { name:"Dawidowska Oliwia",         flag:"🇵🇱", pts:0, pos:23 },
+  { name:"Kadziolka Marlena",         flag:"🇵🇱", pts:0, pos:24 },
+  { name:"Yuen Maya",                 flag:"🇨🇦", pts:0, pos:25 },
+  { name:"Micková Mia",               flag:"🇸🇰", pts:0, pos:26 },
+  { name:"Meier Leana",               flag:"🇩🇪", pts:0, pos:27 },
+  { name:"Hatton Kaia",               flag:"🇬🇧", pts:0, pos:28 },
+  { name:"Parfenkova Katrina",        flag:"🇱🇻", pts:0, pos:29 },
+  { name:"Pernarovska Erika",         flag:"🇺🇦", pts:0, pos:30 },
+  { name:"Smoronska Nikola",          flag:"🇵🇱", pts:0, pos:31 },
+];
+
 const STANDINGS = {
-  overall: [
-    { name:"Anka Jänicke",      flag:"🇩🇪", pts:0, pos:1,  diff:"" },
-    { name:"Viktoria Müller",   flag:"🇦🇹", pts:0, pos:2,  diff:"" },
-    { name:"Naomi Klink",       flag:"🇩🇪", pts:0, pos:3,  diff:"" },
-    { name:"Lena Glöckl",       flag:"🇩🇪", pts:0, pos:4,  diff:"" },
-    { name:"Nicola Lanthaler",  flag:"🇮🇹", pts:0, pos:5,  diff:"" },
-    { name:"Anna Berreiter",    flag:"🇩🇪", pts:0, pos:6,  diff:"" },
-    { name:"Sofia Kucherenko",  flag:"🇺🇦", pts:0, pos:7,  diff:"" },
-    { name:"Kathrin Müller",    flag:"🇦🇹", pts:0, pos:8,  diff:"" },
-    { name:"Talia Tonn",        flag:"🇺🇸", pts:0, pos:9,  diff:"" },
-    { name:"Brianna Gosnell",   flag:"🇺🇸", pts:0, pos:10, diff:"" },
-    { name:"Ellie Kleinheinz",  flag:"🇺🇸", pts:0, pos:11, diff:"", me:true },
-    { name:"Achen",             flag:"🇺🇸", pts:0, pos:12, diff:"" },
-    { name:"Luedke",            flag:"🇺🇸", pts:0, pos:13, diff:"" },
-  ],
-  Lillehammer: [
-    { name:"Anka Jänicke",     flag:"🇩🇪", pts:0, pos:1,  diff:"" },
-    { name:"Naomi Klink",      flag:"🇩🇪", pts:0, pos:2,  diff:"" },
-    { name:"Viktoria Müller",  flag:"🇦🇹", pts:0, pos:3,  diff:"" },
-    { name:"Lena Glöckl",      flag:"🇩🇪", pts:0, pos:4,  diff:"" },
-    { name:"Anna Berreiter",   flag:"🇩🇪", pts:0, pos:5,  diff:"" },
-    { name:"Talia Tonn",       flag:"🇺🇸", pts:0, pos:6,  diff:"" },
-    { name:"Ellie Kleinheinz", flag:"🇺🇸", pts:0, pos:7,  diff:"", me:true },
-  ],
-  Oberhof: [
-    { name:"Anka Jänicke",     flag:"🇩🇪", pts:0, pos:1,  diff:"" },
-    { name:"Viktoria Müller",  flag:"🇦🇹", pts:0, pos:2,  diff:"" },
-    { name:"Nicola Lanthaler", flag:"🇮🇹", pts:0, pos:3,  diff:"" },
-    { name:"Lena Glöckl",      flag:"🇩🇪", pts:0, pos:4,  diff:"" },
-    { name:"Sofia Kucherenko", flag:"🇺🇦", pts:0, pos:5,  diff:"" },
-    { name:"Talia Tonn",       flag:"🇺🇸", pts:0, pos:6,  diff:"" },
-    { name:"Ellie Kleinheinz", flag:"🇺🇸", pts:0, pos:7,  diff:"", me:true },
-  ],
-  "Lake Placid": [
-    { name:"Talia Tonn",       flag:"🇺🇸", pts:0, pos:1,  diff:"" },
-    { name:"Anka Jänicke",     flag:"🇩🇪", pts:0, pos:2,  diff:"" },
-    { name:"Naomi Klink",      flag:"🇩🇪", pts:0, pos:3,  diff:"" },
-    { name:"Kathrin Müller",   flag:"🇦🇹", pts:0, pos:4,  diff:"" },
-    { name:"Anna Berreiter",   flag:"🇩🇪", pts:0, pos:5,  diff:"" },
-    { name:"Ellie Kleinheinz", flag:"🇺🇸", pts:0, pos:6,  diff:"", me:true },
-  ],
-  "Park City": [
-    { name:"Viktoria Müller",  flag:"🇦🇹", pts:0, pos:1,  diff:"" },
-    { name:"Anka Jänicke",     flag:"🇩🇪", pts:0, pos:2,  diff:"" },
-    { name:"Lena Glöckl",      flag:"🇩🇪", pts:0, pos:3,  diff:"" },
-    { name:"Nicola Lanthaler", flag:"🇮🇹", pts:0, pos:4,  diff:"" },
-    { name:"Sofia Kucherenko", flag:"🇺🇦", pts:0, pos:5,  diff:"" },
-    { name:"Talia Tonn",       flag:"🇺🇸", pts:0, pos:6,  diff:"" },
-    { name:"Ellie Kleinheinz", flag:"🇺🇸", pts:0, pos:7,  diff:"", me:true },
-  ],
+  overall:      ALL_ATHLETES.map(a => ({...a, diff:""})),
+  Bludenz:      ALL_ATHLETES.map(a => ({...a, diff:""})),
+  Winterberg:   ALL_ATHLETES.map(a => ({...a, diff:""})),
+  Lillehammer:  ALL_ATHLETES.map(a => ({...a, diff:""})),
+  Sigulda:      ALL_ATHLETES.map(a => ({...a, diff:""})),
+  "Lake Placid":ALL_ATHLETES.map(a => ({...a, diff:""})),
+  "Park City":  ALL_ATHLETES.map(a => ({...a, diff:""})),
 };
 
+const USA_ATHLETES = [
+  { name:"Kleinheinz Elizabeth", flag:"🇺🇸", pts:0, pos:1, diff:"", me:true },
+  { name:"Gosnell Brianna",      flag:"🇺🇸", pts:0, pos:2, diff:"" },
+  { name:"Richardson Margaret",  flag:"🇺🇸", pts:0, pos:3, diff:"" },
+  { name:"Achen",                flag:"🇺🇸", pts:0, pos:4, diff:"" },
+  { name:"Luedke",               flag:"🇺🇸", pts:0, pos:5, diff:"" },
+];
+
 const USA_STANDINGS = {
-  overall: [
-    { name:"Ellie Kleinheinz", flag:"🇺🇸", pts:0, pos:1, diff:"", me:true },
-    { name:"Talia Tonn",       flag:"🇺🇸", pts:0, pos:2, diff:"" },
-    { name:"Brianna Gosnell",  flag:"🇺🇸", pts:0, pos:3, diff:"" },
-    { name:"Achen",            flag:"🇺🇸", pts:0, pos:4, diff:"" },
-    { name:"Luedke",           flag:"🇺🇸", pts:0, pos:5, diff:"" },
-  ],
-  Lillehammer: [
-    { name:"Ellie Kleinheinz", flag:"🇺🇸", pts:0, pos:1, diff:"", me:true },
-    { name:"Talia Tonn",       flag:"🇺🇸", pts:0, pos:2, diff:"" },
-    { name:"Brianna Gosnell",  flag:"🇺🇸", pts:0, pos:3, diff:"" },
-    { name:"Achen",            flag:"🇺🇸", pts:0, pos:4, diff:"" },
-    { name:"Luedke",           flag:"🇺🇸", pts:0, pos:5, diff:"" },
-  ],
-  Oberhof: [
-    { name:"Ellie Kleinheinz", flag:"🇺🇸", pts:0, pos:1, diff:"", me:true },
-    { name:"Talia Tonn",       flag:"🇺🇸", pts:0, pos:2, diff:"" },
-    { name:"Brianna Gosnell",  flag:"🇺🇸", pts:0, pos:3, diff:"" },
-    { name:"Achen",            flag:"🇺🇸", pts:0, pos:4, diff:"" },
-    { name:"Luedke",           flag:"🇺🇸", pts:0, pos:5, diff:"" },
-  ],
-  "Lake Placid": [
-    { name:"Ellie Kleinheinz", flag:"🇺🇸", pts:0, pos:1, diff:"", me:true },
-    { name:"Talia Tonn",       flag:"🇺🇸", pts:0, pos:2, diff:"" },
-    { name:"Brianna Gosnell",  flag:"🇺🇸", pts:0, pos:3, diff:"" },
-    { name:"Achen",            flag:"🇺🇸", pts:0, pos:4, diff:"" },
-    { name:"Luedke",           flag:"🇺🇸", pts:0, pos:5, diff:"" },
-  ],
-  "Park City": [
-    { name:"Ellie Kleinheinz", flag:"🇺🇸", pts:0, pos:1, diff:"", me:true },
-    { name:"Talia Tonn",       flag:"🇺🇸", pts:0, pos:2, diff:"" },
-    { name:"Brianna Gosnell",  flag:"🇺🇸", pts:0, pos:3, diff:"" },
-    { name:"Achen",            flag:"🇺🇸", pts:0, pos:4, diff:"" },
-    { name:"Luedke",           flag:"🇺🇸", pts:0, pos:5, diff:"" },
-  ],
+  overall:      USA_ATHLETES.map(a => ({...a})),
+  Bludenz:      USA_ATHLETES.map(a => ({...a})),
+  Winterberg:   USA_ATHLETES.map(a => ({...a})),
+  Lillehammer:  USA_ATHLETES.map(a => ({...a})),
+  Sigulda:      USA_ATHLETES.map(a => ({...a})),
+  "Lake Placid":USA_ATHLETES.map(a => ({...a})),
+  "Park City":  USA_ATHLETES.map(a => ({...a})),
 };
 
 /* ── Navigation ── */
@@ -579,9 +552,9 @@ function initPointsChart() {
   new Chart(document.getElementById('pointsChart'), {
     type: 'line',
     data: { labels: ['Nov','Dec','Jan','Feb','Mar'], datasets: [
-      { label:'Jänicke',    data:[0,0,0,0,0], borderColor:'#F0B429', borderDash:[4,3], borderWidth:2, tension:0.3, pointRadius:3, pointBackgroundColor:'#F0B429' },
-      { label:'Müller',     data:[0,0,0,0,0], borderColor:'#9BA3AF', borderDash:[4,3], borderWidth:2, tension:0.3, pointRadius:3, pointBackgroundColor:'#9BA3AF' },
-      { label:'Tonn',       data:[0,0,0,0,0], borderColor:'#C67B3A', borderDash:[4,3], borderWidth:2, tension:0.3, pointRadius:3, pointBackgroundColor:'#C67B3A' },
+      { label:'Oberstolz',  data:[0,0,0,0,0], borderColor:'#F0B429', borderDash:[4,3], borderWidth:2, tension:0.3, pointRadius:3, pointBackgroundColor:'#F0B429' },
+      { label:'Pietschmann',data:[0,0,0,0,0], borderColor:'#9BA3AF', borderDash:[4,3], borderWidth:2, tension:0.3, pointRadius:3, pointBackgroundColor:'#9BA3AF' },
+      { label:'Gosnell',    data:[0,0,0,0,0], borderColor:'#C67B3A', borderDash:[4,3], borderWidth:2, tension:0.3, pointRadius:3, pointBackgroundColor:'#C67B3A' },
       { label:'Kleinheinz', data:[0,0,0,0,0], borderColor:'#5BB8F5', borderWidth:2.5,  tension:0.3, pointRadius:4, pointBackgroundColor:'#5BB8F5' },
     ]},
     options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } },
