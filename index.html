@@ -153,9 +153,9 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 <!-- OVERVIEW -->
 <div id="view-overview" class="view active">
   <div class="stat-row">
-    <div class="stat-card"><div class="stat-label">Season PB</div><div class="stat-value green">46.821s</div></div>
-    <div class="stat-card"><div class="stat-label">JWC overall rank</div><div class="stat-value ice">#29</div></div>
-    <div class="stat-card"><div class="stat-label">US Junior rank</div><div class="stat-value gold">#1</div></div>
+    <div class="stat-card"><div class="stat-label">Season PB</div><div class="stat-value" style="color:var(--text-muted)">—</div></div>
+    <div class="stat-card"><div class="stat-label">JWC overall rank</div><div class="stat-value" style="color:var(--text-muted)">—</div></div>
+    <div class="stat-card"><div class="stat-label">Runs this season</div><div class="stat-value ice">0</div></div>
     <div class="stat-card"><div class="stat-label">National titles</div><div class="stat-value" style="color:#F0B429">4 🥇</div></div>
   </div>
 
@@ -356,32 +356,17 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
 <script>
 const TRACKS = [
-  { name:"Lillehammer", country:"Norway",   lat:61.11,  lon:10.46,   myBest:"47.204", rank:14, races:2 },
-  { name:"Sigulda",     country:"Latvia",   lat:57.15,  lon:24.86,   myBest:"48.112", rank:18, races:2 },
-  { name:"Oberhof",     country:"Germany",  lat:50.70,  lon:10.74,   myBest:"47.631", rank:16, races:2 },
-  { name:"Lake Placid", country:"USA",      lat:44.27,  lon:-73.98,  myBest:"46.821", rank:12, races:3 },
-  { name:"Park City",   country:"USA",      lat:40.65,  lon:-111.49, myBest:"47.003", rank:15, races:3 },
-  { name:"Bludenz",     country:"Austria",  lat:47.15,  lon:9.82,    myBest:"48.440", rank:20, races:1 },
-  { name:"Königssee",   country:"Germany",  lat:47.60,  lon:12.98,   myBest:"47.889", rank:18, races:2 },
+  { name:"Lillehammer", country:"Norway",   lat:61.11,  lon:10.46,   myBest:"—", rank:"—", races:0 },
+  { name:"Sigulda",     country:"Latvia",   lat:57.15,  lon:24.86,   myBest:"—", rank:"—", races:0 },
+  { name:"Oberhof",     country:"Germany",  lat:50.70,  lon:10.74,   myBest:"—", rank:"—", races:0 },
+  { name:"Winterberg",  country:"Germany",  lat:51.11,  lon:8.32,    myBest:"—", rank:"—", races:0 },
+  { name:"Lake Placid", country:"USA",      lat:44.27,  lon:-73.98,  myBest:"—", rank:"—", races:0 },
+  { name:"Park City",   country:"USA",      lat:40.65,  lon:-111.49, myBest:"—", rank:"—", races:0 },
+  { name:"Bludenz",     country:"Austria",  lat:47.15,  lon:9.82,    myBest:"—", rank:"—", races:0 },
+  { name:"Königssee",   country:"Germany",  lat:47.60,  lon:12.98,   myBest:"—", rank:"—", races:0 },
 ];
 
-let runData = [
-  { date:"2024-11-30", track:"Lillehammer", run:1, time:47.821, s1:12.40, s2:12.05, s3:23.37, rank:18, notes:"First JWC race of season" },
-  { date:"2024-11-30", track:"Lillehammer", run:2, time:47.204, s1:12.21, s2:11.98, s3:22.99, rank:14, notes:"Better S-curve entry" },
-  { date:"2024-12-07", track:"Sigulda",     run:1, time:48.550, s1:12.68, s2:12.40, s3:23.46, rank:22, notes:"Challenging start curve" },
-  { date:"2024-12-07", track:"Sigulda",     run:2, time:48.112, s1:12.52, s2:12.29, s3:23.31, rank:18, notes:"Improved line mid-track" },
-  { date:"2024-12-21", track:"Oberhof",     run:1, time:48.101, s1:12.58, s2:12.31, s3:23.21, rank:20, notes:"Team event — 4th USA" },
-  { date:"2024-12-21", track:"Oberhof",     run:2, time:47.631, s1:12.39, s2:12.14, s3:23.10, rank:16, notes:"Best Oberhof run" },
-  { date:"2025-01-04", track:"Lake Placid", run:1, time:47.312, s1:12.20, s2:11.99, s3:23.10, rank:14, notes:"Home track — strong start" },
-  { date:"2025-01-04", track:"Lake Placid", run:2, time:47.011, s1:12.10, s2:11.90, s3:23.01, rank:13, notes:"Clean runs through Shady" },
-  { date:"2025-01-05", track:"Lake Placid", run:1, time:46.821, s1:12.01, s2:11.85, s3:22.97, rank:12, notes:"Season PB! Perfect lower section" },
-  { date:"2025-01-18", track:"Park City",   run:1, time:47.522, s1:12.35, s2:12.12, s3:23.07, rank:17, notes:"First run at UOP" },
-  { date:"2025-01-18", track:"Park City",   run:2, time:47.201, s1:12.22, s2:12.00, s3:22.98, rank:15, notes:"Better upper section" },
-  { date:"2025-01-19", track:"Park City",   run:1, time:47.003, s1:12.15, s2:11.94, s3:22.89, rank:15, notes:"Junior Nationals final — champion!" },
-  { date:"2024-11-15", track:"Bludenz",     run:1, time:48.440, s1:12.71, s2:12.50, s3:23.22, rank:20, notes:"Development run — early season" },
-  { date:"2025-02-01", track:"Königssee",   run:1, time:48.211, s1:12.60, s2:12.38, s3:23.22, rank:20, notes:"First time on this track" },
-  { date:"2025-02-01", track:"Königssee",   run:2, time:47.889, s1:12.44, s2:12.22, s3:23.22, rank:18, notes:"Better on curves 8–10" },
-];
+let runData = [];
 
 const STANDINGS = {
   overall: [
@@ -393,9 +378,9 @@ const STANDINGS = {
     { name:"Anna Berreiter",    flag:"🇩🇪", pts:0, pos:6,  diff:"" },
     { name:"Sofia Kucherenko",  flag:"🇺🇦", pts:0, pos:7,  diff:"" },
     { name:"Kathrin Müller",    flag:"🇦🇹", pts:0, pos:8,  diff:"" },
-    { name:"Ellie Kleinheinz",  flag:"🇺🇸", pts:0, pos:9, diff:"", me:true },
-    { name:"Talia Tonn",        flag:"🇺🇸", pts:0, pos:10, diff:"" },
+    { name:"Talia Tonn",        flag:"🇺🇸", pts:0, pos:10,  diff:"" },
     { name:"Brianna Gosnell",   flag:"🇺🇸", pts:0, pos:11, diff:"" },
+    { name:"Ellie Kleinheinz",  flag:"🇺🇸", pts:0, pos:9, diff:"", me:true },
     { name:"Kendall Achen",     flag:"🇺🇸", pts:0, pos:12, diff:"" },
     { name:"Breckan Luedke",    flag:"🇺🇸", pts:0, pos:13, diff:"" },
   ],
@@ -407,6 +392,9 @@ const STANDINGS = {
     { name:"Anna Berreiter",   flag:"🇩🇪", pts:0, pos:5,  diff:"" },
     { name:"Talia Tonn",       flag:"🇺🇸", pts:0, pos:7,  diff:"" },
     { name:"Ellie Kleinheinz", flag:"🇺🇸", pts:0, pos:6,  diff:"", me:true },
+    { name:"Brianna Gosnell",   flag:"🇺🇸", pts:0, pos:8, diff:"" },
+    { name:"Kendall Achen",     flag:"🇺🇸", pts:0, pos:9, diff:"" },
+    { name:"Breckan Luedke",    flag:"🇺🇸", pts:0, pos:10, diff:"" },
   ],
   Oberhof: [
     { name:"Anka Jänicke",     flag:"🇩🇪", pts:0, pos:1,  diff:"" },
@@ -416,23 +404,32 @@ const STANDINGS = {
     { name:"Sofia Kucherenko", flag:"🇺🇦", pts:0, pos:5,  diff:"" },
     { name:"Talia Tonn",       flag:"🇺🇸", pts:0, pos:7,  diff:"" },
     { name:"Ellie Kleinheinz", flag:"🇺🇸", pts:0, pos:6,  diff:"", me:true },
+    { name:"Brianna Gosnell",   flag:"🇺🇸", pts:0, pos:8, diff:"" },
+    { name:"Kendall Achen",     flag:"🇺🇸", pts:0, pos:9, diff:"" },
+    { name:"Breckan Luedke",    flag:"🇺🇸", pts:0, pos:10, diff:"" },
   ],
   "Lake Placid": [
-    { name:"Talia Tonn",       flag:"🇺🇸", pts:0, pos:2,  diff:"" },
-    { name:"Anka Jänicke",     flag:"🇩🇪", pts:0, pos:3,  diff:"" },
-    { name:"Naomi Klink",      flag:"🇩🇪", pts:0, pos:4,  diff:"" },
-    { name:"Kathrin Müller",   flag:"🇦🇹", pts:0, pos:5,  diff:"" },
-    { name:"Anna Berreiter",   flag:"🇩🇪", pts:0, pos:6,  diff:"" },
-    { name:"Ellie Kleinheinz", flag:"🇺🇸", pts:0, pos:1,  diff:"", me:true },
+    { name:"Talia Tonn",       flag:"🇺🇸", pts:0, pos:6,  diff:"" },
+    { name:"Anka Jänicke",     flag:"🇩🇪", pts:0, pos:1,  diff:"" },
+    { name:"Naomi Klink",      flag:"🇩🇪", pts:0, pos:2,  diff:"" },
+    { name:"Kathrin Müller",   flag:"🇦🇹", pts:0, pos:3,  diff:"" },
+    { name:"Anna Berreiter",   flag:"🇩🇪", pts:0, pos:4,  diff:"" },
+    { name:"Ellie Kleinheinz", flag:"🇺🇸", pts:0, pos:5,  diff:"", me:true },
+    { name:"Brianna Gosnell",   flag:"🇺🇸", pts:0, pos:6, diff:"" },
+    { name:"Kendall Achen",     flag:"🇺🇸", pts:0, pos:7, diff:"" },
+    { name:"Breckan Luedke",    flag:"🇺🇸", pts:0, pos:8, diff:"" },
   ],
   "Park City": [
-    { name:"Viktoria Müller",  flag:"🇦🇹", pts:0, pos:7,  diff:"" },
-    { name:"Anka Jänicke",     flag:"🇩🇪", pts:0, pos:6,  diff:"" },
-    { name:"Lena Glöckl",      flag:"🇩🇪", pts:0, pos:5,  diff:"" },
+    { name:"Viktoria Müller",  flag:"🇦🇹", pts:0, pos:1,  diff:"" },
+    { name:"Anka Jänicke",     flag:"🇩🇪", pts:0, pos:2,  diff:"" },
+    { name:"Lena Glöckl",      flag:"🇩🇪", pts:0, pos:3,  diff:"" },
     { name:"Nicola Lanthaler", flag:"🇮🇹", pts:0, pos:4,  diff:"" },
-    { name:"Sofia Kucherenko", flag:"🇺🇦", pts:0, pos:3,  diff:"" },
-    { name:"Talia Tonn",       flag:"🇺🇸", pts:0, pos:2,  diff:"" },
-    { name:"Ellie Kleinheinz", flag:"🇺🇸", pts:0, pos:1,  diff:"", me:true },
+    { name:"Sofia Kucherenko", flag:"🇺🇦", pts:0, pos:5,  diff:"" },
+    { name:"Talia Tonn",       flag:"🇺🇸", pts:0, pos:7,  diff:"" },
+    { name:"Ellie Kleinheinz", flag:"🇺🇸", pts:0, pos:6,  diff:"", me:true },
+    { name:"Brianna Gosnell",   flag:"🇺🇸", pts:0, pos:8, diff:"" },
+    { name:"Kendall Achen",     flag:"🇺🇸", pts:0, pos:9, diff:"" },
+    { name:"Breckan Luedke",    flag:"🇺🇸", pts:0, pos:10, diff:"" },
   ],
 };
 
@@ -441,36 +438,35 @@ const USA_STANDINGS = {
     { name:"Ellie Kleinheinz",  flag:"🇺🇸", pts:0, pos:1, diff:"", me:true },
     { name:"Talia Tonn",        flag:"🇺🇸", pts:0, pos:2, diff:"" },
     { name:"Brianna Gosnell",   flag:"🇺🇸", pts:0, pos:3, diff:"" },
-    { name:"Kendall Achen",     flag:"🇺🇸", pts:0, pos:5, diff:"" },
-    { name:"Breckan Luedke",    flag:"🇺🇸", pts:0, pos:6, diff:"" },
+    { name:"Maggie Richardson", flag:"🇺🇸", pts:0, pos:4, diff:"" },
   ],
   Lillehammer: [
     { name:"Ellie Kleinheinz", flag:"🇺🇸", pts:0, pos:1, diff:"", me:true },
     { name:"Talia Tonn",       flag:"🇺🇸", pts:0, pos:2, diff:"" },
-    { name:"Brianna Gosnell",  flag:"🇺🇸", pts:0, pos:3, diff:"" },
-    { name:"Kendall Achen",     flag:"🇺🇸", pts:0, pos:5, diff:"" },
-    { name:"Breckan Luedke",    flag:"🇺🇸", pts:0, pos:6, diff:"" },
+    { name:"Brianna Gosnell",   flag:"🇺🇸", pts:0, pos:3, diff:"" },
+    { name:"Kendall Achen",     flag:"🇺🇸", pts:0, pos:4, diff:"" },
+    { name:"Breckan Luedke",    flag:"🇺🇸", pts:0, pos:5, diff:"" },
   ],
   Oberhof: [
     { name:"Talia Tonn",       flag:"🇺🇸", pts:0, pos:2, diff:"" },
     { name:"Ellie Kleinheinz", flag:"🇺🇸", pts:0, pos:1, diff:"", me:true },
-    { name:"Brianna Gosnell",  flag:"🇺🇸", pts:0, pos:3, diff:"" },
-    { name:"Kendall Achen",     flag:"🇺🇸", pts:0, pos:5, diff:"" },
-    { name:"Breckan Luedke",    flag:"🇺🇸", pts:0, pos:6, diff:"" },
+    { name:"Brianna Gosnell",   flag:"🇺🇸", pts:0, pos:3, diff:"" },
+    { name:"Kendall Achen",     flag:"🇺🇸", pts:0, pos:4, diff:"" },
+    { name:"Breckan Luedke",    flag:"🇺🇸", pts:0, pos:5, diff:"" },
   ],
   "Lake Placid": [
     { name:"Talia Tonn",       flag:"🇺🇸", pts:0, pos:2, diff:"" },
     { name:"Ellie Kleinheinz", flag:"🇺🇸", pts:0, pos:1, diff:"", me:true },
     { name:"Brianna Gosnell",  flag:"🇺🇸", pts:0, pos:3, diff:"" },
-     { name:"Kendall Achen",     flag:"🇺🇸", pts:0, pos:5, diff:"" },
-    { name:"Breckan Luedke",    flag:"🇺🇸", pts:0, pos:6, diff:"" },
+    { name:"Kendall Achen",     flag:"🇺🇸", pts:0, pos:4, diff:"" },
+    { name:"Breckan Luedke",    flag:"🇺🇸", pts:0, pos:5, diff:"" },
   ],
   "Park City": [
-    { name:"Talia Tonn",        flag:"🇺🇸", pts:0, pos:2, diff:"" },
-    { name:"Ellie Kleinheinz",  flag:"🇺🇸", pts:0, pos:1, diff:"", me:true },
+    { name:"Talia Tonn",        flag:"🇺🇸", pts:0, pos:1, diff:"" },
+    { name:"Ellie Kleinheinz",  flag:"🇺🇸", pts:0, pos:2, diff:"", me:true },
     { name:"Brianna Gosnell",   flag:"🇺🇸", pts:0, pos:3, diff:"" },
-    { name:"Kendall Achen",     flag:"🇺🇸", pts:0, pos:5, diff:"" },
-    { name:"Breckan Luedke",    flag:"🇺🇸", pts:0, pos:6, diff:"" },
+    { name:"Kendall Achen",     flag:"🇺🇸", pts:0, pos:4, diff:"" },
+    { name:"Breckan Luedke",    flag:"🇺🇸", pts:0, pos:5, diff:"" },
   ],
 };
 
@@ -492,35 +488,60 @@ function initOverview() {
   if (ovDone) return; ovDone = true;
 
   const sorted = [...runData].sort((a,b) => a.date.localeCompare(b.date));
+
+  if (sorted.length === 0) {
+    document.getElementById('trendChart').closest('div').innerHTML =
+      '<p style="color:var(--text-muted);font-size:13px;padding:40px 0;text-align:center;">No runs logged yet — add your first run to see the trend.</p>';
+    document.getElementById('splitChart').closest('div').innerHTML =
+      '<p style="color:var(--text-muted);font-size:13px;padding:30px 0;text-align:center;">No data yet.</p>';
+    document.getElementById('trackBars').innerHTML =
+      '<p style="color:var(--text-muted);font-size:12px;">No runs logged yet.</p>';
+    // update season PB stat live
+    document.querySelector('.stat-value.green') && (document.querySelectorAll('.stat-value')[0].textContent = '—');
+    return;
+  }
+
   const labels = sorted.map(r => r.date.slice(5) + ' ' + r.track.slice(0,3));
   const times  = sorted.map(r => r.time);
+  const minT   = Math.min(...times);
+  const maxT   = Math.max(...times);
 
   new Chart(document.getElementById('trendChart'), {
     type: 'line',
     data: { labels, datasets: [{ label:'Time', data:times, borderColor:'#5BB8F5', backgroundColor:'rgba(91,184,245,0.07)', pointBackgroundColor:'#5BB8F5', pointRadius:4, tension:0.35, borderWidth:2 }] },
     options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } },
-      scales: { y:{ min:45.5, max:49.5, ticks:{ color:'#7BA7CC', font:{ size:10 } }, grid:{ color:'rgba(91,184,245,0.07)' } },
+      scales: { y:{ min: Math.floor(minT) - 0.5, max: Math.ceil(maxT) + 0.5,
+                    ticks:{ color:'#7BA7CC', font:{ size:10 } }, grid:{ color:'rgba(91,184,245,0.07)' } },
                 x:{ ticks:{ color:'#7BA7CC', font:{ size:9 }, maxRotation:40, autoSkip:true }, grid:{ display:false } } } }
   });
 
   const pbByTrack = {};
   runData.forEach(r => { if (!pbByTrack[r.track] || r.time < pbByTrack[r.track]) pbByTrack[r.track] = r.time; });
-  const best = TRACKS.slice().sort((a,b) => parseFloat(a.myBest) - parseFloat(b.myBest));
-  const min  = parseFloat(best[0].myBest);
-  const max  = parseFloat(best[best.length-1].myBest);
-  document.getElementById('trackBars').innerHTML = best.map(t => {
-    const pct = Math.round(((parseFloat(t.myBest) - min) / (max - min)) * 65 + 20);
-    return `<div class="speed-bar-wrap">
-      <div class="speed-bar-label"><span>${t.name}</span><span style="color:#5BB8F5">${t.myBest}s</span></div>
-      <div class="speed-bar-track"><div class="speed-bar-fill" style="width:${pct}%"></div></div>
-    </div>`;
-  }).join('');
+  const tracksWithData = TRACKS.filter(t => pbByTrack[t.name]);
+  if (tracksWithData.length) {
+    const vals = tracksWithData.map(t => pbByTrack[t.name]);
+    const min  = Math.min(...vals);
+    const max  = Math.max(...vals);
+    document.getElementById('trackBars').innerHTML = tracksWithData
+      .sort((a,b) => pbByTrack[a.name] - pbByTrack[b.name])
+      .map(t => {
+        const pct = max === min ? 50 : Math.round(((pbByTrack[t.name] - min) / (max - min)) * 65 + 20);
+        return `<div class="speed-bar-wrap">
+          <div class="speed-bar-label"><span>${t.name}</span><span style="color:#5BB8F5">${pbByTrack[t.name].toFixed(3)}s</span></div>
+          <div class="speed-bar-track"><div class="speed-bar-fill" style="width:${pct}%"></div></div>
+        </div>`;
+      }).join('');
+  } else {
+    document.getElementById('trackBars').innerHTML = '<p style="color:var(--text-muted);font-size:12px;">No runs logged yet.</p>';
+  }
 
+  const latest = sorted[sorted.length - 1];
+  const pb     = sorted.reduce((a,b) => a.time < b.time ? a : b);
   new Chart(document.getElementById('splitChart'), {
     type: 'bar',
     data: { labels: ['S1','S2','S3'], datasets: [
-      { label:'Latest', data:[12.01,11.85,22.97], backgroundColor:'rgba(91,184,245,0.45)', borderColor:'#5BB8F5', borderWidth:1 },
-      { label:'PB',     data:[12.01,11.85,22.97], backgroundColor:'rgba(34,212,110,0.4)',  borderColor:'#22D46E', borderWidth:1 },
+      { label:'Latest', data:[latest.s1, latest.s2, latest.s3], backgroundColor:'rgba(91,184,245,0.45)', borderColor:'#5BB8F5', borderWidth:1 },
+      { label:'PB',     data:[pb.s1,     pb.s2,     pb.s3    ], backgroundColor:'rgba(34,212,110,0.4)',  borderColor:'#22D46E', borderWidth:1 },
     ]},
     options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } },
       scales: { y:{ min:10, ticks:{ color:'#7BA7CC', font:{ size:10 } }, grid:{ color:'rgba(91,184,245,0.07)' } },
@@ -685,6 +706,14 @@ function addRun() {
   if (!date || !time) { document.getElementById('logMsg').textContent = 'Please fill in date and time.'; return; }
   runData.push({ date, track, run, time, s1, s2, s3, rank, notes });
   ovDone = false; ptsDone = false;
+
+  // refresh stat cards
+  const pb       = Math.min(...runData.map(r => r.time));
+  const statVals = document.querySelectorAll('.stat-value');
+  statVals[0].textContent = pb.toFixed(3) + 's';
+  statVals[0].style.color = '#22D46E';
+  statVals[2].textContent = runData.length;
+
   document.getElementById('logMsg').textContent = 'Run saved! ✓';
   setTimeout(() => { document.getElementById('logMsg').textContent = ''; }, 2500);
 }
