@@ -196,6 +196,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
     <button class="filter-chip" onclick="filterRuns(this,'Lillehammer')">Lillehammer</button>
     <button class="filter-chip" onclick="filterRuns(this,'Sigulda')">Sigulda</button>
     <button class="filter-chip" onclick="filterRuns(this,'Oberhof')">Oberhof</button>
+    <button class="filter-chip" onclick="filterRuns(this,'Winterberg')">Winterberg</button>
     <button class="filter-chip" onclick="filterRuns(this,'Lake Placid')">Lake Placid</button>
     <button class="filter-chip" onclick="filterRuns(this,'Park City')">Park City</button>
     <button class="filter-chip" onclick="filterRuns(this,'Bludenz')">Bludenz</button>
@@ -257,9 +258,14 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 
 <!-- MAP -->
 <div id="view-map" class="view">
-  <p style="font-size:12px;color:var(--text-muted);margin-bottom:12px;">Hover a pin to preview results. Click to load full run history for that track.</p>
-  <div class="world-map" id="mapWrap">
-    <svg id="worldSvg" viewBox="0 0 900 460"></svg>
+  <p style="font-size:12px;color:var(--text-muted);margin-bottom:12px;">Scroll or use +/− to zoom · hover a pin to preview · click to load full run history.</p>
+  <div class="world-map" id="mapWrap" style="position:relative;">
+    <svg id="worldSvg" viewBox="0 0 900 460" style="width:100%;height:100%;display:block;"></svg>
+    <div style="position:absolute;top:10px;right:10px;display:flex;flex-direction:column;gap:4px;z-index:20;">
+      <button onclick="mapZoom(1.5)" style="width:28px;height:28px;background:#0D2140;border:0.5px solid var(--card-border);color:#5BB8F5;border-radius:6px;cursor:pointer;font-size:16px;line-height:1;font-family:inherit;">+</button>
+      <button onclick="mapZoom(1/1.5)" style="width:28px;height:28px;background:#0D2140;border:0.5px solid var(--card-border);color:#5BB8F5;border-radius:6px;cursor:pointer;font-size:16px;line-height:1;font-family:inherit;">−</button>
+      <button onclick="mapReset()" title="Reset view" style="width:28px;height:28px;background:#0D2140;border:0.5px solid var(--card-border);color:#7BA7CC;border-radius:6px;cursor:pointer;font-size:11px;line-height:1;font-family:inherit;">↺</button>
+    </div>
     <div class="track-popup" id="trackPopup"></div>
   </div>
   <div id="trackDetail" style="margin-top:12px;"></div>
@@ -273,13 +279,14 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
     <span style="font-size:11px;color:var(--text-muted)">Competition photos, podium moments, track shots</span>
   </div>
   <div class="photo-grid" id="photoGrid">
-    <div class="photo-slot" style="grid-column:span 2;aspect-ratio:2/1;">
-      <img src="https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=600&q=80" alt="Luge track">
-      <div class="photo-caption">Lillehammer World Cup opener · Nov 2024</div>
+    <div class="photo-slot add-new" onclick="document.getElementById('photoInput').click()">
+      <i class="ti ti-circle-plus" style="color:var(--text-muted);font-size:24px;"></i>
     </div>
-    <div class="photo-slot">
-      <img src="https://images.unsplash.com/photo-1520166012956-add9ba0835cb?w=400&q=80" alt="Winter track">
-      <div class="photo-caption">Winterberg training · Dec 2024</div>
+    <div class="photo-slot add-new" onclick="document.getElementById('photoInput').click()">
+      <i class="ti ti-circle-plus" style="color:var(--text-muted);font-size:24px;"></i>
+    </div>
+    <div class="photo-slot add-new" onclick="document.getElementById('photoInput').click()">
+      <i class="ti ti-circle-plus" style="color:var(--text-muted);font-size:24px;"></i>
     </div>
     <div class="photo-slot add-new" onclick="document.getElementById('photoInput').click()">
       <i class="ti ti-circle-plus" style="color:var(--text-muted);font-size:24px;"></i>
@@ -302,7 +309,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
         <label class="form-label">Track</label>
         <select class="form-select" id="logTrack">
           <option>Lillehammer</option><option>Sigulda</option><option>Oberhof</option>
-          <option>Lake Placid</option><option>Park City</option><option>Bludenz</option><option>Königssee</option>
+          <option>Winterberg</option><option>Lake Placid</option><option>Park City</option><option>Bludenz</option><option>Königssee</option>
         </select>
       </div>
       <div class="form-group">
@@ -359,6 +366,7 @@ const TRACKS = [
   { name:"Lillehammer", country:"Norway",   lat:61.11,  lon:10.46,   myBest:"—", rank:"—", races:0 },
   { name:"Sigulda",     country:"Latvia",   lat:57.15,  lon:24.86,   myBest:"—", rank:"—", races:0 },
   { name:"Oberhof",     country:"Germany",  lat:50.70,  lon:10.74,   myBest:"—", rank:"—", races:0 },
+  { name:"Winterberg",  country:"Germany",  lat:51.19,  lon:8.52,    myBest:"—", rank:"—", races:0 },
   { name:"Lake Placid", country:"USA",      lat:44.27,  lon:-73.98,  myBest:"—", rank:"—", races:0 },
   { name:"Park City",   country:"USA",      lat:40.65,  lon:-111.49, myBest:"—", rank:"—", races:0 },
   { name:"Bludenz",     country:"Austria",  lat:47.15,  lon:9.82,    myBest:"—", rank:"—", races:0 },
@@ -424,25 +432,36 @@ const USA_STANDINGS = {
     { name:"Ellie Kleinheinz",  flag:"🇺🇸", pts:0, pos:1, diff:"", me:true },
     { name:"Talia Tonn",        flag:"🇺🇸", pts:0, pos:2, diff:"" },
     { name:"Brianna Gosnell",   flag:"🇺🇸", pts:0, pos:3, diff:"" },
-    { name:"Maggie Richardson", flag:"🇺🇸", pts:0, pos:4, diff:"" },
+    { name:"Kendall Achen",     flag:"🇺🇸", pts:0, pos:4, diff:"" },
+    { name:"Breckan Luedke",    flag:"🇺🇸", pts:0, pos:5, diff:"" },
   ],
   Lillehammer: [
     { name:"Ellie Kleinheinz", flag:"🇺🇸", pts:0, pos:1, diff:"", me:true },
     { name:"Talia Tonn",       flag:"🇺🇸", pts:0, pos:2, diff:"" },
+    { name:"Brianna Gosnell",  flag:"🇺🇸", pts:0, pos:3, diff:"" },
+    { name:"Kendall Achen",    flag:"🇺🇸", pts:0, pos:4, diff:"" },
+    { name:"Breckan Luedke",   flag:"🇺🇸", pts:0, pos:5, diff:"" },
   ],
   Oberhof: [
-    { name:"Talia Tonn",       flag:"🇺🇸", pts:0, pos:1, diff:"" },
-    { name:"Ellie Kleinheinz", flag:"🇺🇸", pts:0, pos:2, diff:"", me:true },
+    { name:"Talia Tonn",       flag:"🇺🇸", pts:0, pos:2, diff:"" },
+    { name:"Ellie Kleinheinz", flag:"🇺🇸", pts:0, pos:1, diff:"", me:true },
+    { name:"Brianna Gosnell",  flag:"🇺🇸", pts:0, pos:3, diff:"" },
+    { name:"Kendall Achen",    flag:"🇺🇸", pts:0, pos:4, diff:"" },
+    { name:"Breckan Luedke",   flag:"🇺🇸", pts:0, pos:5, diff:"" },
   ],
   "Lake Placid": [
-    { name:"Talia Tonn",       flag:"🇺🇸", pts:0, pos:1, diff:"" },
-    { name:"Ellie Kleinheinz", flag:"🇺🇸", pts:0, pos:2, diff:"", me:true },
+    { name:"Talia Tonn",       flag:"🇺🇸", pts:0, pos:2, diff:"" },
+    { name:"Ellie Kleinheinz", flag:"🇺🇸", pts:0, pos:1, diff:"", me:true },
     { name:"Brianna Gosnell",  flag:"🇺🇸", pts:0, pos:3, diff:"" },
+    { name:"Kendall Achen",    flag:"🇺🇸", pts:0, pos:4, diff:"" },
+    { name:"Breckan Luedke",   flag:"🇺🇸", pts:0, pos:5, diff:"" },
   ],
   "Park City": [
     { name:"Talia Tonn",        flag:"🇺🇸", pts:0, pos:1, diff:"" },
     { name:"Ellie Kleinheinz",  flag:"🇺🇸", pts:0, pos:2, diff:"", me:true },
-    { name:"Maggie Richardson", flag:"🇺🇸", pts:0, pos:3, diff:"" },
+    { name:"Brianna Gosnell",  flag:"🇺🇸", pts:0, pos:3, diff:"" },
+    { name:"Kendall Achen",    flag:"🇺🇸", pts:0, pos:4, diff:"" },
+    { name:"Breckan Luedke",   flag:"🇺🇸", pts:0, pos:5, diff:"" },
   ],
 };
 
@@ -594,15 +613,40 @@ function renderUSALeaderboard(key) {
 
 /* ── Map ── */
 let mapDone = false;
+let mapZoomBehavior, mapSvgSel, mapGMain;
+
 function initMap() {
   if (mapDone) return; mapDone = true;
-  const svg    = d3.select('#worldSvg');
-  const proj   = d3.geoNaturalEarth1().scale(155).translate([450, 240]);
-  const path   = d3.geoPath(proj);
-  const popup  = document.getElementById('trackPopup');
+
+  const W = 900, H = 460;
+  const popup = document.getElementById('trackPopup');
+  mapSvgSel = d3.select('#worldSvg').attr('viewBox', `0 0 ${W} ${H}`);
+
+  // single zoomable group
+  mapGMain = mapSvgSel.append('g').attr('class','map-root');
+
+  const proj = d3.geoNaturalEarth1().scale(155).translate([W/2, H/2]);
+  const path = d3.geoPath(proj);
+
+  // zoom behaviour
+  mapZoomBehavior = d3.zoom()
+    .scaleExtent([1, 12])
+    .translateExtent([[0,0],[W,H]])
+    .on('zoom', (event) => {
+      mapGMain.attr('transform', event.transform);
+      // scale pin radius inversely so pins don't grow huge
+      const k = event.transform.k;
+      mapGMain.selectAll('.pin-outer').attr('r', 9 / Math.sqrt(k));
+      mapGMain.selectAll('.pin-inner').attr('r', 3.5 / Math.sqrt(k));
+      mapGMain.selectAll('.pin-label').attr('font-size', Math.max(7, 9 / Math.sqrt(k)));
+      mapGMain.selectAll('path').attr('stroke-width', 0.5 / k);
+    });
+
+  mapSvgSel.call(mapZoomBehavior)
+    .on('dblclick.zoom', null); // disable dblclick default
 
   d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json').then(world => {
-    svg.selectAll('path')
+    mapGMain.selectAll('path')
       .data(topojson.feature(world, world.objects.countries).features)
       .join('path').attr('d', path)
       .attr('fill','#0D2140').attr('stroke','rgba(91,184,245,0.2)').attr('stroke-width',0.5);
@@ -611,21 +655,32 @@ function initMap() {
       const xy = proj([t.lon, t.lat]);
       if (!xy || !xy[0]) return;
       const [x, y] = xy;
-      const g = svg.append('g').style('cursor','pointer');
-      g.append('circle').attr('cx',x).attr('cy',y).attr('r',9).attr('fill','rgba(91,184,245,0.12)').attr('stroke','#5BB8F5').attr('stroke-width',1.5);
-      g.append('circle').attr('cx',x).attr('cy',y).attr('r',3.5).attr('fill','#5BB8F5');
-      g.append('text').attr('x',x+11).attr('y',y+4).attr('fill','#7BA7CC').attr('font-size','9').text(t.name);
+      const g = mapGMain.append('g').style('cursor','pointer');
 
-      g.on('mouseover', () => {
+      g.append('circle').attr('class','pin-outer')
+        .attr('cx',x).attr('cy',y).attr('r',9)
+        .attr('fill','rgba(91,184,245,0.12)').attr('stroke','#5BB8F5').attr('stroke-width',1.5);
+      g.append('circle').attr('class','pin-inner')
+        .attr('cx',x).attr('cy',y).attr('r',3.5).attr('fill','#5BB8F5');
+      g.append('text').attr('class','pin-label')
+        .attr('x',x+11).attr('y',y+4).attr('fill','#7BA7CC').attr('font-size','9').text(t.name);
+
+      g.on('mouseover', (event) => {
+        const svgRect = document.getElementById('worldSvg').getBoundingClientRect();
+        const transform = d3.zoomTransform(mapSvgSel.node());
+        // project pin through current transform to screen coords
+        const px = transform.applyX(x) * (svgRect.width / W);
+        const py = transform.applyY(y) * (svgRect.height / H);
         popup.style.display = 'block';
-        popup.style.left = Math.min(x+10, 680) + 'px';
-        popup.style.top  = (y - 15) + 'px';
-        popup.innerHTML  = `<strong>${t.name}, ${t.country}</strong>
-          <div style="color:#E8F4FD;margin-top:3px">Best: <b style="color:#22D46E">${t.myBest}s</b></div>
-          <div style="color:#7BA7CC">JWC rank: <span style="color:#F0B429">#${t.rank}</span></div>
+        popup.style.left = Math.min(px + 10, svgRect.width - 170) + 'px';
+        popup.style.top  = Math.max(py - 15, 5) + 'px';
+        popup.innerHTML = `<strong>${t.name}, ${t.country}</strong>
+          <div style="color:#E8F4FD;margin-top:3px">Best: <b style="color:#22D46E">${t.myBest}</b></div>
+          <div style="color:#7BA7CC">JWC rank: <span style="color:#F0B429">${t.rank === '—' ? '—' : '#'+t.rank}</span></div>
           <div style="color:#7BA7CC">${t.races} race(s) logged</div>`;
       }).on('mouseout', () => { popup.style.display = 'none'; })
         .on('click', () => {
+          popup.style.display = 'none';
           const tr = runData.filter(r => r.track === t.name);
           const pbByTrack = {};
           runData.forEach(r => { if (!pbByTrack[r.track] || r.time < pbByTrack[r.track]) pbByTrack[r.track] = r.time; });
@@ -644,7 +699,7 @@ function initMap() {
             </tr>`;
           }).join('');
           document.getElementById('trackDetail').innerHTML = `<div class="card">
-            <div class="card-title">${t.name} · ${t.country} &nbsp;|&nbsp; PB: ${t.myBest}s &nbsp;|&nbsp; Best rank: #${t.rank}</div>
+            <div class="card-title">${t.name} · ${t.country} &nbsp;|&nbsp; PB: ${t.myBest} &nbsp;|&nbsp; Best rank: ${t.rank === '—' ? '—' : '#'+t.rank}</div>
             <table class="run-table">
               <thead><tr><th>Date</th><th>Run</th><th>Time</th><th>Rank</th><th>Notes</th></tr></thead>
               <tbody>${rows}</tbody>
@@ -653,6 +708,15 @@ function initMap() {
         });
     });
   });
+}
+
+function mapZoom(factor) {
+  if (!mapSvgSel) return;
+  mapSvgSel.transition().duration(300).call(mapZoomBehavior.scaleBy, factor);
+}
+function mapReset() {
+  if (!mapSvgSel) return;
+  mapSvgSel.transition().duration(400).call(mapZoomBehavior.transform, d3.zoomIdentity);
 }
 
 /* ── Photo upload ── */
