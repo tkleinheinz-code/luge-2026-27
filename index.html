@@ -123,6 +123,25 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 
 /* Legend dots */
 .legend-dot { width: 10px; height: 3px; border-radius: 2px; display: inline-block; }
+
+/* Edit modal */
+.modal-overlay { display:none; position:fixed; inset:0; background:rgba(7,15,30,0.88); z-index:200; align-items:center; justify-content:center; }
+.modal-overlay.open { display:flex; }
+.modal { background:#0D2140; border:0.5px solid var(--card-border); border-radius:var(--radius-lg); padding:20px 22px; width:480px; max-width:95vw; box-shadow:0 8px 40px rgba(0,0,0,0.6); }
+.modal-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; }
+.modal-title { font-size:14px; font-weight:500; color:var(--ice); }
+.modal-close { background:none; border:none; color:var(--text-muted); font-size:22px; cursor:pointer; line-height:1; padding:0; }
+.modal-close:hover { color:var(--text-main); }
+.modal-footer { display:flex; gap:8px; margin-top:14px; justify-content:space-between; align-items:center; }
+.btn-danger { background:rgba(220,53,69,0.12); border:0.5px solid rgba(220,53,69,0.45); color:#f87171; border-radius:var(--radius-md); padding:7px 14px; font-size:12px; cursor:pointer; font-family:inherit; }
+.btn-danger:hover { background:rgba(220,53,69,0.25); }
+.btn-secondary { background:rgba(91,184,245,0.06); border:0.5px solid var(--card-border); color:var(--text-muted); border-radius:var(--radius-md); padding:7px 14px; font-size:12px; cursor:pointer; font-family:inherit; }
+.btn-secondary:hover { color:var(--text-main); }
+.action-btn { background:none; border:none; cursor:pointer; padding:3px 7px; border-radius:4px; font-size:11px; font-family:inherit; transition:background 0.15s; }
+.action-btn.edit { color:#5BB8F5; border:0.5px solid rgba(91,184,245,0.3); }
+.action-btn.edit:hover { background:rgba(91,184,245,0.15); }
+.action-btn.del  { color:#f87171; border:0.5px solid rgba(220,53,69,0.3); margin-left:4px; }
+.action-btn.del:hover  { background:rgba(220,53,69,0.15); }
 </style>
 </head>
 <body>
@@ -208,7 +227,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   <div class="card" style="padding:0;overflow:hidden;">
     <table class="run-table">
       <thead><tr>
-        <th>Date</th><th>Track</th><th>Run</th><th>Time</th><th>S1 | S2 | S3</th><th>Rank</th><th>Notes</th>
+        <th>Date</th><th>Track</th><th>Run</th><th>Time</th><th>S1 | S2 | S3</th><th>Rank</th><th>Notes</th><th>Actions</th>
       </tr></thead>
       <tbody id="runTableBody"></tbody>
     </table>
@@ -358,6 +377,62 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
     </div>
     <button class="btn-primary" onclick="addRun()">Save run</button>
     <span id="logMsg" style="font-size:12px;color:var(--green);margin-left:10px;"></span>
+  </div>
+</div>
+
+<!-- EDIT MODAL -->
+<div class="modal-overlay" id="editModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Edit Run</div>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Track</label>
+        <select class="form-select" id="editTrack">
+          <option>Lillehammer</option><option>Sigulda</option><option>Oberhof</option>
+          <option>Winterberg</option><option>Lake Placid</option><option>Park City</option>
+          <option>Bludenz</option><option>Königssee</option>
+        </select>
+      </div>
+      <div class="form-group"><label class="form-label">Date</label>
+        <input type="date" class="form-input" id="editDate">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Run #</label>
+        <input type="number" class="form-input" id="editRun" min="1">
+      </div>
+      <div class="form-group"><label class="form-label">Total time (s)</label>
+        <input type="number" class="form-input" id="editTime" step="0.001">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Sector 1 (s)</label>
+        <input type="number" class="form-input" id="editS1" step="0.001">
+      </div>
+      <div class="form-group"><label class="form-label">Sector 2 (s)</label>
+        <input type="number" class="form-input" id="editS2" step="0.001">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Sector 3 (s)</label>
+        <input type="number" class="form-input" id="editS3" step="0.001">
+      </div>
+      <div class="form-group"><label class="form-label">Finish rank</label>
+        <input type="number" class="form-input" id="editRank" min="1">
+      </div>
+    </div>
+    <div class="form-group" style="margin-bottom:4px;"><label class="form-label">Notes</label>
+      <input type="text" class="form-input" id="editNotes">
+    </div>
+    <div class="modal-footer">
+      <button class="btn-danger" onclick="confirmDelete()">🗑 Delete run</button>
+      <div style="display:flex;gap:8px;">
+        <button class="btn-secondary" onclick="closeModal()">Cancel</button>
+        <button class="btn-primary" onclick="saveEdit()">Save changes</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -525,24 +600,34 @@ function initOverview() {
 function filterRuns(el, track) {
   document.querySelectorAll('#runFilter .filter-chip').forEach(c => c.classList.remove('active'));
   el.classList.add('active');
+  currentFilter = track;
   renderRunTable(track);
 }
 function renderRunTable(track) {
   const rows  = track === 'all' ? runData : runData.filter(r => r.track === track);
-  const sorted = [...rows].sort((a,b) => b.date.localeCompare(a.date));
+  // sort descending by date but keep original index reference
+  const indexed = runData.map((r, i) => ({...r, _idx: i}));
+  const filtered = track === 'all' ? indexed : indexed.filter(r => r.track === track);
+  const sorted = [...filtered].sort((a,b) => b.date.localeCompare(a.date));
   const pbByTrack = {};
   runData.forEach(r => { if (!pbByTrack[r.track] || r.time < pbByTrack[r.track]) pbByTrack[r.track] = r.time; });
-  document.getElementById('runTableBody').innerHTML = sorted.map(r => {
-    const isPB = r.time === pbByTrack[r.track];
-    const bc   = r.rank <= 3 ? ['badge-gold','badge-silver','badge-bronze'][r.rank-1] : 'badge-blue';
-    return `<tr>
-      <td>${r.date}</td><td>${r.track}</td><td>Run ${r.run}</td>
-      <td style="font-variant-numeric:tabular-nums;color:${isPB?'#22D46E':'inherit'}">${r.time.toFixed(3)}s${isPB?' <span class="pb-tag">PB</span>':''}</td>
-      <td style="color:#7BA7CC;font-size:11px">${r.s1.toFixed(2)} | ${r.s2.toFixed(2)} | ${r.s3.toFixed(2)}</td>
-      <td><span class="badge ${bc}">#${r.rank}</span></td>
-      <td style="font-size:11px;color:#7BA7CC">${r.notes}</td>
-    </tr>`;
-  }).join('');
+  document.getElementById('runTableBody').innerHTML = sorted.length === 0
+    ? `<tr><td colspan="8" style="text-align:center;color:var(--text-muted);padding:24px;">No runs logged yet.</td></tr>`
+    : sorted.map(r => {
+      const isPB = r.time === pbByTrack[r.track];
+      const bc   = r.rank <= 3 ? ['badge-gold','badge-silver','badge-bronze'][r.rank-1] : 'badge-blue';
+      return `<tr>
+        <td>${r.date}</td><td>${r.track}</td><td>Run ${r.run}</td>
+        <td style="font-variant-numeric:tabular-nums;color:${isPB?'#22D46E':'inherit'}">${r.time.toFixed(3)}s${isPB?' <span class="pb-tag">PB</span>':''}</td>
+        <td style="color:#7BA7CC;font-size:11px">${r.s1.toFixed(2)} | ${r.s2.toFixed(2)} | ${r.s3.toFixed(2)}</td>
+        <td><span class="badge ${bc}">#${r.rank}</span></td>
+        <td style="font-size:11px;color:#7BA7CC">${r.notes}</td>
+        <td style="white-space:nowrap;">
+          <button class="action-btn edit" onclick="openEdit(${r._idx})">✏ Edit</button>
+          <button class="action-btn del"  onclick="deleteRun(${r._idx})">🗑</button>
+        </td>
+      </tr>`;
+    }).join('');
 }
 
 /* ── Standings ── */
@@ -746,7 +831,84 @@ function addRun() {
   setTimeout(() => { document.getElementById('logMsg').textContent = ''; }, 2500);
 }
 
-/* ── Init ── */
+/* ── Edit / Delete modal ── */
+let editingIdx = null;
+let currentFilter = 'all';
+
+function openEdit(idx) {
+  editingIdx = idx;
+  const r = runData[idx];
+  document.getElementById('editTrack').value = r.track;
+  document.getElementById('editDate').value  = r.date;
+  document.getElementById('editRun').value   = r.run;
+  document.getElementById('editTime').value  = r.time;
+  document.getElementById('editS1').value    = r.s1;
+  document.getElementById('editS2').value    = r.s2;
+  document.getElementById('editS3').value    = r.s3;
+  document.getElementById('editRank').value  = r.rank;
+  document.getElementById('editNotes').value = r.notes;
+  document.getElementById('editModal').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('editModal').classList.remove('open');
+  editingIdx = null;
+}
+
+function saveEdit() {
+  if (editingIdx === null) return;
+  const time = parseFloat(document.getElementById('editTime').value);
+  const date = document.getElementById('editDate').value;
+  if (!date || !time) { alert('Please fill in date and time.'); return; }
+  runData[editingIdx] = {
+    track: document.getElementById('editTrack').value,
+    date,
+    run:   parseInt(document.getElementById('editRun').value) || 1,
+    time,
+    s1:    parseFloat(document.getElementById('editS1').value) || 0,
+    s2:    parseFloat(document.getElementById('editS2').value) || 0,
+    s3:    parseFloat(document.getElementById('editS3').value) || 0,
+    rank:  parseInt(document.getElementById('editRank').value) || 99,
+    notes: document.getElementById('editNotes').value,
+  };
+  closeModal();
+  ovDone = false;
+  renderRunTable(currentFilter);
+  refreshStatCards();
+}
+
+function deleteRun(idx) {
+  if (!confirm('Delete this run? This cannot be undone.')) return;
+  runData.splice(idx, 1);
+  ovDone = false;
+  renderRunTable(currentFilter);
+  refreshStatCards();
+}
+
+function confirmDelete() {
+  if (editingIdx === null) return;
+  closeModal();
+  deleteRun(editingIdx);
+}
+
+function refreshStatCards() {
+  const statVals = document.querySelectorAll('.stat-value');
+  if (runData.length === 0) {
+    statVals[0].textContent = '—'; statVals[0].style.color = 'var(--text-muted)';
+    statVals[2].textContent = '0';
+  } else {
+    const pb = Math.min(...runData.map(r => r.time));
+    statVals[0].textContent = pb.toFixed(3) + 's'; statVals[0].style.color = '#22D46E';
+    statVals[2].textContent = runData.length;
+  }
+}
+
+// close modal on overlay click
+document.getElementById('editModal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+
 initOverview();
 renderLeaderboard('overall');
 renderUSALeaderboard('overall');
