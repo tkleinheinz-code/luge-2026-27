@@ -106,7 +106,51 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .action-btn.edit:hover { background:rgba(91,184,245,0.15); }
 .action-btn.del  { color:#f87171; border:0.5px solid rgba(220,53,69,0.3); margin-left:4px; }
 .action-btn.del:hover  { background:rgba(220,53,69,0.15); }
-</style>
+
+/* Notes */
+.note-card { background:rgba(91,184,245,0.04); border:0.5px solid var(--card-border); border-radius:var(--radius-lg); padding:14px 16px; margin-bottom:10px; cursor:pointer; transition:border-color 0.15s; }
+.note-card:hover { border-color:rgba(91,184,245,0.4); }
+.note-card-title { font-size:13px; font-weight:500; color:var(--text-main); margin-bottom:4px; display:flex; justify-content:space-between; align-items:center; }
+.note-card-preview { font-size:12px; color:var(--text-muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:85%; }
+.note-card-date { font-size:10px; color:var(--text-muted); margin-top:4px; }
+.note-tag { display:inline-block; padding:1px 8px; border-radius:10px; font-size:10px; font-weight:500; margin-right:4px; }
+.note-tag-race     { background:rgba(240,180,41,0.15); color:var(--gold); }
+.note-tag-training { background:rgba(91,184,245,0.15); color:var(--ice); }
+.note-tag-general  { background:rgba(34,212,110,0.12); color:var(--green); }
+.note-editor { width:100%; background:rgba(91,184,245,0.05); border:0.5px solid var(--card-border); border-radius:var(--radius-md); color:var(--text-main); font-family:inherit; font-size:13px; padding:10px 12px; resize:vertical; min-height:160px; line-height:1.6; }
+.note-editor:focus { outline:none; border-color:var(--ice); }
+.note-title-input { width:100%; background:rgba(91,184,245,0.05); border:0.5px solid var(--card-border); border-radius:var(--radius-md); color:var(--text-main); font-family:inherit; font-size:15px; font-weight:500; padding:8px 12px; margin-bottom:10px; }
+.note-title-input:focus { outline:none; border-color:var(--ice); }
+.note-tag-btn { background:rgba(91,184,245,0.05); border:0.5px solid var(--card-border); color:var(--text-muted); border-radius:20px; padding:3px 10px; font-size:11px; cursor:pointer; font-family:inherit; margin-right:5px; transition:all 0.15s; }
+.note-tag-btn.active { background:rgba(91,184,245,0.18); border-color:var(--ice); color:var(--ice); }
+
+/* Calendar */
+.cal-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:4px; margin-bottom:16px; }
+.cal-day-name { text-align:center; font-size:10px; color:var(--text-muted); padding:4px 0; text-transform:uppercase; letter-spacing:0.4px; }
+.cal-day { min-height:64px; background:rgba(91,184,245,0.03); border:0.5px solid var(--card-border); border-radius:var(--radius-md); padding:5px; cursor:pointer; transition:border-color 0.15s; position:relative; }
+.cal-day:hover { border-color:rgba(91,184,245,0.4); }
+.cal-day.today { border-color:var(--ice); background:rgba(91,184,245,0.07); }
+.cal-day.other-month { opacity:0.35; }
+.cal-day-num { font-size:11px; color:var(--text-muted); margin-bottom:3px; }
+.cal-day.today .cal-day-num { color:var(--ice); font-weight:600; }
+.cal-event { font-size:9px; padding:1px 5px; border-radius:3px; margin-bottom:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:500; }
+.cal-event-race     { background:rgba(240,180,41,0.25); color:#F0B429; }
+.cal-event-training { background:rgba(91,184,245,0.2);  color:#5BB8F5; }
+.cal-event-travel   { background:rgba(34,212,110,0.18); color:#22D46E; }
+.cal-event-other    { background:rgba(155,163,175,0.2); color:#9BA3AF; }
+.cal-nav { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+.cal-nav-btn { background:rgba(91,184,245,0.07); border:0.5px solid var(--card-border); color:var(--ice); border-radius:var(--radius-md); padding:5px 12px; font-size:12px; cursor:pointer; font-family:inherit; }
+.cal-nav-btn:hover { background:rgba(91,184,245,0.15); }
+.cal-month-label { font-size:15px; font-weight:500; color:var(--text-main); }
+.event-type-btn { border:0.5px solid var(--card-border); border-radius:20px; padding:3px 11px; font-size:11px; cursor:pointer; font-family:inherit; margin-right:5px; transition:all 0.15s; background:rgba(91,184,245,0.05); color:var(--text-muted); }
+.event-type-btn.sel-race     { background:rgba(240,180,41,0.2); border-color:#F0B429; color:#F0B429; }
+.event-type-btn.sel-training { background:rgba(91,184,245,0.2); border-color:#5BB8F5; color:#5BB8F5; }
+.event-type-btn.sel-travel   { background:rgba(34,212,110,0.15); border-color:#22D46E; color:#22D46E; }
+.event-type-btn.sel-other    { background:rgba(155,163,175,0.15); border-color:#9BA3AF; color:#9BA3AF; }
+.upcoming-event { display:flex; align-items:center; gap:10px; padding:8px 12px; border-radius:var(--radius-md); margin-bottom:5px; background:rgba(91,184,245,0.04); border:0.5px solid var(--card-border); }
+.upcoming-date { font-size:11px; color:var(--text-muted); min-width:70px; }
+.upcoming-title { font-size:13px; flex:1; }
+.upcoming-type { font-size:10px; padding:1px 7px; border-radius:8px; font-weight:500; }
 </head>
 <body>
 <div id="app">
@@ -135,6 +179,8 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   <button class="nav-btn" onclick="showView('standings',this)"><i class="ti ti-trophy"></i> WC Standings</button>
   <button class="nav-btn" onclick="showView('map',this)"><i class="ti ti-map-pin"></i> Tracks</button>
   <button class="nav-btn" onclick="showView('photos',this)"><i class="ti ti-camera"></i> Photos</button>
+  <button class="nav-btn" onclick="showView('notes',this)"><i class="ti ti-notebook"></i> Notes</button>
+  <button class="nav-btn" onclick="showView('calendar',this)"><i class="ti ti-calendar"></i> Calendar</button>
   <button class="nav-btn" onclick="showView('log',this)"><i class="ti ti-circle-plus"></i> Add Run</button>
   <button class="nav-btn" onclick="showView('import',this)"><i class="ti ti-file-upload"></i> Import PDF</button>
 </div>
@@ -323,6 +369,110 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   </div>
 </div>
 
+<!-- NOTES -->
+<div id="view-notes" class="view">
+  <div id="notes-list-panel">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+      <div style="font-size:14px;font-weight:500;color:var(--text-main);">My Notes</div>
+      <button class="btn-primary" onclick="openNewNote()" style="display:flex;align-items:center;gap:5px;"><i class="ti ti-plus"></i> New note</button>
+    </div>
+    <div class="filter-row" id="noteFilterRow">
+      <button class="filter-chip active" onclick="filterNotes(this,'all')">All</button>
+      <button class="filter-chip" onclick="filterNotes(this,'race')">Race</button>
+      <button class="filter-chip" onclick="filterNotes(this,'training')">Training</button>
+      <button class="filter-chip" onclick="filterNotes(this,'general')">General</button>
+    </div>
+    <div id="notesList"><p style="color:var(--text-muted);font-size:13px;padding:20px 0;">No notes yet — hit New note to get started.</p></div>
+  </div>
+
+  <!-- Note editor (hidden until new/edit) -->
+  <div id="notes-editor-panel" style="display:none;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+      <button class="btn-secondary" onclick="closeNoteEditor()" style="display:flex;align-items:center;gap:4px;"><i class="ti ti-arrow-left"></i> Back</button>
+      <div style="flex:1;font-size:13px;color:var(--text-muted);" id="noteEditorMeta"></div>
+      <button class="btn-danger" id="noteDeleteBtn" onclick="deleteNote()" style="display:none;">🗑 Delete</button>
+      <button class="btn-primary" onclick="saveNote()"><i class="ti ti-device-floppy"></i> Save</button>
+    </div>
+    <input type="text" class="note-title-input" id="noteTitle" placeholder="Note title…">
+    <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;flex-wrap:wrap;">
+      <span style="font-size:11px;color:var(--text-muted);margin-right:4px;">Tag:</span>
+      <button class="note-tag-btn active" id="tagBtnGeneral"  onclick="selectNoteTag('general')">General</button>
+      <button class="note-tag-btn"        id="tagBtnRace"     onclick="selectNoteTag('race')">Race</button>
+      <button class="note-tag-btn"        id="tagBtnTraining" onclick="selectNoteTag('training')">Training</button>
+      <span style="margin-left:auto;font-size:11px;color:var(--text-muted);">Date:</span>
+      <input type="date" class="form-input" id="noteDate" style="width:140px;">
+    </div>
+    <textarea class="note-editor" id="noteBody" placeholder="Write your note here…"></textarea>
+    <div id="noteSaveMsg" style="font-size:12px;color:var(--green);margin-top:8px;"></div>
+  </div>
+</div>
+
+<!-- CALENDAR -->
+<div id="view-calendar" class="view">
+  <div style="display:grid;grid-template-columns:1fr 320px;gap:16px;align-items:start;">
+
+    <!-- Calendar grid -->
+    <div>
+      <div class="cal-nav">
+        <button class="cal-nav-btn" onclick="calNav(-1)">‹ Prev</button>
+        <div class="cal-month-label" id="calMonthLabel"></div>
+        <button class="cal-nav-btn" onclick="calNav(1)">Next ›</button>
+      </div>
+      <div class="cal-grid" id="calDayNames"></div>
+      <div class="cal-grid" id="calGrid"></div>
+    </div>
+
+    <!-- Add event + upcoming -->
+    <div>
+      <div class="card">
+        <div class="card-title">Add event</div>
+        <div class="form-group" style="margin-bottom:9px;"><label class="form-label">Title</label>
+          <input type="text" class="form-input" id="evTitle" placeholder="e.g. Winterberg Race Day">
+        </div>
+        <div class="form-group" style="margin-bottom:9px;"><label class="form-label">Date</label>
+          <input type="date" class="form-input" id="evDate">
+        </div>
+        <div class="form-group" style="margin-bottom:9px;"><label class="form-label">End date (optional)</label>
+          <input type="date" class="form-input" id="evEndDate">
+        </div>
+        <div class="form-group" style="margin-bottom:9px;"><label class="form-label">Type</label>
+          <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:4px;">
+            <button class="event-type-btn sel-race"     id="evTypeRace"     onclick="selectEvType('race')">🏆 Race</button>
+            <button class="event-type-btn"              id="evTypeTraining" onclick="selectEvType('training')">🛷 Training</button>
+            <button class="event-type-btn"              id="evTypeTravel"   onclick="selectEvType('travel')">✈ Travel</button>
+            <button class="event-type-btn"              id="evTypeOther"    onclick="selectEvType('other')">📌 Other</button>
+          </div>
+        </div>
+        <div class="form-group" style="margin-bottom:12px;"><label class="form-label">Notes</label>
+          <input type="text" class="form-input" id="evNotes" placeholder="Optional details…">
+        </div>
+        <button class="btn-primary" onclick="addCalEvent()" style="width:100%;">Add to calendar</button>
+        <div id="evMsg" style="font-size:12px;color:var(--green);margin-top:8px;"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Upcoming</div>
+        <div id="upcomingList"><p style="font-size:12px;color:var(--text-muted);">No upcoming events.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EVENT DETAIL MODAL -->
+<div class="modal-overlay" id="eventModal" onclick="if(event.target===this)closeEventModal()">
+  <div class="modal" style="width:400px;">
+    <div class="modal-header">
+      <div class="modal-title" id="eventModalTitle">Event</div>
+      <button class="modal-close" onclick="closeEventModal()">×</button>
+    </div>
+    <div id="eventModalBody" style="font-size:13px;color:var(--text-muted);line-height:1.7;"></div>
+    <div class="modal-footer">
+      <button class="btn-danger" onclick="deleteCalEvent()">🗑 Delete event</button>
+      <button class="btn-secondary" onclick="closeEventModal()">Close</button>
+    </div>
+  </div>
+</div>
+
 <!-- EDIT MODAL -->
 <div class="modal-overlay" id="editModal" onclick="if(event.target===this)closeModal()">
   <div class="modal">
@@ -485,6 +635,8 @@ function showView(id, btn) {
   if (id === 'runs')      renderRunTable(currentFilter);
   if (id === 'standings') { renderLeaderboard('overall'); renderUSALeaderboard('overall'); setTimeout(initPointsChart, 50); }
   if (id === 'map')       setTimeout(initMap, 50);
+  if (id === 'notes')     renderNotesList(currentNoteFilter);
+  if (id === 'calendar')  { setTimeout(renderCalendar, 50); setTimeout(renderUpcoming, 50); }
   if (id === 'import')    { document.getElementById('importPreview').style.display='none'; document.getElementById('importStatus').style.display='none'; }
 }
 
@@ -1003,6 +1155,289 @@ function showImportStatus(msg, isError) {
 }
 
 // ─────────────────────────────────────────────
+// NOTES
+// ─────────────────────────────────────────────
+let notesData        = [];   // [{_id, title, body, tag, date, updatedAt}]
+let currentNoteId    = null;
+let currentNoteTag   = 'general';
+let currentNoteFilter= 'all';
+
+function filterNotes(el, tag) {
+  document.querySelectorAll('#noteFilterRow .filter-chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  currentNoteFilter = tag;
+  renderNotesList(tag);
+}
+
+function renderNotesList(filter) {
+  const list = filter==='all' ? notesData : notesData.filter(n=>n.tag===filter);
+  const sorted = [...list].sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0));
+  const el = document.getElementById('notesList');
+  if (!sorted.length) {
+    el.innerHTML='<p style="color:var(--text-muted);font-size:13px;padding:20px 0;">No notes yet.</p>';
+    return;
+  }
+  const tagClass = { race:'note-tag-race', training:'note-tag-training', general:'note-tag-general' };
+  el.innerHTML = sorted.map(n => `
+    <div class="note-card" onclick="openEditNote('${n._id}')">
+      <div class="note-card-title">
+        <span>${n.title||'Untitled'}</span>
+        <span class="note-tag ${tagClass[n.tag]||'note-tag-general'}">${n.tag||'general'}</span>
+      </div>
+      <div class="note-card-preview">${(n.body||'').replace(/\n/g,' ')}</div>
+      <div class="note-card-date">${n.date||''} · ${n.updatedAt ? new Date(n.updatedAt).toLocaleDateString() : ''}</div>
+    </div>`).join('');
+}
+
+function openNewNote() {
+  currentNoteId = null;
+  document.getElementById('noteTitle').value = '';
+  document.getElementById('noteBody').value  = '';
+  document.getElementById('noteDate').value  = new Date().toISOString().slice(0,10);
+  document.getElementById('noteEditorMeta').textContent = 'New note';
+  document.getElementById('noteDeleteBtn').style.display = 'none';
+  document.getElementById('noteSaveMsg').textContent = '';
+  selectNoteTag('general');
+  document.getElementById('notes-list-panel').style.display   = 'none';
+  document.getElementById('notes-editor-panel').style.display = 'block';
+}
+
+function openEditNote(id) {
+  const note = notesData.find(n=>n._id===id);
+  if (!note) return;
+  currentNoteId = id;
+  document.getElementById('noteTitle').value = note.title||'';
+  document.getElementById('noteBody').value  = note.body||'';
+  document.getElementById('noteDate').value  = note.date||'';
+  document.getElementById('noteEditorMeta').textContent = 'Editing note';
+  document.getElementById('noteDeleteBtn').style.display = 'inline-flex';
+  document.getElementById('noteSaveMsg').textContent = '';
+  selectNoteTag(note.tag||'general');
+  document.getElementById('notes-list-panel').style.display   = 'none';
+  document.getElementById('notes-editor-panel').style.display = 'block';
+}
+
+function closeNoteEditor() {
+  document.getElementById('notes-editor-panel').style.display = 'none';
+  document.getElementById('notes-list-panel').style.display   = 'block';
+  renderNotesList(currentNoteFilter);
+}
+
+function selectNoteTag(tag) {
+  currentNoteTag = tag;
+  ['general','race','training'].forEach(t => {
+    const btn = document.getElementById('tagBtn'+t.charAt(0).toUpperCase()+t.slice(1));
+    if (btn) btn.classList.toggle('active', t===tag);
+  });
+}
+
+async function saveNote() {
+  const title = document.getElementById('noteTitle').value.trim()||'Untitled';
+  const body  = document.getElementById('noteBody').value;
+  const date  = document.getElementById('noteDate').value;
+  const noteObj = { title, body, tag:currentNoteTag, date, updatedAt:Date.now() };
+  try {
+    setSyncStatus('syncing');
+    if (currentNoteId) {
+      await db.collection('notes').doc(currentNoteId).set(noteObj);
+    } else {
+      const ref = await db.collection('notes').add(noteObj);
+      currentNoteId = ref.id;
+      document.getElementById('noteDeleteBtn').style.display = 'inline-flex';
+    }
+    document.getElementById('noteSaveMsg').textContent = 'Saved ✓';
+    document.getElementById('noteEditorMeta').textContent = 'Note saved';
+    setSyncStatus('ok');
+    setTimeout(()=>{ document.getElementById('noteSaveMsg').textContent=''; },2000);
+  } catch(e) {
+    console.error('Note save error:', e);
+    document.getElementById('noteSaveMsg').textContent = 'Error saving. Check connection.';
+    document.getElementById('noteSaveMsg').style.color = '#f87171';
+    setSyncStatus('error');
+  }
+}
+
+async function deleteNote() {
+  if (!currentNoteId) return;
+  if (!confirm('Delete this note?')) return;
+  try {
+    await db.collection('notes').doc(currentNoteId).delete();
+    closeNoteEditor();
+  } catch(e) { console.error('Note delete error:', e); }
+}
+
+// ─────────────────────────────────────────────
+// CALENDAR
+// ─────────────────────────────────────────────
+let calEvents      = [];   // [{_id, title, date, endDate, type, notes}]
+let calYear        = new Date().getFullYear();
+let calMonth       = new Date().getMonth();  // 0-indexed
+let selectedEvType = 'race';
+let viewingEventId = null;
+
+const MONTH_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const DAY_NAMES   = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const EV_COLORS   = { race:'cal-event-race', training:'cal-event-training', travel:'cal-event-travel', other:'cal-event-other' };
+const EV_LABELS   = { race:'🏆 Race', training:'🛷 Training', travel:'✈ Travel', other:'📌 Other' };
+const EV_BADGE    = { race:'rgba(240,180,41,0.25)', training:'rgba(91,184,245,0.2)', travel:'rgba(34,212,110,0.18)', other:'rgba(155,163,175,0.2)' };
+const EV_COLOR    = { race:'#F0B429', training:'#5BB8F5', travel:'#22D46E', other:'#9BA3AF' };
+
+function calNav(dir) {
+  calMonth += dir;
+  if (calMonth > 11) { calMonth=0; calYear++; }
+  if (calMonth < 0)  { calMonth=11; calYear--; }
+  renderCalendar();
+}
+
+function renderCalendar() {
+  document.getElementById('calMonthLabel').textContent = `${MONTH_NAMES[calMonth]} ${calYear}`;
+
+  // Day name headers
+  const dn = document.getElementById('calDayNames');
+  dn.innerHTML = DAY_NAMES.map(d=>`<div class="cal-day-name">${d}</div>`).join('');
+
+  const firstDay = new Date(calYear, calMonth, 1).getDay();
+  const daysInMonth = new Date(calYear, calMonth+1, 0).getDate();
+  const daysInPrev  = new Date(calYear, calMonth, 0).getDate();
+  const today = new Date();
+  const todayStr = today.toISOString().slice(0,10);
+
+  const grid = document.getElementById('calGrid');
+  grid.innerHTML = '';
+
+  // Cells before month start
+  for (let i=0; i<firstDay; i++) {
+    const day = daysInPrev - firstDay + 1 + i;
+    const dateStr = `${calYear}-${String(calMonth).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+    grid.appendChild(makeDayCell(day, dateStr, true, false));
+  }
+  // This month's cells
+  for (let d=1; d<=daysInMonth; d++) {
+    const dateStr = `${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    grid.appendChild(makeDayCell(d, dateStr, false, dateStr===todayStr));
+  }
+  // Fill remaining cells
+  const totalCells = firstDay + daysInMonth;
+  const remainder  = totalCells % 7 === 0 ? 0 : 7 - (totalCells % 7);
+  for (let d=1; d<=remainder; d++) {
+    const dateStr = `${calYear}-${String(calMonth+2).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    grid.appendChild(makeDayCell(d, dateStr, true, false));
+  }
+
+  renderUpcoming();
+}
+
+function makeDayCell(dayNum, dateStr, otherMonth, isToday) {
+  const cell = document.createElement('div');
+  cell.className = 'cal-day' + (otherMonth?' other-month':'') + (isToday?' today':'');
+  cell.innerHTML = `<div class="cal-day-num">${dayNum}</div>`;
+
+  // Find events on this date (including multi-day spans)
+  const evs = calEvents.filter(e => {
+    if (!e.date) return false;
+    if (e.endDate && e.endDate > e.date) return dateStr >= e.date && dateStr <= e.endDate;
+    return e.date === dateStr;
+  });
+
+  evs.slice(0,3).forEach(e => {
+    const tag = document.createElement('div');
+    tag.className = `cal-event ${EV_COLORS[e.type]||'cal-event-other'}`;
+    tag.textContent = e.title;
+    tag.onclick = (ev) => { ev.stopPropagation(); openEventModal(e._id); };
+    cell.appendChild(tag);
+  });
+  if (evs.length > 3) {
+    const more = document.createElement('div');
+    more.style.cssText='font-size:9px;color:var(--text-muted);padding-left:3px;';
+    more.textContent = `+${evs.length-3} more`;
+    cell.appendChild(more);
+  }
+
+  cell.onclick = () => prefillEventDate(dateStr);
+  return cell;
+}
+
+function prefillEventDate(dateStr) {
+  document.getElementById('evDate').value = dateStr;
+  document.getElementById('evTitle').focus();
+}
+
+function renderUpcoming() {
+  const todayStr = new Date().toISOString().slice(0,10);
+  const upcoming = calEvents
+    .filter(e => e.date >= todayStr)
+    .sort((a,b) => a.date.localeCompare(b.date))
+    .slice(0,8);
+  const el = document.getElementById('upcomingList');
+  if (!upcoming.length) { el.innerHTML='<p style="font-size:12px;color:var(--text-muted);">No upcoming events.</p>'; return; }
+  el.innerHTML = upcoming.map(e => `
+    <div class="upcoming-event" onclick="openEventModal('${e._id}')" style="cursor:pointer;">
+      <div class="upcoming-date">${e.date}</div>
+      <div class="upcoming-title">${e.title}</div>
+      <div class="upcoming-type" style="background:${EV_BADGE[e.type]||EV_BADGE.other};color:${EV_COLOR[e.type]||EV_COLOR.other};">${EV_LABELS[e.type]||'Other'}</div>
+    </div>`).join('');
+}
+
+function selectEvType(type) {
+  selectedEvType = type;
+  ['race','training','travel','other'].forEach(t => {
+    const btn = document.getElementById('evType'+t.charAt(0).toUpperCase()+t.slice(1));
+    if (!btn) return;
+    btn.className = 'event-type-btn' + (t===type ? ` sel-${t}` : '');
+  });
+}
+
+async function addCalEvent() {
+  const title   = document.getElementById('evTitle').value.trim();
+  const date    = document.getElementById('evDate').value;
+  const endDate = document.getElementById('evEndDate').value;
+  const notes   = document.getElementById('evNotes').value;
+  if (!title||!date) { document.getElementById('evMsg').textContent='Please add a title and date.'; return; }
+  const evObj = { title, date, endDate:endDate||'', type:selectedEvType, notes, createdAt:Date.now() };
+  try {
+    setSyncStatus('syncing');
+    await db.collection('calEvents').add(evObj);
+    document.getElementById('evTitle').value   = '';
+    document.getElementById('evEndDate').value = '';
+    document.getElementById('evNotes').value   = '';
+    document.getElementById('evMsg').textContent = 'Event added ✓';
+    setSyncStatus('ok');
+    setTimeout(()=>{ document.getElementById('evMsg').textContent=''; },2000);
+  } catch(e) {
+    console.error('Event add error:', e);
+    document.getElementById('evMsg').textContent = 'Error. Check connection.';
+    document.getElementById('evMsg').style.color = '#f87171';
+    setSyncStatus('error');
+  }
+}
+
+function openEventModal(id) {
+  const e = calEvents.find(ev=>ev._id===id);
+  if (!e) return;
+  viewingEventId = id;
+  document.getElementById('eventModalTitle').textContent = e.title;
+  document.getElementById('eventModalBody').innerHTML = `
+    <div style="margin-bottom:6px;"><span style="padding:2px 9px;border-radius:8px;font-size:11px;font-weight:500;background:${EV_BADGE[e.type]||EV_BADGE.other};color:${EV_COLOR[e.type]||EV_COLOR.other};">${EV_LABELS[e.type]||'Other'}</span></div>
+    <div><b style="color:var(--text-main)">Date:</b> ${e.date}${e.endDate?' → '+e.endDate:''}</div>
+    ${e.notes?`<div style="margin-top:6px;"><b style="color:var(--text-main)">Notes:</b> ${e.notes}</div>`:''}`;
+  document.getElementById('eventModal').classList.add('open');
+}
+
+function closeEventModal() {
+  document.getElementById('eventModal').classList.remove('open');
+  viewingEventId = null;
+}
+
+async function deleteCalEvent() {
+  if (!viewingEventId) return;
+  if (!confirm('Delete this event?')) return;
+  try {
+    await db.collection('calEvents').doc(viewingEventId).delete();
+    closeEventModal();
+  } catch(e) { console.error('Event delete error:', e); }
+}
+
+// ─────────────────────────────────────────────
 // FIREBASE REAL-TIME LISTENERS
 // ─────────────────────────────────────────────
 db.collection('runs').onSnapshot(snap => {
@@ -1046,6 +1481,25 @@ db.collection('photos').onSnapshot(snap => {
 // ─────────────────────────────────────────────
 renderLeaderboard('overall');
 renderUSALeaderboard('overall');
+
+// Calendar: default type button active
+selectEvType('race');
+
+// Notes listener
+db.collection('notes').onSnapshot(snap => {
+  notesData = snap.docs.map(d => ({_id:d.id,...d.data()}));
+  if (document.getElementById('view-notes').classList.contains('active')) {
+    renderNotesList(currentNoteFilter);
+  }
+}, err => { console.error('Notes listener error:', err); });
+
+// Calendar events listener
+db.collection('calEvents').onSnapshot(snap => {
+  calEvents = snap.docs.map(d => ({_id:d.id,...d.data()}));
+  if (document.getElementById('view-calendar').classList.contains('active')) {
+    renderCalendar();
+  }
+}, err => { console.error('Calendar listener error:', err); });
 </script>
 </body>
 </html>
