@@ -16,26 +16,16 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   --radius-md: 8px; --radius-lg: 12px;
 }
 #app { background: var(--track-bg); color: var(--text-main); min-height: 100vh; }
-
-/* Header */
 .header { background: #0A1628; border-bottom: 1px solid var(--card-border); padding: 14px 22px; display: flex; align-items: center; justify-content: space-between; }
 .header-left { display: flex; align-items: center; gap: 12px; }
-.avatar { width: 42px; height: 42px; border-radius: 50%; border: 2px solid var(--ice); overflow: hidden; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 26px; background: #0A1A35; }
 .h-name { font-size: 16px; font-weight: 500; color: var(--text-main); }
 .h-sub { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
-.usa-pill { background: rgba(0,40,104,0.5); border: 0.5px solid rgba(178,34,52,0.5); border-radius: 20px; padding: 5px 12px; font-size: 12px; color: #E8F4FD; display: flex; align-items: center; gap: 5px; }
-
-/* Nav */
 .nav { display: flex; gap: 0; padding: 0 22px; border-bottom: 1px solid var(--card-border); background: #0A1628; overflow-x: auto; }
 .nav-btn { background: none; border: none; padding: 10px 14px; font-size: 12px; color: var(--text-muted); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; white-space: nowrap; font-family: inherit; transition: color 0.15s; display: flex; align-items: center; gap: 5px; }
 .nav-btn.active { color: var(--ice); border-bottom-color: var(--ice); }
 .nav-btn:hover { color: var(--text-main); }
-
-/* Views */
 .view { display: none; padding: 18px 22px; }
 .view.active { display: block; }
-
-/* Stats */
 .stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 18px; }
 .stat-card { background: rgba(91,184,245,0.05); border: 0.5px solid var(--card-border); border-radius: var(--radius-md); padding: 11px 14px; }
 .stat-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
@@ -43,28 +33,20 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .stat-value.green { color: var(--green); }
 .stat-value.gold  { color: var(--gold); }
 .stat-value.ice   { color: var(--ice); }
-
-/* Cards */
 .card { background: rgba(91,184,245,0.04); border: 0.5px solid var(--card-border); border-radius: var(--radius-lg); padding: 14px 16px; margin-bottom: 14px; }
 .card-title { font-size: 11px; font-weight: 500; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
 .split-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-
-/* Tables */
 .run-table { width: 100%; border-collapse: collapse; font-size: 12px; }
 .run-table th { text-align: left; color: var(--text-muted); padding: 5px 9px; font-weight: 400; border-bottom: 0.5px solid var(--card-border); font-size: 10px; text-transform: uppercase; letter-spacing: 0.4px; }
 .run-table td { padding: 7px 9px; border-bottom: 0.5px solid rgba(91,184,245,0.06); color: var(--text-main); }
 .run-table tr:last-child td { border-bottom: none; }
 .run-table tr:hover td { background: rgba(91,184,245,0.04); }
-
-/* Badges */
 .badge { display: inline-block; padding: 1px 7px; border-radius: 10px; font-size: 10px; font-weight: 500; }
 .badge-gold   { background: rgba(240,180,41,0.15);  color: var(--gold); }
 .badge-silver { background: rgba(155,163,175,0.15); color: var(--silver); }
 .badge-bronze { background: rgba(198,123,58,0.15);  color: var(--bronze); }
 .badge-blue   { background: rgba(91,184,245,0.12);  color: var(--ice); }
 .pb-tag { color: var(--green); font-size: 10px; margin-left: 3px; }
-
-/* Leaderboard */
 .lb-row { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: var(--radius-md); margin-bottom: 3px; }
 .lb-row.me { background: rgba(91,184,245,0.09); border: 0.5px solid var(--card-border); }
 .lb-pos { width: 22px; font-size: 13px; font-weight: 500; color: var(--text-muted); text-align: center; }
@@ -72,14 +54,10 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .lb-name { flex: 1; font-size: 13px; }
 .lb-pts  { font-size: 13px; font-weight: 500; color: var(--ice); font-variant-numeric: tabular-nums; }
 .lb-diff { font-size: 11px; color: var(--text-muted); margin-left: 6px; }
-
-/* Map */
 .world-map { position: relative; width: 100%; height: 340px; border-radius: var(--radius-md); overflow: hidden; }
 #worldSvg { width: 100%; height: 100%; background: #0A1628; }
 .track-popup { position: absolute; background: #0D2140; border: 0.5px solid var(--ice); border-radius: var(--radius-md); padding: 10px 13px; font-size: 12px; pointer-events: none; z-index: 10; min-width: 155px; display: none; }
 .track-popup strong { font-size: 13px; color: var(--ice); display: block; margin-bottom: 3px; }
-
-/* Photos */
 .photo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; margin-bottom: 14px; }
 .photo-slot { aspect-ratio: 1; background: rgba(91,184,245,0.04); border: 0.5px dashed var(--card-border); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; cursor: pointer; overflow: hidden; position: relative; transition: border-color 0.15s; }
 .photo-slot:hover { border-color: var(--ice); }
@@ -87,8 +65,6 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .photo-caption { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(7,15,30,0.82); font-size: 10px; padding: 3px 6px; color: var(--text-muted); text-align: center; }
 .upload-btn { background: rgba(91,184,245,0.07); border: 0.5px solid var(--card-border); color: var(--ice); border-radius: var(--radius-md); padding: 7px 14px; font-size: 12px; cursor: pointer; font-family: inherit; display: flex; align-items: center; gap: 5px; }
 .upload-btn:hover { background: rgba(91,184,245,0.14); }
-
-/* Forms */
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
 .form-group { display: flex; flex-direction: column; gap: 3px; }
 .form-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.4px; }
@@ -97,34 +73,22 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .form-input:focus, .form-select:focus { outline: none; border-color: var(--ice); }
 .btn-primary { background: var(--ice-dark); border: none; color: #fff; border-radius: var(--radius-md); padding: 8px 18px; font-size: 12px; cursor: pointer; font-family: inherit; }
 .btn-primary:hover { background: #2280C0; }
-
-/* Filters */
 .filter-row { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; }
 .filter-chip { background: rgba(91,184,245,0.05); border: 0.5px solid var(--card-border); color: var(--text-muted); border-radius: 20px; padding: 3px 11px; font-size: 11px; cursor: pointer; font-family: inherit; transition: all 0.15s; }
 .filter-chip.active { background: rgba(91,184,245,0.16); border-color: var(--ice); color: var(--ice); }
 .filter-chip:hover { color: var(--text-main); }
-
-/* Speed bars */
 .speed-bar-wrap { margin-bottom: 9px; }
 .speed-bar-label { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); margin-bottom: 3px; }
 .speed-bar-track { height: 3px; background: rgba(91,184,245,0.1); border-radius: 2px; overflow: hidden; }
 .speed-bar-fill  { height: 100%; background: var(--ice); border-radius: 2px; transition: width 0.5s; }
-
-/* Section header */
 .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 11px; }
 .section-tag { font-size: 10px; color: var(--ice); background: rgba(91,184,245,0.1); padding: 2px 8px; border-radius: 10px; }
-
-/* Achievement grid */
 .achieve-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
 .achieve-card { background: rgba(91,184,245,0.05); border: 0.5px solid var(--card-border); border-radius: var(--radius-md); padding: 12px; text-align: center; }
 .achieve-icon  { font-size: 22px; margin-bottom: 4px; }
 .achieve-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.4px; }
 .achieve-val   { font-size: 13px; font-weight: 500; color: var(--text-main); margin-top: 2px; }
-
-/* Legend dots */
 .legend-dot { width: 10px; height: 3px; border-radius: 2px; display: inline-block; }
-
-/* Edit modal */
 .modal-overlay { display:none; position:fixed; inset:0; background:rgba(7,15,30,0.88); z-index:200; align-items:center; justify-content:center; }
 .modal-overlay.open { display:flex; }
 .modal { background:#0D2140; border:0.5px solid var(--card-border); border-radius:var(--radius-lg); padding:20px 22px; width:480px; max-width:95vw; box-shadow:0 8px 40px rgba(0,0,0,0.6); }
@@ -147,7 +111,6 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 <body>
 <div id="app">
 
-<!-- HEADER -->
 <div class="header">
   <div class="header-left">
     <div>
@@ -158,7 +121,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   <div style="display:flex;align-items:center;gap:10px;">
     <div style="font-size:11px;color:var(--text-muted);text-align:right;line-height:1.5;">4× National Champion<br>2024 Youth Olympian</div>
     <div style="width:1px;height:32px;background:var(--card-border);"></div>
-    <div style="font-size:11px;color:var(--text-muted);text-align:right;line-height:1.5;">2025–26 Season<br><span style="color:var(--ice)">Junior World Cup</span></div>
+    <div style="font-size:11px;color:var(--text-muted);text-align:right;line-height:1.5;">2026–27 Season<br><span style="color:var(--ice)">Junior World Cup</span></div>
     <div style="display:flex;align-items:center;gap:5px;margin-left:10px;" title="Firebase sync status">
       <div id="syncDot" style="width:8px;height:8px;border-radius:50%;background:#F0B429;transition:background 0.4s;flex-shrink:0;"></div>
       <span id="syncLabel" style="font-size:10px;color:var(--text-muted);">connecting…</span>
@@ -166,7 +129,6 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   </div>
 </div>
 
-<!-- NAV -->
 <div class="nav">
   <button class="nav-btn active" onclick="showView('overview',this)"><i class="ti ti-layout-dashboard"></i> Overview</button>
   <button class="nav-btn" onclick="showView('runs',this)"><i class="ti ti-list"></i> Run Log</button>
@@ -180,39 +142,26 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 <!-- OVERVIEW -->
 <div id="view-overview" class="view active">
   <div class="stat-row">
-    <div class="stat-card"><div class="stat-label">Season PB</div><div class="stat-value" style="color:var(--text-muted)">—</div></div>
-    <div class="stat-card"><div class="stat-label">JWC overall rank</div><div class="stat-value" style="color:var(--text-muted)">—</div></div>
-    <div class="stat-card"><div class="stat-label">Runs this season</div><div class="stat-value ice">0</div></div>
+    <div class="stat-card"><div class="stat-label">Season PB</div><div class="stat-value" id="statPB" style="color:var(--text-muted)">—</div></div>
+    <div class="stat-card"><div class="stat-label">JWC overall rank</div><div class="stat-value" id="statRank" style="color:var(--text-muted)">—</div></div>
+    <div class="stat-card"><div class="stat-label">Runs this season</div><div class="stat-value ice" id="statRuns">0</div></div>
     <div class="stat-card"><div class="stat-label">National titles</div><div class="stat-value" style="color:#F0B429">4 🥇</div></div>
   </div>
-
   <div class="achieve-grid" style="margin-bottom:14px;">
     <div class="achieve-card"><div class="achieve-icon">🏆</div><div class="achieve-label">2025 Junior Nationals</div><div class="achieve-val">Champion</div></div>
     <div class="achieve-card"><div class="achieve-icon">🛷</div><div class="achieve-label">2024 Youth Olympics</div><div class="achieve-val">Gangwon, KOR</div></div>
     <div class="achieve-card"><div class="achieve-icon">⚡</div><div class="achieve-label">Junior WC debut</div><div class="achieve-val">Winterberg '24</div></div>
   </div>
-
   <div class="card">
     <div class="section-header">
       <div class="card-title">Season time trend — all tracks</div>
-      <div class="section-tag">2024–25 JWC</div>
+      <div class="section-tag">2026–27 JWC</div>
     </div>
-    <div style="position:relative;height:185px;">
-      <canvas id="trendChart" role="img" aria-label="Ellie's run times across the 2024-25 season showing improvement toward a PB of 46.821s">Season trend</canvas>
-    </div>
+    <div id="trendWrap" style="position:relative;height:185px;"><canvas id="trendChart"></canvas></div>
   </div>
-
   <div class="split-grid">
-    <div class="card">
-      <div class="card-title">Best times by track</div>
-      <div id="trackBars"></div>
-    </div>
-    <div class="card">
-      <div class="card-title">Sector comparison — latest vs PB</div>
-      <div style="position:relative;height:160px;">
-        <canvas id="splitChart" role="img" aria-label="Sector split comparison between latest run and personal best">Splits</canvas>
-      </div>
-    </div>
+    <div class="card"><div class="card-title">Best times by track</div><div id="trackBars"></div></div>
+    <div class="card"><div class="card-title">Sector comparison — latest vs PB</div><div id="splitWrap" style="position:relative;height:160px;"><canvas id="splitChart"></canvas></div></div>
   </div>
 </div>
 
@@ -231,9 +180,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   </div>
   <div class="card" style="padding:0;overflow:hidden;">
     <table class="run-table">
-      <thead><tr>
-        <th>Date</th><th>Track</th><th>Run</th><th>Time</th><th>S1 | S2 | S3</th><th>Rank</th><th>Notes</th><th>Actions</th>
-      </tr></thead>
+      <thead><tr><th>Date</th><th>Track</th><th>Run</th><th>Time</th><th>S1 | S2 | S3</th><th>Rank</th><th>Notes</th><th>Actions</th></tr></thead>
       <tbody id="runTableBody"></tbody>
     </table>
   </div>
@@ -250,27 +197,16 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
     <button class="filter-chip" onclick="filterStandings(this,'Lake Placid')">Lake Placid</button>
     <button class="filter-chip" onclick="filterStandings(this,'Park City')">Park City</button>
   </div>
-
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start;">
-
-    <!-- International standings -->
     <div class="card" style="padding:12px;">
-      <div class="card-title" style="display:flex;align-items:center;gap:6px;">
-        <i class="ti ti-world" style="font-size:13px;"></i> International standings
-      </div>
+      <div class="card-title"><i class="ti ti-world" style="font-size:13px;"></i> International standings</div>
       <div id="leaderboard"></div>
     </div>
-
-    <!-- USA-only standings -->
     <div class="card" style="padding:12px;border-color:rgba(178,34,52,0.35);">
-      <div class="card-title" style="display:flex;align-items:center;gap:6px;">
-        🇺🇸 <span>USA standings</span>
-      </div>
+      <div class="card-title">🇺🇸 USA standings</div>
       <div id="usa-leaderboard"></div>
     </div>
-
   </div>
-
   <div class="card" style="margin-top:12px;">
     <div class="card-title">JWC points progression — top competitors</div>
     <div style="display:flex;gap:16px;margin-bottom:8px;flex-wrap:wrap;">
@@ -279,9 +215,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
       <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text-muted)"><span class="legend-dot" style="background:#C67B3A"></span>Gosnell (USA)</span>
       <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text-muted)"><span class="legend-dot" style="background:#5BB8F5"></span>Kleinheinz (USA)</span>
     </div>
-    <div style="position:relative;height:185px;">
-      <canvas id="pointsChart" role="img" aria-label="JWC points progression for Ellie vs top 3 competitors across the season">Points chart</canvas>
-    </div>
+    <div style="position:relative;height:185px;"><canvas id="pointsChart"></canvas></div>
   </div>
 </div>
 
@@ -293,7 +227,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
     <div style="position:absolute;top:10px;right:10px;display:flex;flex-direction:column;gap:4px;z-index:20;">
       <button onclick="mapZoom(1.5)" style="width:28px;height:28px;background:#0D2140;border:0.5px solid var(--card-border);color:#5BB8F5;border-radius:6px;cursor:pointer;font-size:16px;line-height:1;font-family:inherit;">+</button>
       <button onclick="mapZoom(1/1.5)" style="width:28px;height:28px;background:#0D2140;border:0.5px solid var(--card-border);color:#5BB8F5;border-radius:6px;cursor:pointer;font-size:16px;line-height:1;font-family:inherit;">−</button>
-      <button onclick="mapReset()" title="Reset view" style="width:28px;height:28px;background:#0D2140;border:0.5px solid var(--card-border);color:#7BA7CC;border-radius:6px;cursor:pointer;font-size:11px;line-height:1;font-family:inherit;">↺</button>
+      <button onclick="mapReset()" style="width:28px;height:28px;background:#0D2140;border:0.5px solid var(--card-border);color:#7BA7CC;border-radius:6px;cursor:pointer;font-size:11px;line-height:1;font-family:inherit;">↺</button>
     </div>
     <div class="track-popup" id="trackPopup"></div>
   </div>
@@ -304,28 +238,16 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 <div id="view-photos" class="view">
   <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
     <label class="upload-btn" for="photoInput"><i class="ti ti-upload"></i> Upload photo</label>
-    <input type="file" id="photoInput" accept="image/*" multiple style="display:none">
+    <input type="file" id="photoInput" accept="image/*" multiple style="display:none" onchange="handlePhotoUpload(this)">
     <span style="font-size:11px;color:var(--text-muted)">Competition photos, podium moments, track shots</span>
   </div>
   <div class="photo-grid" id="photoGrid">
-    <div class="photo-slot add-new" onclick="document.getElementById('photoInput').click()">
-      <i class="ti ti-circle-plus" style="color:var(--text-muted);font-size:24px;"></i>
-    </div>
-    <div class="photo-slot add-new" onclick="document.getElementById('photoInput').click()">
-      <i class="ti ti-circle-plus" style="color:var(--text-muted);font-size:24px;"></i>
-    </div>
-    <div class="photo-slot add-new" onclick="document.getElementById('photoInput').click()">
-      <i class="ti ti-circle-plus" style="color:var(--text-muted);font-size:24px;"></i>
-    </div>
-    <div class="photo-slot add-new" onclick="document.getElementById('photoInput').click()">
-      <i class="ti ti-circle-plus" style="color:var(--text-muted);font-size:24px;"></i>
-    </div>
-    <div class="photo-slot add-new" onclick="document.getElementById('photoInput').click()">
-      <i class="ti ti-circle-plus" style="color:var(--text-muted);font-size:24px;"></i>
-    </div>
-    <div class="photo-slot add-new" onclick="document.getElementById('photoInput').click()">
-      <i class="ti ti-circle-plus" style="color:var(--text-muted);font-size:24px;"></i>
-    </div>
+    <div class="photo-slot add-new" onclick="document.getElementById('photoInput').click()"><i class="ti ti-circle-plus" style="color:var(--text-muted);font-size:24px;"></i></div>
+    <div class="photo-slot add-new" onclick="document.getElementById('photoInput').click()"><i class="ti ti-circle-plus" style="color:var(--text-muted);font-size:24px;"></i></div>
+    <div class="photo-slot add-new" onclick="document.getElementById('photoInput').click()"><i class="ti ti-circle-plus" style="color:var(--text-muted);font-size:24px;"></i></div>
+    <div class="photo-slot add-new" onclick="document.getElementById('photoInput').click()"><i class="ti ti-circle-plus" style="color:var(--text-muted);font-size:24px;"></i></div>
+    <div class="photo-slot add-new" onclick="document.getElementById('photoInput').click()"><i class="ti ti-circle-plus" style="color:var(--text-muted);font-size:24px;"></i></div>
+    <div class="photo-slot add-new" onclick="document.getElementById('photoInput').click()"><i class="ti ti-circle-plus" style="color:var(--text-muted);font-size:24px;"></i></div>
   </div>
 </div>
 
@@ -334,52 +256,27 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   <div class="card">
     <div class="card-title">Log a new run</div>
     <div class="form-row">
-      <div class="form-group">
-        <label class="form-label">Track</label>
+      <div class="form-group"><label class="form-label">Track</label>
         <select class="form-select" id="logTrack">
           <option>Lillehammer</option><option>Sigulda</option><option>Oberhof</option>
           <option>Winterberg</option><option>Lake Placid</option><option>Park City</option><option>Bludenz</option><option>Königssee</option>
         </select>
       </div>
-      <div class="form-group">
-        <label class="form-label">Date</label>
-        <input type="date" class="form-input" id="logDate">
-      </div>
+      <div class="form-group"><label class="form-label">Date</label><input type="date" class="form-input" id="logDate"></div>
     </div>
     <div class="form-row">
-      <div class="form-group">
-        <label class="form-label">Run #</label>
-        <input type="number" class="form-input" id="logRun" placeholder="1" min="1">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Total time (s)</label>
-        <input type="number" class="form-input" id="logTime" placeholder="46.850" step="0.001">
-      </div>
+      <div class="form-group"><label class="form-label">Run #</label><input type="number" class="form-input" id="logRun" placeholder="1" min="1"></div>
+      <div class="form-group"><label class="form-label">Total time (s)</label><input type="number" class="form-input" id="logTime" placeholder="46.850" step="0.001"></div>
     </div>
     <div class="form-row">
-      <div class="form-group">
-        <label class="form-label">Sector 1 (s)</label>
-        <input type="number" class="form-input" id="logS1" placeholder="12.10" step="0.001">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Sector 2 (s)</label>
-        <input type="number" class="form-input" id="logS2" placeholder="11.95" step="0.001">
-      </div>
+      <div class="form-group"><label class="form-label">Sector 1 (s)</label><input type="number" class="form-input" id="logS1" placeholder="12.10" step="0.001"></div>
+      <div class="form-group"><label class="form-label">Sector 2 (s)</label><input type="number" class="form-input" id="logS2" placeholder="11.95" step="0.001"></div>
     </div>
     <div class="form-row">
-      <div class="form-group">
-        <label class="form-label">Sector 3 (s)</label>
-        <input type="number" class="form-input" id="logS3" placeholder="22.77" step="0.001">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Finish rank</label>
-        <input type="number" class="form-input" id="logRank" placeholder="16" min="1">
-      </div>
+      <div class="form-group"><label class="form-label">Sector 3 (s)</label><input type="number" class="form-input" id="logS3" placeholder="22.77" step="0.001"></div>
+      <div class="form-group"><label class="form-label">Finish rank</label><input type="number" class="form-input" id="logRank" placeholder="16" min="1"></div>
     </div>
-    <div class="form-group" style="margin-bottom:12px;">
-      <label class="form-label">Notes</label>
-      <input type="text" class="form-input" id="logNotes" placeholder="Ice conditions, start timing, equipment changes...">
-    </div>
+    <div class="form-group" style="margin-bottom:12px;"><label class="form-label">Notes</label><input type="text" class="form-input" id="logNotes" placeholder="Ice conditions, start timing, equipment changes..."></div>
     <button class="btn-primary" onclick="addRun()">Save run</button>
     <span id="logMsg" style="font-size:12px;color:var(--green);margin-left:10px;"></span>
   </div>
@@ -389,8 +286,8 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 <div id="view-import" class="view">
   <div class="card" style="margin-bottom:14px;">
     <div class="card-title">Import FIL results PDF</div>
-    <p style="font-size:12px;color:var(--text-muted);margin-bottom:14px;">Drop a FIL Junior Women's results PDF (e.g. Winterberg Lauf 2) and the app will parse all finish times, calculate World Cup points, update the standings, and optionally add Ellie's run to the log.</p>
-    <div id="pdfDropZone" style="border:1.5px dashed var(--card-border);border-radius:var(--radius-lg);padding:32px;text-align:center;cursor:pointer;transition:border-color 0.15s;background:rgba(91,184,245,0.03);"
+    <p style="font-size:12px;color:var(--text-muted);margin-bottom:14px;">Drop a FIL Junior Women's results PDF and the app will parse finish times, calculate World Cup points, update standings, and add Ellie's runs to the log.</p>
+    <div id="pdfDropZone" style="border:1.5px dashed var(--card-border);border-radius:var(--radius-lg);padding:32px;text-align:center;cursor:pointer;background:rgba(91,184,245,0.03);"
       onclick="document.getElementById('pdfFileInput').click()"
       ondragover="event.preventDefault();this.style.borderColor='#5BB8F5'"
       ondragleave="this.style.borderColor=''"
@@ -401,37 +298,25 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
     </div>
     <input type="file" id="pdfFileInput" accept=".pdf" style="display:none" onchange="handlePdfFile(this.files[0])">
   </div>
-
-  <!-- Parse status -->
-  <div id="importStatus" style="display:none;" class="card" style="margin-bottom:14px;">
-    <div id="importStatusText" style="font-size:13px;color:var(--text-muted);"></div>
-  </div>
-
-  <!-- Preview table -->
+  <div id="importStatus" style="display:none;" class="card"><div id="importStatusText" style="font-size:13px;color:var(--text-muted);"></div></div>
   <div id="importPreview" style="display:none;">
     <div class="card" style="padding:0;overflow:hidden;margin-bottom:14px;">
       <div style="padding:12px 16px;border-bottom:0.5px solid var(--card-border);display:flex;align-items:center;justify-content:space-between;">
-        <div>
-          <div class="card-title" style="margin-bottom:2px;">Parsed results</div>
-          <div id="importMeta" style="font-size:11px;color:var(--text-muted);"></div>
-        </div>
+        <div><div class="card-title" style="margin-bottom:2px;">Parsed results</div><div id="importMeta" style="font-size:11px;color:var(--text-muted);"></div></div>
         <div style="display:flex;gap:8px;align-items:center;">
           <label style="font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:5px;">
-            <input type="checkbox" id="addEllieRun" checked style="accent-color:#5BB8F5;">
-            Add Ellie's run to Run Log
+            <input type="checkbox" id="addEllieRun" checked style="accent-color:#5BB8F5;"> Add Ellie's run to Run Log
           </label>
           <input type="date" id="importDate" class="form-input" style="width:140px;">
         </div>
       </div>
       <table class="run-table">
-        <thead><tr>
-          <th>Rank</th><th>Name</th><th>Nation</th><th>Run 1</th><th>Run 2</th><th>Total</th><th>WC Pts</th><th>Status</th>
-        </tr></thead>
+        <thead><tr><th>Rank</th><th>Name</th><th>Nation</th><th>Run 1</th><th>Run 2</th><th>Total</th><th>WC Pts</th><th>Status</th></tr></thead>
         <tbody id="importTableBody"></tbody>
       </table>
     </div>
     <div style="display:flex;gap:10px;">
-      <button class="btn-primary" onclick="applyImport()"><i class="ti ti-check"></i> Apply to standings &amp; log</button>
+      <button class="btn-primary" onclick="applyImport()">✓ Apply to standings &amp; log</button>
       <button class="btn-secondary" onclick="cancelImport()">Cancel</button>
     </div>
     <div id="importMsg" style="font-size:12px;color:var(--green);margin-top:10px;"></div>
@@ -439,51 +324,31 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 </div>
 
 <!-- EDIT MODAL -->
-<div class="modal-overlay" id="editModal">
+<div class="modal-overlay" id="editModal" onclick="if(event.target===this)closeModal()">
   <div class="modal">
-    <div class="modal-header">
-      <div class="modal-title">Edit Run</div>
-      <button class="modal-close" onclick="closeModal()">×</button>
-    </div>
+    <div class="modal-header"><div class="modal-title">Edit Run</div><button class="modal-close" onclick="closeModal()">×</button></div>
     <div class="form-row">
       <div class="form-group"><label class="form-label">Track</label>
         <select class="form-select" id="editTrack">
           <option>Lillehammer</option><option>Sigulda</option><option>Oberhof</option>
-          <option>Winterberg</option><option>Lake Placid</option><option>Park City</option>
-          <option>Bludenz</option><option>Königssee</option>
+          <option>Winterberg</option><option>Lake Placid</option><option>Park City</option><option>Bludenz</option><option>Königssee</option>
         </select>
       </div>
-      <div class="form-group"><label class="form-label">Date</label>
-        <input type="date" class="form-input" id="editDate">
-      </div>
+      <div class="form-group"><label class="form-label">Date</label><input type="date" class="form-input" id="editDate"></div>
     </div>
     <div class="form-row">
-      <div class="form-group"><label class="form-label">Run #</label>
-        <input type="number" class="form-input" id="editRun" min="1">
-      </div>
-      <div class="form-group"><label class="form-label">Total time (s)</label>
-        <input type="number" class="form-input" id="editTime" step="0.001">
-      </div>
+      <div class="form-group"><label class="form-label">Run #</label><input type="number" class="form-input" id="editRun" min="1"></div>
+      <div class="form-group"><label class="form-label">Total time (s)</label><input type="number" class="form-input" id="editTime" step="0.001"></div>
     </div>
     <div class="form-row">
-      <div class="form-group"><label class="form-label">Sector 1 (s)</label>
-        <input type="number" class="form-input" id="editS1" step="0.001">
-      </div>
-      <div class="form-group"><label class="form-label">Sector 2 (s)</label>
-        <input type="number" class="form-input" id="editS2" step="0.001">
-      </div>
+      <div class="form-group"><label class="form-label">Sector 1 (s)</label><input type="number" class="form-input" id="editS1" step="0.001"></div>
+      <div class="form-group"><label class="form-label">Sector 2 (s)</label><input type="number" class="form-input" id="editS2" step="0.001"></div>
     </div>
     <div class="form-row">
-      <div class="form-group"><label class="form-label">Sector 3 (s)</label>
-        <input type="number" class="form-input" id="editS3" step="0.001">
-      </div>
-      <div class="form-group"><label class="form-label">Finish rank</label>
-        <input type="number" class="form-input" id="editRank" min="1">
-      </div>
+      <div class="form-group"><label class="form-label">Sector 3 (s)</label><input type="number" class="form-input" id="editS3" step="0.001"></div>
+      <div class="form-group"><label class="form-label">Finish rank</label><input type="number" class="form-input" id="editRank" min="1"></div>
     </div>
-    <div class="form-group" style="margin-bottom:4px;"><label class="form-label">Notes</label>
-      <input type="text" class="form-input" id="editNotes">
-    </div>
+    <div class="form-group" style="margin-bottom:4px;"><label class="form-label">Notes</label><input type="text" class="form-input" id="editNotes"></div>
     <div class="modal-footer">
       <button class="btn-danger" onclick="confirmDelete()">🗑 Delete run</button>
       <div style="display:flex;gap:8px;">
@@ -496,17 +361,21 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 
 </div><!-- end #app -->
 
+<!-- External libs (regular scripts, load first) -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
-<script type="module">
-/* ── Firebase ── */
-import { initializeApp }                          from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import { getFirestore, collection, doc,
-         setDoc, deleteDoc, onSnapshot, getDoc }  from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
-import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject }
-                                                   from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js';
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 
+<!-- Firebase via CDN compat (no bundler needed, global firebase object) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
+
+<script>
+// ─────────────────────────────────────────────
+// FIREBASE INIT
+// ─────────────────────────────────────────────
 const firebaseConfig = {
   apiKey:            "AIzaSyDqQ4D7t8JJ1vik-waNaNjKIA302moxeGw",
   authDomain:        "ellie-luge-tracker-26-27.firebaseapp.com",
@@ -515,431 +384,401 @@ const firebaseConfig = {
   messagingSenderId: "283966248849",
   appId:             "1:283966248849:web:c38e04d9929b51f3b86c30"
 };
+firebase.initializeApp(firebaseConfig);
+const db      = firebase.firestore();
+const storage = firebase.storage();
 
-const fbApp   = initializeApp(firebaseConfig);
-const db      = getFirestore(fbApp);
-const storage = getStorage(fbApp);
-
-const RUNS_COL    = collection(db, 'runs');
-const STAND_DOC   = doc(db, 'meta', 'standings');
-const PHOTOS_COL  = collection(db, 'photos');
-
-// ── sync status indicator ──
 function setSyncStatus(state) {
-  // state: 'syncing' | 'ok' | 'error'
-  const el = document.getElementById('syncDot');
-  if (!el) return;
-  el.title = state === 'ok' ? 'Synced' : state === 'syncing' ? 'Syncing…' : 'Sync error';
-  el.style.background = state === 'ok' ? '#22D46E' : state === 'syncing' ? '#F0B429' : '#f87171';
+  const dot   = document.getElementById('syncDot');
+  const label = document.getElementById('syncLabel');
+  if (!dot) return;
+  if (state === 'ok')      { dot.style.background = '#22D46E'; if(label) label.textContent = 'synced'; }
+  else if (state === 'syncing') { dot.style.background = '#F0B429'; if(label) label.textContent = 'saving…'; }
+  else                     { dot.style.background = '#f87171'; if(label) label.textContent = 'offline'; }
 }
 
+// ─────────────────────────────────────────────
+// APP DATA
+// ─────────────────────────────────────────────
 const TRACKS = [
-  { name:"Lillehammer", country:"Norway",   lat:61.11,  lon:10.46,   myBest:"—", rank:"—", races:0 },
-  { name:"Sigulda",     country:"Latvia",   lat:57.15,  lon:24.86,   myBest:"—", rank:"—", races:0 },
-  { name:"Oberhof",     country:"Germany",  lat:50.70,  lon:10.74,   myBest:"—", rank:"—", races:0 },
-  { name:"Winterberg",  country:"Germany",  lat:51.19,  lon:8.52,    myBest:"—", rank:"—", races:0 },
-  { name:"Lake Placid", country:"USA",      lat:44.27,  lon:-73.98,  myBest:"—", rank:"—", races:0 },
-  { name:"Park City",   country:"USA",      lat:40.65,  lon:-111.49, myBest:"—", rank:"—", races:0 },
-  { name:"Bludenz",     country:"Austria",  lat:47.15,  lon:9.82,    myBest:"—", rank:"—", races:0 },
-  { name:"Königssee",   country:"Germany",  lat:47.60,  lon:12.98,   myBest:"—", rank:"—", races:0 },
+  { name:"Lillehammer", country:"Norway",  lat:61.11, lon:10.46,  myBest:"—", rank:"—", races:0 },
+  { name:"Sigulda",     country:"Latvia",  lat:57.15, lon:24.86,  myBest:"—", rank:"—", races:0 },
+  { name:"Oberhof",     country:"Germany", lat:50.70, lon:10.74,  myBest:"—", rank:"—", races:0 },
+  { name:"Winterberg",  country:"Germany", lat:51.19, lon:8.52,   myBest:"—", rank:"—", races:0 },
+  { name:"Lake Placid", country:"USA",     lat:44.27, lon:-73.98, myBest:"—", rank:"—", races:0 },
+  { name:"Park City",   country:"USA",     lat:40.65, lon:-111.49,myBest:"—", rank:"—", races:0 },
+  { name:"Bludenz",     country:"Austria", lat:47.15, lon:9.82,   myBest:"—", rank:"—", races:0 },
+  { name:"Königssee",   country:"Germany", lat:47.60, lon:12.98,  myBest:"—", rank:"—", races:0 },
 ];
 
 let runData = [];
 
 const ALL_ATHLETES = [
-  { name:"Oberstolz Alexandra",       nat:"ITA", pts:0, pos:1  },
-  { name:"Pietschmann Antonia",       nat:"GER", pts:0, pos:2  },
-  { name:"Koch Laura",                nat:"GER", pts:0, pos:3  },
-  { name:"Buse Josephine",            nat:"GER", pts:0, pos:4  },
-  { name:"Schmidt Mona",              nat:"AUT", pts:0, pos:5  },
-  { name:"Jänicke Anka",              nat:"GER", pts:0, pos:6  },
-  { name:"Sirsnina Margita",          nat:"LAT", pts:0, pos:7  },
-  { name:"Kofler Katharina Sofie",    nat:"ITA", pts:0, pos:8  },
-  { name:"Riedl Marie",               nat:"AUT", pts:0, pos:9  },
-  { name:"Hartmann Lara",             nat:"GER", pts:0, pos:10 },
-  { name:"Grundböck Annina",          nat:"AUT", pts:0, pos:11 },
-  { name:"Zimmermann Lena",           nat:"AUT", pts:0, pos:12 },
-  { name:"Bleiner Lina",              nat:"AUT", pts:0, pos:13 },
-  { name:"Zimmermann Lara",           nat:"AUT", pts:0, pos:14 },
-  { name:"Dobrean Ionela Madalina",   nat:"ROU", pts:0, pos:15 },
-  { name:"Chaiyapantho Sunita",       nat:"THA", pts:0, pos:16 },
-  { name:"Panchuk Khrystyna",         nat:"UKR", pts:0, pos:17 },
-  { name:"Nosal Emilia",              nat:"POL", pts:0, pos:18 },
-  { name:"Kleinheinz Elizabeth",      nat:"USA", pts:0, pos:19, me:true },
-  { name:"Gosnell Brianna",           nat:"USA", pts:0, pos:20 },
-  { name:"Zvilna Selina",             nat:"LAT", pts:0, pos:21 },
-  { name:"Dawidowska Oliwia",         nat:"POL", pts:0, pos:22 },
-  { name:"Kadziolka Marlena",         nat:"POL", pts:0, pos:23 },
-  { name:"Yuen Maya",                 nat:"CAN", pts:0, pos:24 },
-  { name:"Micková Mia",               nat:"SVK", pts:0, pos:25 },
-  { name:"Meier Leana",               nat:"GER", pts:0, pos:26 },
-  { name:"Hatton Kaia",               nat:"GBR", pts:0, pos:27 },
-  { name:"Parfenkova Katrina",        nat:"LAT", pts:0, pos:28 },
-  { name:"Pernarovska Erika",         nat:"UKR", pts:0, pos:29 },
-  { name:"Smoronska Nikola",          nat:"POL", pts:0, pos:30 },
+  { name:"Oberstolz Alexandra",     nat:"ITA", pts:0, pos:1  },
+  { name:"Pietschmann Antonia",     nat:"GER", pts:0, pos:2  },
+  { name:"Koch Laura",              nat:"GER", pts:0, pos:3  },
+  { name:"Buse Josephine",          nat:"GER", pts:0, pos:4  },
+  { name:"Schmidt Mona",            nat:"AUT", pts:0, pos:5  },
+  { name:"Jänicke Anka",            nat:"GER", pts:0, pos:6  },
+  { name:"Sirsnina Margita",        nat:"LAT", pts:0, pos:7  },
+  { name:"Kofler Katharina Sofie",  nat:"ITA", pts:0, pos:8  },
+  { name:"Riedl Marie",             nat:"AUT", pts:0, pos:9  },
+  { name:"Hartmann Lara",           nat:"GER", pts:0, pos:10 },
+  { name:"Grundböck Annina",        nat:"AUT", pts:0, pos:11 },
+  { name:"Zimmermann Lena",         nat:"AUT", pts:0, pos:12 },
+  { name:"Bleiner Lina",            nat:"AUT", pts:0, pos:13 },
+  { name:"Zimmermann Lara",         nat:"AUT", pts:0, pos:14 },
+  { name:"Dobrean Ionela Madalina", nat:"ROU", pts:0, pos:15 },
+  { name:"Chaiyapantho Sunita",     nat:"THA", pts:0, pos:16 },
+  { name:"Panchuk Khrystyna",       nat:"UKR", pts:0, pos:17 },
+  { name:"Nosal Emilia",            nat:"POL", pts:0, pos:18 },
+  { name:"Kleinheinz Elizabeth",    nat:"USA", pts:0, pos:19, me:true },
+  { name:"Gosnell Brianna",         nat:"USA", pts:0, pos:20 },
+  { name:"Zvilna Selina",           nat:"LAT", pts:0, pos:21 },
+  { name:"Dawidowska Oliwia",       nat:"POL", pts:0, pos:22 },
+  { name:"Kadziolka Marlena",       nat:"POL", pts:0, pos:23 },
+  { name:"Yuen Maya",               nat:"CAN", pts:0, pos:24 },
+  { name:"Micková Mia",             nat:"SVK", pts:0, pos:25 },
+  { name:"Meier Leana",             nat:"GER", pts:0, pos:26 },
+  { name:"Hatton Kaia",             nat:"GBR", pts:0, pos:27 },
+  { name:"Parfenkova Katrina",      nat:"LAT", pts:0, pos:28 },
+  { name:"Pernarovska Erika",       nat:"UKR", pts:0, pos:29 },
+  { name:"Smoronska Nikola",        nat:"POL", pts:0, pos:30 },
 ];
 
 const STANDINGS = {
-  overall:      ALL_ATHLETES.map(a => ({...a, diff:""})),
-  Bludenz:      ALL_ATHLETES.map(a => ({...a, diff:""})),
-  Winterberg:   ALL_ATHLETES.map(a => ({...a, diff:""})),
-  Lillehammer:  ALL_ATHLETES.map(a => ({...a, diff:""})),
-  Sigulda:      ALL_ATHLETES.map(a => ({...a, diff:""})),
-  "Lake Placid":ALL_ATHLETES.map(a => ({...a, diff:""})),
-  "Park City":  ALL_ATHLETES.map(a => ({...a, diff:""})),
+  overall:       ALL_ATHLETES.map(a => ({...a, diff:""})),
+  Bludenz:       ALL_ATHLETES.map(a => ({...a, diff:""})),
+  Winterberg:    ALL_ATHLETES.map(a => ({...a, diff:""})),
+  Lillehammer:   ALL_ATHLETES.map(a => ({...a, diff:""})),
+  Sigulda:       ALL_ATHLETES.map(a => ({...a, diff:""})),
+  "Lake Placid": ALL_ATHLETES.map(a => ({...a, diff:""})),
+  "Park City":   ALL_ATHLETES.map(a => ({...a, diff:""})),
 };
 
 const USA_ATHLETES = [
   { name:"Kleinheinz Elizabeth", nat:"USA", pts:0, pos:1, diff:"", me:true },
   { name:"Gosnell Brianna",      nat:"USA", pts:0, pos:2, diff:"" },
-  { name:"Kendall Achen",                nat:"USA", pts:0, pos:3, diff:"" },
-  { name:"Breckan Luedke",               nat:"USA", pts:0, pos:4, diff:"" },
+  { name:"Kendall Achen",        nat:"USA", pts:0, pos:3, diff:"" },
+  { name:"Breckan Luedke",       nat:"USA", pts:0, pos:4, diff:"" },
 ];
 
 const USA_STANDINGS = {
-  overall:      USA_ATHLETES.map(a => ({...a})),
-  Bludenz:      USA_ATHLETES.map(a => ({...a})),
-  Winterberg:   USA_ATHLETES.map(a => ({...a})),
-  Lillehammer:  USA_ATHLETES.map(a => ({...a})),
-  Sigulda:      USA_ATHLETES.map(a => ({...a})),
-  "Lake Placid":USA_ATHLETES.map(a => ({...a})),
-  "Park City":  USA_ATHLETES.map(a => ({...a})),
+  overall:       USA_ATHLETES.map(a => ({...a})),
+  Bludenz:       USA_ATHLETES.map(a => ({...a})),
+  Winterberg:    USA_ATHLETES.map(a => ({...a})),
+  Lillehammer:   USA_ATHLETES.map(a => ({...a})),
+  Sigulda:       USA_ATHLETES.map(a => ({...a})),
+  "Lake Placid": USA_ATHLETES.map(a => ({...a})),
+  "Park City":   USA_ATHLETES.map(a => ({...a})),
 };
 
-/* ── Navigation ── */
+// ─────────────────────────────────────────────
+// NAVIGATION
+// ─────────────────────────────────────────────
 function showView(id, btn) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('view-' + id).classList.add('active');
   btn.classList.add('active');
-  if (id === 'overview')   setTimeout(initOverview, 50);
-  if (id === 'runs')       renderRunTable('all');
-  if (id === 'standings')  { renderLeaderboard('overall'); renderUSALeaderboard('overall'); setTimeout(initPointsChart, 50); }
-  if (id === 'map')        setTimeout(initMap, 50);
-  if (id === 'import')     { document.getElementById('importPreview').style.display='none'; document.getElementById('importStatus').style.display='none'; }
+  if (id === 'overview')  setTimeout(initOverview, 50);
+  if (id === 'runs')      renderRunTable(currentFilter);
+  if (id === 'standings') { renderLeaderboard('overall'); renderUSALeaderboard('overall'); setTimeout(initPointsChart, 50); }
+  if (id === 'map')       setTimeout(initMap, 50);
+  if (id === 'import')    { document.getElementById('importPreview').style.display='none'; document.getElementById('importStatus').style.display='none'; }
 }
 
-/* ── Overview charts ── */
+// ─────────────────────────────────────────────
+// OVERVIEW
+// ─────────────────────────────────────────────
 let ovDone = false;
+let trendChartInst = null, splitChartInst = null;
+
 function initOverview() {
   if (ovDone) return; ovDone = true;
-
   const sorted = [...runData].sort((a,b) => a.date.localeCompare(b.date));
 
   if (sorted.length === 0) {
-    document.getElementById('trendChart').closest('div').innerHTML =
-      '<p style="color:var(--text-muted);font-size:13px;padding:40px 0;text-align:center;">No runs logged yet — add your first run to see the trend.</p>';
-    document.getElementById('splitChart').closest('div').innerHTML =
-      '<p style="color:var(--text-muted);font-size:13px;padding:30px 0;text-align:center;">No data yet.</p>';
-    document.getElementById('trackBars').innerHTML =
-      '<p style="color:var(--text-muted);font-size:12px;">No runs logged yet.</p>';
-    // update season PB stat live
-    document.querySelector('.stat-value.green') && (document.querySelectorAll('.stat-value')[0].textContent = '—');
+    document.getElementById('trendWrap').innerHTML = '<p style="color:var(--text-muted);font-size:13px;padding:40px 0;text-align:center;">No runs logged yet — add your first run to see the trend.</p>';
+    document.getElementById('splitWrap').innerHTML = '<p style="color:var(--text-muted);font-size:13px;padding:30px 0;text-align:center;">No data yet.</p>';
+    document.getElementById('trackBars').innerHTML = '<p style="color:var(--text-muted);font-size:12px;">No runs logged yet.</p>';
     return;
   }
 
-  const labels = sorted.map(r => r.date.slice(5) + ' ' + r.track.slice(0,3));
+  const labels = sorted.map(r => r.date.slice(5)+' '+r.track.slice(0,3));
   const times  = sorted.map(r => r.time);
-  const minT   = Math.min(...times);
-  const maxT   = Math.max(...times);
+  const minT = Math.min(...times), maxT = Math.max(...times);
 
-  new Chart(document.getElementById('trendChart'), {
+  // Re-create canvas if replaced
+  if (!document.getElementById('trendChart')) {
+    document.getElementById('trendWrap').innerHTML = '<canvas id="trendChart"></canvas>';
+  }
+  if (trendChartInst) { trendChartInst.destroy(); trendChartInst = null; }
+  trendChartInst = new Chart(document.getElementById('trendChart'), {
     type: 'line',
-    data: { labels, datasets: [{ label:'Time', data:times, borderColor:'#5BB8F5', backgroundColor:'rgba(91,184,245,0.07)', pointBackgroundColor:'#5BB8F5', pointRadius:4, tension:0.35, borderWidth:2 }] },
-    options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } },
-      scales: { y:{ min: Math.floor(minT) - 0.5, max: Math.ceil(maxT) + 0.5,
-                    ticks:{ color:'#7BA7CC', font:{ size:10 } }, grid:{ color:'rgba(91,184,245,0.07)' } },
-                x:{ ticks:{ color:'#7BA7CC', font:{ size:9 }, maxRotation:40, autoSkip:true }, grid:{ display:false } } } }
+    data: { labels, datasets: [{ data:times, borderColor:'#5BB8F5', backgroundColor:'rgba(91,184,245,0.07)', pointBackgroundColor:'#5BB8F5', pointRadius:4, tension:0.35, borderWidth:2 }] },
+    options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false} },
+      scales: { y:{ min:Math.floor(minT)-0.5, max:Math.ceil(maxT)+0.5, ticks:{color:'#7BA7CC',font:{size:10}}, grid:{color:'rgba(91,184,245,0.07)'} },
+                x:{ ticks:{color:'#7BA7CC',font:{size:9},maxRotation:40,autoSkip:true}, grid:{display:false} } } }
   });
 
   const pbByTrack = {};
   runData.forEach(r => { if (!pbByTrack[r.track] || r.time < pbByTrack[r.track]) pbByTrack[r.track] = r.time; });
-  const tracksWithData = TRACKS.filter(t => pbByTrack[t.name]);
-  if (tracksWithData.length) {
-    const vals = tracksWithData.map(t => pbByTrack[t.name]);
-    const min  = Math.min(...vals);
-    const max  = Math.max(...vals);
-    document.getElementById('trackBars').innerHTML = tracksWithData
-      .sort((a,b) => pbByTrack[a.name] - pbByTrack[b.name])
-      .map(t => {
-        const pct = max === min ? 50 : Math.round(((pbByTrack[t.name] - min) / (max - min)) * 65 + 20);
-        return `<div class="speed-bar-wrap">
-          <div class="speed-bar-label"><span>${t.name}</span><span style="color:#5BB8F5">${pbByTrack[t.name].toFixed(3)}s</span></div>
-          <div class="speed-bar-track"><div class="speed-bar-fill" style="width:${pct}%"></div></div>
-        </div>`;
-      }).join('');
-  } else {
-    document.getElementById('trackBars').innerHTML = '<p style="color:var(--text-muted);font-size:12px;">No runs logged yet.</p>';
+  const td = TRACKS.filter(t => pbByTrack[t.name]);
+  if (td.length) {
+    const vals = td.map(t => pbByTrack[t.name]);
+    const mn = Math.min(...vals), mx = Math.max(...vals);
+    document.getElementById('trackBars').innerHTML = td.sort((a,b)=>pbByTrack[a.name]-pbByTrack[b.name]).map(t => {
+      const pct = mx===mn?50:Math.round(((pbByTrack[t.name]-mn)/(mx-mn))*65+20);
+      return `<div class="speed-bar-wrap"><div class="speed-bar-label"><span>${t.name}</span><span style="color:#5BB8F5">${pbByTrack[t.name].toFixed(3)}s</span></div><div class="speed-bar-track"><div class="speed-bar-fill" style="width:${pct}%"></div></div></div>`;
+    }).join('');
   }
 
-  const latest = sorted[sorted.length - 1];
-  const pb     = sorted.reduce((a,b) => a.time < b.time ? a : b);
-  new Chart(document.getElementById('splitChart'), {
+  const latest = sorted[sorted.length-1];
+  const pb     = sorted.reduce((a,b) => a.time<b.time?a:b);
+  if (!document.getElementById('splitChart')) {
+    document.getElementById('splitWrap').innerHTML = '<canvas id="splitChart"></canvas>';
+  }
+  if (splitChartInst) { splitChartInst.destroy(); splitChartInst = null; }
+  splitChartInst = new Chart(document.getElementById('splitChart'), {
     type: 'bar',
-    data: { labels: ['S1','S2','S3'], datasets: [
-      { label:'Latest', data:[latest.s1, latest.s2, latest.s3], backgroundColor:'rgba(91,184,245,0.45)', borderColor:'#5BB8F5', borderWidth:1 },
-      { label:'PB',     data:[pb.s1,     pb.s2,     pb.s3    ], backgroundColor:'rgba(34,212,110,0.4)',  borderColor:'#22D46E', borderWidth:1 },
+    data: { labels:['S1','S2','S3'], datasets:[
+      { label:'Latest', data:[latest.s1,latest.s2,latest.s3], backgroundColor:'rgba(91,184,245,0.45)', borderColor:'#5BB8F5', borderWidth:1 },
+      { label:'PB',     data:[pb.s1,pb.s2,pb.s3],             backgroundColor:'rgba(34,212,110,0.4)',  borderColor:'#22D46E', borderWidth:1 }
     ]},
-    options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } },
-      scales: { y:{ min:10, ticks:{ color:'#7BA7CC', font:{ size:10 } }, grid:{ color:'rgba(91,184,245,0.07)' } },
-                x:{ ticks:{ color:'#7BA7CC', font:{ size:11 } }, grid:{ display:false } } } }
+    options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false} },
+      scales: { y:{ min:10, ticks:{color:'#7BA7CC',font:{size:10}}, grid:{color:'rgba(91,184,245,0.07)'} }, x:{ ticks:{color:'#7BA7CC',font:{size:11}}, grid:{display:false} } } }
   });
 }
 
-/* ── Run log ── */
+// ─────────────────────────────────────────────
+// RUN LOG
+// ─────────────────────────────────────────────
+let currentFilter = 'all';
+
 function filterRuns(el, track) {
   document.querySelectorAll('#runFilter .filter-chip').forEach(c => c.classList.remove('active'));
   el.classList.add('active');
   currentFilter = track;
   renderRunTable(track);
 }
+
 function renderRunTable(track) {
-  const rows  = track === 'all' ? runData : runData.filter(r => r.track === track);
-  // sort descending by date but keep original index reference
-  const indexed = runData.map((r, i) => ({...r, _idx: i}));
-  const filtered = track === 'all' ? indexed : indexed.filter(r => r.track === track);
+  const indexed = runData.map((r,i) => ({...r, _idx:i}));
+  const filtered = track==='all' ? indexed : indexed.filter(r => r.track===track);
   const sorted = [...filtered].sort((a,b) => b.date.localeCompare(a.date));
   const pbByTrack = {};
-  runData.forEach(r => { if (!pbByTrack[r.track] || r.time < pbByTrack[r.track]) pbByTrack[r.track] = r.time; });
-  document.getElementById('runTableBody').innerHTML = sorted.length === 0
+  runData.forEach(r => { if (!pbByTrack[r.track]||r.time<pbByTrack[r.track]) pbByTrack[r.track]=r.time; });
+  document.getElementById('runTableBody').innerHTML = sorted.length===0
     ? `<tr><td colspan="8" style="text-align:center;color:var(--text-muted);padding:24px;">No runs logged yet.</td></tr>`
     : sorted.map(r => {
-      const isPB = r.time === pbByTrack[r.track];
-      const bc   = r.rank <= 3 ? ['badge-gold','badge-silver','badge-bronze'][r.rank-1] : 'badge-blue';
-      return `<tr>
-        <td>${r.date}</td><td>${r.track}</td><td>Run ${r.run}</td>
-        <td style="font-variant-numeric:tabular-nums;color:${isPB?'#22D46E':'inherit'}">${r.time.toFixed(3)}s${isPB?' <span class="pb-tag">PB</span>':''}</td>
-        <td style="color:#7BA7CC;font-size:11px">${r.s1.toFixed(2)} | ${r.s2.toFixed(2)} | ${r.s3.toFixed(2)}</td>
-        <td><span class="badge ${bc}">#${r.rank}</span></td>
-        <td style="font-size:11px;color:#7BA7CC">${r.notes}</td>
-        <td style="white-space:nowrap;">
-          <button class="action-btn edit" onclick="openEdit(${r._idx})">✏ Edit</button>
-          <button class="action-btn del"  onclick="deleteRun(${r._idx})">🗑</button>
-        </td>
-      </tr>`;
-    }).join('');
+        const isPB = r.time===pbByTrack[r.track];
+        const bc = r.rank<=3?['badge-gold','badge-silver','badge-bronze'][r.rank-1]:'badge-blue';
+        return `<tr>
+          <td>${r.date}</td><td>${r.track}</td><td>Run ${r.run}</td>
+          <td style="font-variant-numeric:tabular-nums;color:${isPB?'#22D46E':'inherit'}">${r.time.toFixed(3)}s${isPB?' <span class="pb-tag">PB</span>':''}</td>
+          <td style="color:#7BA7CC;font-size:11px">${(r.s1||0).toFixed(2)} | ${(r.s2||0).toFixed(2)} | ${(r.s3||0).toFixed(2)}</td>
+          <td><span class="badge ${bc}">#${r.rank}</span></td>
+          <td style="font-size:11px;color:#7BA7CC">${r.notes||''}</td>
+          <td style="white-space:nowrap;">
+            <button class="action-btn edit" onclick="openEdit(${r._idx})">✏ Edit</button>
+            <button class="action-btn del"  onclick="deleteRun(${r._idx})">🗑</button>
+          </td></tr>`;
+      }).join('');
 }
 
-/* ── Standings ── */
-let ptsDone = false;
+// ─────────────────────────────────────────────
+// STANDINGS
+// ─────────────────────────────────────────────
+let ptsDone = false, pointsChartInst = null;
+
 function initPointsChart() {
   if (ptsDone) return; ptsDone = true;
-  new Chart(document.getElementById('pointsChart'), {
-    type: 'line',
-    data: { labels: ['Nov','Dec','Jan','Feb','Mar'], datasets: [
+  if (pointsChartInst) { pointsChartInst.destroy(); pointsChartInst = null; }
+  pointsChartInst = new Chart(document.getElementById('pointsChart'), {
+    type:'line',
+    data:{ labels:['Nov','Dec','Jan','Feb','Mar'], datasets:[
       { label:'Oberstolz',  data:[0,0,0,0,0], borderColor:'#F0B429', borderDash:[4,3], borderWidth:2, tension:0.3, pointRadius:3, pointBackgroundColor:'#F0B429' },
       { label:'Pietschmann',data:[0,0,0,0,0], borderColor:'#9BA3AF', borderDash:[4,3], borderWidth:2, tension:0.3, pointRadius:3, pointBackgroundColor:'#9BA3AF' },
       { label:'Gosnell',    data:[0,0,0,0,0], borderColor:'#C67B3A', borderDash:[4,3], borderWidth:2, tension:0.3, pointRadius:3, pointBackgroundColor:'#C67B3A' },
       { label:'Kleinheinz', data:[0,0,0,0,0], borderColor:'#5BB8F5', borderWidth:2.5,  tension:0.3, pointRadius:4, pointBackgroundColor:'#5BB8F5' },
     ]},
-    options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } },
-      scales: { y:{ min:0, ticks:{ color:'#7BA7CC', font:{ size:10 } }, grid:{ color:'rgba(91,184,245,0.07)' } },
-                x:{ ticks:{ color:'#7BA7CC', font:{ size:10 } }, grid:{ display:false } } } }
+    options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}},
+      scales:{ y:{min:0,ticks:{color:'#7BA7CC',font:{size:10}},grid:{color:'rgba(91,184,245,0.07)'}}, x:{ticks:{color:'#7BA7CC',font:{size:10}},grid:{display:false}} } }
   });
 }
+
 function filterStandings(el, key) {
   document.querySelectorAll('#standFilter .filter-chip').forEach(c => c.classList.remove('active'));
   el.classList.add('active');
   renderLeaderboard(key);
   renderUSALeaderboard(key);
 }
-const NAT_TO_ISO = {
-  USA:'us', GER:'de', AUT:'at', ITA:'it', LAT:'lv', ROU:'ro',
-  THA:'th', UKR:'ua', POL:'pl', CAN:'ca', SVK:'sk', GBR:'gb',
-};
+
+const NAT_TO_ISO = { USA:'us',GER:'de',AUT:'at',ITA:'it',LAT:'lv',ROU:'ro',THA:'th',UKR:'ua',POL:'pl',CAN:'ca',SVK:'sk',GBR:'gb' };
+
 function flagImg(nat) {
   const iso = NAT_TO_ISO[nat];
-  if (!iso) return '';
-  return `<img src="https://flagcdn.com/20x15/${iso}.png" width="20" height="15" alt="${nat}" style="vertical-align:middle;margin-left:7px;border-radius:2px;box-shadow:0 0 0 1px rgba(255,255,255,0.12);">`;
+  return iso ? `<img src="https://flagcdn.com/20x15/${iso}.png" width="20" height="15" alt="${nat}" style="vertical-align:middle;margin-left:7px;border-radius:2px;box-shadow:0 0 0 1px rgba(255,255,255,0.12);">` : '';
 }
+
 function natBadge(nat, me) {
-  const colors = {
-    USA:'#B22234', GER:'#000000', AUT:'#ED2939', ITA:'#009246',
-    LAT:'#9E3039', ROU:'#002B7F', THA:'#A51931', UKR:'#005BBB',
-    POL:'#DC143C', CAN:'#FF0000', SVK:'#0B4EA2', GBR:'#012169',
-  };
-  const bg = me ? 'rgba(91,184,245,0.2)' : `${colors[nat] || '#444'}22`;
-  const border = me ? '#5BB8F5' : (colors[nat] || '#666');
-  const color  = me ? '#5BB8F5' : '#E8F4FD';
+  const colors = { USA:'#B22234',GER:'#000',AUT:'#ED2939',ITA:'#009246',LAT:'#9E3039',ROU:'#002B7F',THA:'#A51931',UKR:'#005BBB',POL:'#DC143C',CAN:'#FF0000',SVK:'#0B4EA2',GBR:'#012169' };
+  const bg = me?'rgba(91,184,245,0.2)':`${colors[nat]||'#444'}22`;
+  const border = me?'#5BB8F5':(colors[nat]||'#666');
+  const color  = me?'#5BB8F5':'#E8F4FD';
   return `<span style="display:inline-block;padding:1px 6px;border-radius:4px;font-size:10px;font-weight:600;letter-spacing:0.5px;background:${bg};border:1px solid ${border};color:${color};margin-right:6px;">${nat}</span>`;
 }
+
 function buildLbRows(rows) {
   return rows.map(r => {
-    const pc    = r.pos===1?'p1':r.pos===2?'p2':r.pos===3?'p3':'';
+    const pc = r.pos===1?'p1':r.pos===2?'p2':r.pos===3?'p3':'';
     const medal = r.pos===1?'🥇':r.pos===2?'🥈':r.pos===3?'🥉':r.pos;
     return `<div class="lb-row ${r.me?'me':''}">
       <div class="lb-pos ${pc}">${medal}</div>
-      <div class="lb-name">${natBadge(r.nat, r.me)}${r.name}${flagImg(r.nat)}${r.me?' <span style="font-size:10px;color:#5BB8F5;margin-left:6px;">(Ellie)</span>':''}</div>
+      <div class="lb-name">${natBadge(r.nat,r.me)}${r.name}${flagImg(r.nat)}${r.me?' <span style="font-size:10px;color:#5BB8F5;margin-left:6px;">(Ellie)</span>':''}</div>
       <div class="lb-pts">${r.pts} pts<span class="lb-diff">${r.diff||''}</span></div>
     </div>`;
   }).join('');
 }
+
 function renderLeaderboard(key) {
-  const rows = STANDINGS[key] || STANDINGS.overall;
-  document.getElementById('leaderboard').innerHTML = buildLbRows(rows);
+  document.getElementById('leaderboard').innerHTML = buildLbRows(STANDINGS[key]||STANDINGS.overall);
 }
 function renderUSALeaderboard(key) {
-  const rows = USA_STANDINGS[key] || USA_STANDINGS.overall;
-  document.getElementById('usa-leaderboard').innerHTML = buildLbRows(rows);
+  document.getElementById('usa-leaderboard').innerHTML = buildLbRows(USA_STANDINGS[key]||USA_STANDINGS.overall);
 }
 
-/* ── Map ── */
-let mapDone = false;
-let mapZoomBehavior, mapSvgSel, mapGMain;
+// ─────────────────────────────────────────────
+// MAP
+// ─────────────────────────────────────────────
+let mapDone=false, mapZoomBehavior, mapSvgSel, mapGMain;
 
 function initMap() {
-  if (mapDone) return; mapDone = true;
-
-  const W = 900, H = 460;
+  if (mapDone) return; mapDone=true;
+  const W=900, H=460;
   const popup = document.getElementById('trackPopup');
-  mapSvgSel = d3.select('#worldSvg').attr('viewBox', `0 0 ${W} ${H}`);
-
-  // single zoomable group
-  mapGMain = mapSvgSel.append('g').attr('class','map-root');
-
-  const proj = d3.geoNaturalEarth1().scale(155).translate([W/2, H/2]);
+  mapSvgSel = d3.select('#worldSvg').attr('viewBox',`0 0 ${W} ${H}`);
+  mapGMain  = mapSvgSel.append('g').attr('class','map-root');
+  const proj = d3.geoNaturalEarth1().scale(155).translate([W/2,H/2]);
   const path = d3.geoPath(proj);
-
-  // zoom behaviour
-  mapZoomBehavior = d3.zoom()
-    .scaleExtent([1, 12])
-    .translateExtent([[0,0],[W,H]])
-    .on('zoom', (event) => {
+  mapZoomBehavior = d3.zoom().scaleExtent([1,12]).translateExtent([[0,0],[W,H]])
+    .on('zoom', event => {
       mapGMain.attr('transform', event.transform);
-      // scale pin radius inversely so pins don't grow huge
       const k = event.transform.k;
-      mapGMain.selectAll('.pin-outer').attr('r', 9 / Math.sqrt(k));
-      mapGMain.selectAll('.pin-inner').attr('r', 3.5 / Math.sqrt(k));
-      mapGMain.selectAll('.pin-label').attr('font-size', Math.max(7, 9 / Math.sqrt(k)));
-      mapGMain.selectAll('path').attr('stroke-width', 0.5 / k);
+      mapGMain.selectAll('.pin-outer').attr('r', 9/Math.sqrt(k));
+      mapGMain.selectAll('.pin-inner').attr('r', 3.5/Math.sqrt(k));
+      mapGMain.selectAll('.pin-label').attr('font-size', Math.max(7, 9/Math.sqrt(k)));
+      mapGMain.selectAll('path').attr('stroke-width', 0.5/k);
     });
-
-  mapSvgSel.call(mapZoomBehavior)
-    .on('dblclick.zoom', null); // disable dblclick default
+  mapSvgSel.call(mapZoomBehavior).on('dblclick.zoom', null);
 
   d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json').then(world => {
-    mapGMain.selectAll('path')
-      .data(topojson.feature(world, world.objects.countries).features)
-      .join('path').attr('d', path)
-      .attr('fill','#0D2140').attr('stroke','rgba(91,184,245,0.2)').attr('stroke-width',0.5);
-
+    mapGMain.selectAll('path').data(topojson.feature(world,world.objects.countries).features)
+      .join('path').attr('d',path).attr('fill','#0D2140').attr('stroke','rgba(91,184,245,0.2)').attr('stroke-width',0.5);
     TRACKS.forEach(t => {
-      const xy = proj([t.lon, t.lat]);
-      if (!xy || !xy[0]) return;
-      const [x, y] = xy;
+      const xy = proj([t.lon,t.lat]);
+      if (!xy||!xy[0]) return;
+      const [x,y]=xy;
       const g = mapGMain.append('g').style('cursor','pointer');
-
-      g.append('circle').attr('class','pin-outer')
-        .attr('cx',x).attr('cy',y).attr('r',9)
-        .attr('fill','rgba(91,184,245,0.12)').attr('stroke','#5BB8F5').attr('stroke-width',1.5);
-      g.append('circle').attr('class','pin-inner')
-        .attr('cx',x).attr('cy',y).attr('r',3.5).attr('fill','#5BB8F5');
-      g.append('text').attr('class','pin-label')
-        .attr('x',x+11).attr('y',y+4).attr('fill','#7BA7CC').attr('font-size','9').text(t.name);
-
-      g.on('mouseover', (event) => {
+      g.append('circle').attr('class','pin-outer').attr('cx',x).attr('cy',y).attr('r',9).attr('fill','rgba(91,184,245,0.12)').attr('stroke','#5BB8F5').attr('stroke-width',1.5);
+      g.append('circle').attr('class','pin-inner').attr('cx',x).attr('cy',y).attr('r',3.5).attr('fill','#5BB8F5');
+      g.append('text').attr('class','pin-label').attr('x',x+11).attr('y',y+4).attr('fill','#7BA7CC').attr('font-size','9').text(t.name);
+      g.on('mouseover', () => {
         const svgRect = document.getElementById('worldSvg').getBoundingClientRect();
-        const transform = d3.zoomTransform(mapSvgSel.node());
-        // project pin through current transform to screen coords
-        const px = transform.applyX(x) * (svgRect.width / W);
-        const py = transform.applyY(y) * (svgRect.height / H);
-        popup.style.display = 'block';
-        popup.style.left = Math.min(px + 10, svgRect.width - 170) + 'px';
-        popup.style.top  = Math.max(py - 15, 5) + 'px';
-        popup.innerHTML = `<strong>${t.name}, ${t.country}</strong>
+        const tr = d3.zoomTransform(mapSvgSel.node());
+        const px = tr.applyX(x)*(svgRect.width/W);
+        const py = tr.applyY(y)*(svgRect.height/H);
+        popup.style.display='block';
+        popup.style.left=Math.min(px+10,svgRect.width-170)+'px';
+        popup.style.top=Math.max(py-15,5)+'px';
+        popup.innerHTML=`<strong>${t.name}, ${t.country}</strong>
           <div style="color:#E8F4FD;margin-top:3px">Best: <b style="color:#22D46E">${t.myBest}</b></div>
-          <div style="color:#7BA7CC">JWC rank: <span style="color:#F0B429">${t.rank === '—' ? '—' : '#'+t.rank}</span></div>
+          <div style="color:#7BA7CC">JWC rank: <span style="color:#F0B429">${t.rank==='—'?'—':'#'+t.rank}</span></div>
           <div style="color:#7BA7CC">${t.races} race(s) logged</div>`;
-      }).on('mouseout', () => { popup.style.display = 'none'; })
+      }).on('mouseout', () => popup.style.display='none')
         .on('click', () => {
-          popup.style.display = 'none';
-          const tr = runData.filter(r => r.track === t.name);
-          const pbByTrack = {};
-          runData.forEach(r => { if (!pbByTrack[r.track] || r.time < pbByTrack[r.track]) pbByTrack[r.track] = r.time; });
-          if (!tr.length) {
-            document.getElementById('trackDetail').innerHTML = `<div class="card"><p style="color:var(--text-muted);font-size:12px">No runs logged at ${t.name} yet.</p></div>`;
-            return;
-          }
-          const rows = tr.sort((a,b) => b.date.localeCompare(a.date)).map(r => {
-            const isPB = r.time === pbByTrack[r.track];
-            const bc   = r.rank <= 3 ? ['badge-gold','badge-silver','badge-bronze'][r.rank-1] : 'badge-blue';
-            return `<tr>
-              <td>${r.date}</td><td>Run ${r.run}</td>
-              <td style="color:${isPB?'#22D46E':'#E8F4FD'}">${r.time.toFixed(3)}s${isPB?' <span class="pb-tag">PB</span>':''}</td>
-              <td><span class="badge ${bc}">#${r.rank}</span></td>
-              <td style="font-size:11px;color:#7BA7CC">${r.notes}</td>
-            </tr>`;
+          popup.style.display='none';
+          const tr = runData.filter(r=>r.track===t.name);
+          const pb2={};
+          runData.forEach(r=>{if(!pb2[r.track]||r.time<pb2[r.track])pb2[r.track]=r.time;});
+          if (!tr.length) { document.getElementById('trackDetail').innerHTML=`<div class="card"><p style="color:var(--text-muted);font-size:12px">No runs logged at ${t.name} yet.</p></div>`; return; }
+          const rws = tr.sort((a,b)=>b.date.localeCompare(a.date)).map(r=>{
+            const isPB=r.time===pb2[r.track];
+            const bc=r.rank<=3?['badge-gold','badge-silver','badge-bronze'][r.rank-1]:'badge-blue';
+            return `<tr><td>${r.date}</td><td>Run ${r.run}</td><td style="color:${isPB?'#22D46E':'#E8F4FD'}">${r.time.toFixed(3)}s${isPB?' <span class="pb-tag">PB</span>':''}</td><td><span class="badge ${bc}">#${r.rank}</span></td><td style="font-size:11px;color:#7BA7CC">${r.notes||''}</td></tr>`;
           }).join('');
-          document.getElementById('trackDetail').innerHTML = `<div class="card">
-            <div class="card-title">${t.name} · ${t.country} &nbsp;|&nbsp; PB: ${t.myBest} &nbsp;|&nbsp; Best rank: ${t.rank === '—' ? '—' : '#'+t.rank}</div>
-            <table class="run-table">
-              <thead><tr><th>Date</th><th>Run</th><th>Time</th><th>Rank</th><th>Notes</th></tr></thead>
-              <tbody>${rows}</tbody>
-            </table>
-          </div>`;
+          document.getElementById('trackDetail').innerHTML=`<div class="card"><div class="card-title">${t.name} · ${t.country} | PB: ${t.myBest} | Best rank: ${t.rank==='—'?'—':'#'+t.rank}</div><table class="run-table"><thead><tr><th>Date</th><th>Run</th><th>Time</th><th>Rank</th><th>Notes</th></tr></thead><tbody>${rws}</tbody></table></div>`;
         });
     });
   });
 }
 
-function mapZoom(factor) {
-  if (!mapSvgSel) return;
-  mapSvgSel.transition().duration(300).call(mapZoomBehavior.scaleBy, factor);
-}
-function mapReset() {
-  if (!mapSvgSel) return;
-  mapSvgSel.transition().duration(400).call(mapZoomBehavior.transform, d3.zoomIdentity);
+function mapZoom(factor) { if(mapSvgSel) mapSvgSel.transition().duration(300).call(mapZoomBehavior.scaleBy,factor); }
+function mapReset()      { if(mapSvgSel) mapSvgSel.transition().duration(400).call(mapZoomBehavior.transform,d3.zoomIdentity); }
+
+// ─────────────────────────────────────────────
+// PHOTOS
+// ─────────────────────────────────────────────
+async function handlePhotoUpload(input) {
+  for (const file of Array.from(input.files)) {
+    try {
+      setSyncStatus('syncing');
+      const path = `photos/${Date.now()}_${file.name}`;
+      const sRef = storage.ref(path);
+      await sRef.put(file);
+      const url = await sRef.getDownloadURL();
+      await db.collection('photos').add({ url, caption:file.name.slice(0,30), storagePath:path, uploadedAt:Date.now() });
+      setSyncStatus('ok');
+    } catch(e) {
+      console.error('Photo upload error:', e);
+      setSyncStatus('error');
+    }
+  }
+  input.value='';
 }
 
-/* ── Photo upload ── */
-document.getElementById('photoInput').addEventListener('change', function () {
-  const grid = document.getElementById('photoGrid');
-  Array.from(this.files).forEach(file => {
-    const url  = URL.createObjectURL(file);
-    const slot = document.createElement('div');
-    slot.className = 'photo-slot';
-    slot.innerHTML = `<img src="${url}" alt="${file.name}"><div class="photo-caption">${file.name.slice(0,22)}</div>`;
-    const adds = grid.querySelectorAll('.add-new');
-    if (adds.length) grid.insertBefore(slot, adds[0]); else grid.appendChild(slot);
-  });
-});
+function deletePhoto(firestoreId, storagePath) {
+  if (!confirm('Remove this photo?')) return;
+  db.collection('photos').doc(firestoreId).delete().catch(console.error);
+  if (storagePath) storage.ref(storagePath).delete().catch(console.error);
+}
 
-/* ── Add run ── */
+// ─────────────────────────────────────────────
+// ADD RUN
+// ─────────────────────────────────────────────
 async function addRun() {
   const track = document.getElementById('logTrack').value;
   const date  = document.getElementById('logDate').value;
-  const run   = parseInt(document.getElementById('logRun').value) || 1;
+  const run   = parseInt(document.getElementById('logRun').value)||1;
   const time  = parseFloat(document.getElementById('logTime').value);
-  const s1    = parseFloat(document.getElementById('logS1').value) || 0;
-  const s2    = parseFloat(document.getElementById('logS2').value) || 0;
-  const s3    = parseFloat(document.getElementById('logS3').value) || 0;
-  const rank  = parseInt(document.getElementById('logRank').value) || 99;
+  const s1    = parseFloat(document.getElementById('logS1').value)||0;
+  const s2    = parseFloat(document.getElementById('logS2').value)||0;
+  const s3    = parseFloat(document.getElementById('logS3').value)||0;
+  const rank  = parseInt(document.getElementById('logRank').value)||99;
   const notes = document.getElementById('logNotes').value;
-  if (!date || !time) { document.getElementById('logMsg').textContent = 'Please fill in date and time.'; return; }
-
-  const runObj = { date, track, run, time, s1, s2, s3, rank, notes };
+  if (!date||!time) { document.getElementById('logMsg').textContent='Please fill in date and time.'; return; }
+  const runObj = { date,track,run,time,s1,s2,s3,rank,notes };
   const id = `${date}_${track.replace(/\s/g,'_')}_run${run}_${Date.now()}`;
-
   try {
     setSyncStatus('syncing');
-    document.getElementById('logMsg').textContent = 'Saving…';
-    await setDoc(doc(db, 'runs', id), runObj);
-    document.getElementById('logMsg').textContent = 'Run saved & synced! ✓';
+    document.getElementById('logMsg').textContent='Saving…';
+    await db.collection('runs').doc(id).set(runObj);
+    document.getElementById('logMsg').textContent='Run saved & synced! ✓';
     setSyncStatus('ok');
   } catch(e) {
-    // fallback: save locally
-    runData.push({...runObj, _id: id});
-    ovDone = false;
-    refreshStatCards();
-    document.getElementById('logMsg').textContent = 'Saved locally (offline). Will sync when reconnected.';
+    runData.push({...runObj,_id:id});
+    ovDone=false; refreshStatCards();
+    document.getElementById('logMsg').textContent='Saved locally (offline).';
     setSyncStatus('error');
   }
-  setTimeout(() => { document.getElementById('logMsg').textContent = ''; }, 3000);
+  setTimeout(()=>{ document.getElementById('logMsg').textContent=''; },3000);
 }
 
-/* ── Edit / Delete modal ── */
+// ─────────────────────────────────────────────
+// EDIT / DELETE MODAL
+// ─────────────────────────────────────────────
 let editingIdx = null;
-let currentFilter = 'all';
 
 function openEdit(idx) {
   editingIdx = idx;
@@ -948,11 +787,11 @@ function openEdit(idx) {
   document.getElementById('editDate').value  = r.date;
   document.getElementById('editRun').value   = r.run;
   document.getElementById('editTime').value  = r.time;
-  document.getElementById('editS1').value    = r.s1;
-  document.getElementById('editS2').value    = r.s2;
-  document.getElementById('editS3').value    = r.s3;
+  document.getElementById('editS1').value    = r.s1||0;
+  document.getElementById('editS2').value    = r.s2||0;
+  document.getElementById('editS3').value    = r.s3||0;
   document.getElementById('editRank').value  = r.rank;
-  document.getElementById('editNotes').value = r.notes;
+  document.getElementById('editNotes').value = r.notes||'';
   document.getElementById('editModal').classList.add('open');
 }
 
@@ -962,91 +801,223 @@ function closeModal() {
 }
 
 async function saveEdit() {
-  if (editingIdx === null) return;
+  if (editingIdx===null) return;
   const time = parseFloat(document.getElementById('editTime').value);
   const date = document.getElementById('editDate').value;
-  if (!date || !time) { alert('Please fill in date and time.'); return; }
+  if (!date||!time) { alert('Please fill in date and time.'); return; }
   const updated = {
-    track: document.getElementById('editTrack').value,
-    date,
-    run:   parseInt(document.getElementById('editRun').value) || 1,
-    time,
-    s1:    parseFloat(document.getElementById('editS1').value) || 0,
-    s2:    parseFloat(document.getElementById('editS2').value) || 0,
-    s3:    parseFloat(document.getElementById('editS3').value) || 0,
-    rank:  parseInt(document.getElementById('editRank').value) || 99,
+    track: document.getElementById('editTrack').value, date,
+    run:   parseInt(document.getElementById('editRun').value)||1, time,
+    s1:    parseFloat(document.getElementById('editS1').value)||0,
+    s2:    parseFloat(document.getElementById('editS2').value)||0,
+    s3:    parseFloat(document.getElementById('editS3').value)||0,
+    rank:  parseInt(document.getElementById('editRank').value)||99,
     notes: document.getElementById('editNotes').value,
   };
-  const firestoreId = runData[editingIdx]._id;
+  const fid = runData[editingIdx]._id;
   closeModal();
   try {
     setSyncStatus('syncing');
-    await setDoc(doc(db, 'runs', firestoreId), updated);
+    await db.collection('runs').doc(fid).set(updated);
     setSyncStatus('ok');
   } catch(e) {
-    // update locally as fallback
-    runData[editingIdx] = {...updated, _id: firestoreId};
-    ovDone = false;
-    renderRunTable(currentFilter);
-    refreshStatCards();
+    runData[editingIdx]={...updated,_id:fid};
+    ovDone=false; renderRunTable(currentFilter); refreshStatCards();
     setSyncStatus('error');
   }
 }
 
 async function deleteRun(idx) {
   if (!confirm('Delete this run? This cannot be undone.')) return;
-  const firestoreId = runData[idx]._id;
+  const fid = runData[idx]._id;
   try {
     setSyncStatus('syncing');
-    await deleteDoc(doc(db, 'runs', firestoreId));
+    await db.collection('runs').doc(fid).delete();
     setSyncStatus('ok');
   } catch(e) {
-    runData.splice(idx, 1);
-    ovDone = false;
-    renderRunTable(currentFilter);
-    refreshStatCards();
+    runData.splice(idx,1);
+    ovDone=false; renderRunTable(currentFilter); refreshStatCards();
     setSyncStatus('error');
   }
 }
 
 function confirmDelete() {
-  if (editingIdx === null) return;
+  if (editingIdx===null) return;
   closeModal();
   deleteRun(editingIdx);
 }
 
 function refreshStatCards() {
-  const statVals = document.querySelectorAll('.stat-value');
-  if (runData.length === 0) {
-    statVals[0].textContent = '—'; statVals[0].style.color = 'var(--text-muted)';
-    statVals[2].textContent = '0';
+  const pb   = document.getElementById('statPB');
+  const runs = document.getElementById('statRuns');
+  if (runData.length===0) {
+    if(pb)   { pb.textContent='—';  pb.style.color='var(--text-muted)'; }
+    if(runs)   runs.textContent='0';
   } else {
-    const pb = Math.min(...runData.map(r => r.time));
-    statVals[0].textContent = pb.toFixed(3) + 's'; statVals[0].style.color = '#22D46E';
-    statVals[2].textContent = runData.length;
+    const best = Math.min(...runData.map(r=>r.time));
+    if(pb)   { pb.textContent=best.toFixed(3)+'s'; pb.style.color='#22D46E'; }
+    if(runs)   runs.textContent=runData.length;
   }
 }
 
-/* ── Firebase real-time listeners & init ── */
+// ─────────────────────────────────────────────
+// PDF IMPORT
+// ─────────────────────────────────────────────
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
-// Runs: listen for any change across all devices
-onSnapshot(RUNS_COL, (snap) => {
-  runData = snap.docs.map(d => ({ _id: d.id, ...d.data() }));
+const FIL_POINTS = {
+  1:100,2:85,3:70,4:60,5:55,6:50,7:46,8:42,9:39,10:36,
+  11:34,12:32,13:30,14:28,15:26,16:25,17:24,18:23,19:22,20:21,
+  21:20,22:19,23:18,24:17,25:16,26:15,27:14,28:13,29:12,30:11,
+};
+
+let parsedResults=[], parsedVenue='', parsedRun='';
+
+function handlePdfDrop(e) {
+  e.preventDefault();
+  document.getElementById('pdfDropZone').style.borderColor='';
+  const file = e.dataTransfer.files[0];
+  if (file&&file.type==='application/pdf') handlePdfFile(file);
+}
+
+async function handlePdfFile(file) {
+  if (!file) return;
+  showImportStatus('Reading PDF…');
+  try {
+    const buf = await file.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument({data:buf}).promise;
+    let text = '';
+    for (let p=1;p<=pdf.numPages;p++) {
+      const items = (await (await pdf.getPage(p)).getTextContent()).items;
+      text += items.map(i=>i.str).join(' ')+'\n';
+    }
+    parseResults(text);
+  } catch(e) { showImportStatus('❌ Could not read PDF: '+e.message, true); }
+}
+
+function parseResults(text) {
+  const knownTracks = ['Winterberg','Lillehammer','Sigulda','Oberhof','Lake Placid','Park City','Bludenz','Königssee'];
+  parsedVenue = knownTracks.find(t=>text.includes(t))||'Unknown';
+  const rm = text.match(/Lauf\s*(\d+)/i)||text.match(/Run\s*(\d+)/i);
+  parsedRun  = rm?rm[1]:'?';
+  const rt   = text.replace(/\s+/g,' ');
+  const results = [];
+  const re = /\b(\d{1,2})\s+(\d{1,3})\s+([A-ZÄÖÜ][A-Za-zÄÖÜäöüß\s]{2,35?})\s+(AUT|GER|ITA|LAT|ROU|THA|UKR|POL|USA|CAN|SVK|GBR|NOR|SUI|FRA|ESP|NED|SWE|FIN|CZE|HUN)\b.{10,300}?(\d{1}:\d{2}\.\d{3})/g;
+  let m;
+  while((m=re.exec(rt))!==null){
+    const rank=parseInt(m[1]), name=m[3].trim().replace(/\s+/g,' '), nation=m[4], total=m[5];
+    const tp=total.split(':');
+    const secs=tp.length===2?parseInt(tp[0])*60+parseFloat(tp[1]):parseFloat(total);
+    const blk=rt.slice(Math.max(0,m.index),m.index+m[0].length+20);
+    const tr2=/\b4\d\.\d{3}\b/g; const rts=[];
+    let tm; while((tm=tr2.exec(blk))!==null) rts.push(parseFloat(tm[0]));
+    results.push({rank,name,nation,run1:rts[0]||null,run2:rts[1]||null,total:secs,totalStr:total,pts:FIL_POINTS[rank]||0});
+  }
+  const dnfRe=/\b(\d{1,2})\s+([A-ZÄÖÜ][A-Za-zÄÖÜäöüß\s]{2,35?})\s+(AUT|GER|ITA|LAT|ROU|THA|UKR|POL|USA|CAN|SVK|GBR|NOR|SUI)\b.+?DNF/g;
+  while((m=dnfRe.exec(rt))!==null){
+    const name=m[2].trim().replace(/\s+/g,' ');
+    if (!results.find(r=>r.name.toLowerCase().includes(name.split(' ')[0].toLowerCase())))
+      results.push({rank:999,name,nation:m[3],run1:null,run2:null,total:null,totalStr:'DNF',pts:0});
+  }
+  if (!results.length) { showImportStatus('⚠️ Could not parse results. Check this is a FIL Junior Women PDF.', true); return; }
+  parsedResults=results;
+  showImportStatus('');
+  renderImportPreview();
+}
+
+function renderImportPreview() {
+  document.getElementById('importStatus').style.display='none';
+  document.getElementById('importPreview').style.display='block';
+  document.getElementById('importMeta').textContent=`${parsedVenue} · Lauf ${parsedRun} · ${parsedResults.length} athletes`;
+  if (!document.getElementById('importDate').value)
+    document.getElementById('importDate').value=new Date().toISOString().slice(0,10);
+  const ell=['kleinheinz','elizabeth','ellie'];
+  document.getElementById('importTableBody').innerHTML=parsedResults.map(r=>{
+    const isE=ell.some(n=>r.name.toLowerCase().includes(n));
+    const pc=r.pts>0?'color:#22D46E;font-weight:500;':'color:var(--text-muted);';
+    const rb=r.rank<=3?['badge-gold','badge-silver','badge-bronze'][r.rank-1]:r.rank<900?'badge-blue':'';
+    return `<tr style="${isE?'background:rgba(91,184,245,0.08);':''}">
+      <td>${r.rank<900?`<span class="badge ${rb}">#${r.rank}</span>`:'—'}</td>
+      <td style="${isE?'color:#5BB8F5;font-weight:500;':''}">${r.name}${isE?' ⭐':''}</td>
+      <td>${natBadge(r.nation,false)}</td>
+      <td style="font-size:11px;color:var(--text-muted)">${r.run1?r.run1.toFixed(3)+'s':'—'}</td>
+      <td style="font-size:11px;color:var(--text-muted)">${r.run2?r.run2.toFixed(3)+'s':r.totalStr==='DNF'?'<span style="color:#f87171">DNF</span>':'—'}</td>
+      <td style="font-weight:500">${r.totalStr!=='DNF'?r.totalStr:'<span style="color:#f87171">DNF</span>'}</td>
+      <td style="${pc}">${r.pts||(r.totalStr==='DNF'?'0':'—')}</td>
+      <td style="font-size:10px;color:var(--text-muted)">${isE?'✅ Will update':''}</td>
+    </tr>`;
+  }).join('');
+}
+
+async function applyImport() {
+  const date   = document.getElementById('importDate').value||new Date().toISOString().slice(0,10);
+  const addRun = document.getElementById('addEllieRun').checked;
+  const ell    = ['kleinheinz','elizabeth','ellie'];
+
+  parsedResults.forEach(res => {
+    if (res.pts<=0) return;
+    const nl = res.name.toLowerCase();
+    const match = ALL_ATHLETES.find(a => a.name.toLowerCase().split(' ').some(p=>p.length>3&&nl.includes(p)));
+    if (match) {
+      Object.keys(STANDINGS).forEach(k=>{ const row=STANDINGS[k].find(r=>r.name===match.name); if(row) row.pts+=res.pts; });
+      Object.keys(USA_STANDINGS).forEach(k=>{ const row=USA_STANDINGS[k].find(r=>r.name===match.name); if(row) row.pts+=res.pts; });
+    }
+  });
+  Object.keys(STANDINGS).forEach(k=>{ STANDINGS[k].sort((a,b)=>b.pts-a.pts); STANDINGS[k].forEach((r,i)=>{r.pos=i+1;r.diff=i===0?'':(r.pts-STANDINGS[k][0].pts).toString();}); });
+  Object.keys(USA_STANDINGS).forEach(k=>{ USA_STANDINGS[k].sort((a,b)=>b.pts-a.pts); USA_STANDINGS[k].forEach((r,i)=>{r.pos=i+1;r.diff=i===0?'':(r.pts-USA_STANDINGS[k][0].pts).toString();}); });
+
+  if (addRun) {
+    const er = parsedResults.find(r=>ell.some(n=>r.name.toLowerCase().includes(n)));
+    if (er&&er.total) {
+      const base={track:parsedVenue,rank:er.rank,s1:0,s2:0,s3:0,notes:`Imported · Lauf ${parsedRun}`,date};
+      if (er.run1) { const id=`${date}_${parsedVenue.replace(/\s/g,'_')}_run1_${Date.now()}`; await db.collection('runs').doc(id).set({...base,run:1,time:er.run1}).catch(console.error); }
+      if (er.run2&&er.run2!==er.run1) { const id=`${date}_${parsedVenue.replace(/\s/g,'_')}_run2_${Date.now()+1}`; await db.collection('runs').doc(id).set({...base,run:2,time:er.run2}).catch(console.error); }
+    }
+  }
+
+  try {
+    setSyncStatus('syncing');
+    await db.collection('meta').doc('standings').set({STANDINGS,USA_STANDINGS});
+    setSyncStatus('ok');
+  } catch(e) { console.error(e); setSyncStatus('error'); }
+
+  ptsDone=false; renderLeaderboard('overall'); renderUSALeaderboard('overall');
+  document.getElementById('importMsg').textContent=`✅ Applied & synced! ${addRun?"Ellie's runs added.":""}`;
+  setTimeout(()=>{ document.getElementById('pdfFileInput').value=''; parsedResults=[]; },3000);
+}
+
+function cancelImport() {
+  document.getElementById('importPreview').style.display='none';
+  document.getElementById('importStatus').style.display='none';
+  document.getElementById('pdfFileInput').value='';
+  parsedResults=[];
+}
+
+function showImportStatus(msg, isError) {
+  const el=document.getElementById('importStatus');
+  const tx=document.getElementById('importStatusText');
+  if (!msg) { el.style.display='none'; return; }
+  el.style.display='block';
+  tx.style.color=isError?'#f87171':'var(--text-muted)';
+  tx.textContent=msg;
+}
+
+// ─────────────────────────────────────────────
+// FIREBASE REAL-TIME LISTENERS
+// ─────────────────────────────────────────────
+db.collection('runs').onSnapshot(snap => {
+  runData = snap.docs.map(d => ({_id:d.id,...d.data()}));
   ovDone  = false;
-  renderRunTable(currentFilter || 'all');
+  renderRunTable(currentFilter);
   refreshStatCards();
-  const el = document.getElementById('syncLabel');
-  if (el) { el.textContent = 'synced'; setSyncStatus('ok'); }
-}, (err) => {
-  console.error('Runs sync error:', err);
+  setSyncStatus('ok');
+}, err => {
+  console.error('Runs listener error:', err);
   setSyncStatus('error');
-  const el = document.getElementById('syncLabel');
-  if (el) el.textContent = 'offline';
 });
 
-// Standings: listen for any change across all devices
-onSnapshot(STAND_DOC, (snap) => {
-  if (snap.exists()) {
+db.collection('meta').doc('standings').onSnapshot(snap => {
+  if (snap.exists) {
     const data = snap.data();
     if (data.STANDINGS)     Object.assign(STANDINGS, data.STANDINGS);
     if (data.USA_STANDINGS) Object.assign(USA_STANDINGS, data.USA_STANDINGS);
@@ -1055,206 +1026,26 @@ onSnapshot(STAND_DOC, (snap) => {
   }
 });
 
-// Photos: listen and render from Firebase Storage URLs
-onSnapshot(PHOTOS_COL, (snap) => {
+db.collection('photos').onSnapshot(snap => {
   const grid = document.getElementById('photoGrid');
-  // Remove previously synced photos (keep add-new slots)
-  grid.querySelectorAll('.photo-slot:not(.add-new)').forEach(el => el.remove());
+  grid.querySelectorAll('.photo-slot:not(.add-new)').forEach(el=>el.remove());
   snap.docs.forEach(d => {
-    const { url, caption } = d.data();
+    const {url, caption, storagePath} = d.data();
     const slot = document.createElement('div');
-    slot.className = 'photo-slot';
-    slot.dataset.firestoreId = d.id;
-    slot.innerHTML = `<img src="${url}" alt="${caption||''}">
+    slot.className='photo-slot';
+    slot.innerHTML=`<img src="${url}" alt="${caption||''}">
       <div class="photo-caption">${caption||''}</div>
-      <button onclick="deletePhoto('${d.id}','${d.data().storagePath||''}')" style="position:absolute;top:4px;right:4px;background:rgba(220,53,69,0.8);border:none;color:#fff;border-radius:4px;font-size:10px;padding:2px 5px;cursor:pointer;">✕</button>`;
-    const adds = grid.querySelectorAll('.add-new');
-    if (adds.length) grid.insertBefore(slot, adds[0]); else grid.appendChild(slot);
+      <button onclick="deletePhoto('${d.id}','${storagePath||''}')" style="position:absolute;top:4px;right:4px;background:rgba(220,53,69,0.8);border:none;color:#fff;border-radius:4px;font-size:10px;padding:2px 5px;cursor:pointer;">✕</button>`;
+    const adds=grid.querySelectorAll('.add-new');
+    if (adds.length) grid.insertBefore(slot,adds[0]); else grid.appendChild(slot);
   });
 });
 
-// Photo upload → Firebase Storage + Firestore metadata
-document.getElementById('photoInput').addEventListener('change', async function() {
-  for (const file of Array.from(this.files)) {
-    try {
-      setSyncStatus('syncing');
-      const path      = `photos/${Date.now()}_${file.name}`;
-      const storageRef = ref(storage, path);
-      await uploadBytes(storageRef, file);
-      const url = await getDownloadURL(storageRef);
-      await setDoc(doc(PHOTOS_COL), { url, caption: file.name.slice(0,30), storagePath: path, uploadedAt: Date.now() });
-      setSyncStatus('ok');
-    } catch(e) {
-      console.error('Photo upload failed:', e);
-      setSyncStatus('error');
-    }
-  }
-  this.value = '';
-});
-
-window.deletePhoto = async (firestoreId, storagePath) => {
-  if (!confirm('Remove this photo?')) return;
-  try {
-    await deleteDoc(doc(db, 'photos', firestoreId));
-    if (storagePath) await deleteObject(ref(storage, storagePath));
-  } catch(e) { console.error('Delete photo error:', e); }
-};
-
-initOverview();
+// ─────────────────────────────────────────────
+// INIT
+// ─────────────────────────────────────────────
 renderLeaderboard('overall');
 renderUSALeaderboard('overall');
-
-// Modal close on overlay click
-document.getElementById('editModal').addEventListener('click', function(e) {
-  if (e.target === this) closeModal();
-});
-
-// Expose functions needed by non-module scripts (PDF importer)
-window.applyImport  = applyImport;
-window.cancelImport = cancelImport;
-window.showStatus   = showStatus;
-window.natBadge     = natBadge;
-window.STANDINGS        = STANDINGS;
-window.USA_STANDINGS    = USA_STANDINGS;
-window.ALL_ATHLETES     = ALL_ATHLETES;
-window.runData          = runData;
-window.parsedResults    = [];
-window.parsedVenue      = '';
-window.parsedRun        = '';
-window.renderPreview    = renderPreview;
-window.renderLeaderboard     = renderLeaderboard;
-window.renderUSALeaderboard  = renderUSALeaderboard;
-
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-<script>
-// FIL World Cup points table (position → points)
-const FIL_POINTS = {
-  1:100, 2:85, 3:70, 4:60, 5:55, 6:50, 7:46, 8:42, 9:39, 10:36,
-  11:34, 12:32, 13:30, 14:28, 15:26, 16:25, 17:24, 18:23, 19:22, 20:21,
-  21:20, 22:19, 23:18, 24:17, 25:16, 26:15, 27:14, 28:13, 29:12, 30:11,
-};
-
-pdfjsLib.GlobalWorkerOptions.workerSrc =
-  'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-
-function handlePdfDrop(e) {
-  e.preventDefault();
-  document.getElementById('pdfDropZone').style.borderColor = '';
-  const file = e.dataTransfer.files[0];
-  if (file && file.type === 'application/pdf') handlePdfFile(file);
-}
-
-async function handlePdfFile(file) {
-  if (!file) return;
-  window.showStatus('Reading PDF…');
-  try {
-    const buf  = await file.arrayBuffer();
-    const pdf  = await pdfjsLib.getDocument({ data: buf }).promise;
-    let fullText = '';
-    for (let p = 1; p <= pdf.numPages; p++) {
-      const page  = await pdf.getPage(p);
-      const items = (await page.getTextContent()).items;
-      fullText += items.map(i => i.str).join(' ') + '\n';
-    }
-    parseResults(fullText);
-  } catch (err) {
-    window.showStatus('❌ Could not read PDF: ' + err.message, true);
-  }
-}
-
-function parseResults(text) {
-  const knownTracks = ['Winterberg','Lillehammer','Sigulda','Oberhof','Lake Placid','Park City','Bludenz','Königssee'];
-  window.parsedVenue = knownTracks.find(t => text.includes(t)) || 'Unknown';
-  const runMatch = text.match(/Lauf\s*(\d+)/i) || text.match(/Run\s*(\d+)/i);
-  window.parsedRun = runMatch ? runMatch[1] : '?';
-
-  const raceText = text.replace(/\s+/g, ' ');
-  const results  = [];
-
-  const blockRe = /\b(\d{1,2})\s+(\d{1,3})\s+([A-ZÄÖÜ][A-Za-zÄÖÜäöüß\s]{2,35?})\s+(AUT|GER|ITA|LAT|ROU|THA|UKR|POL|USA|CAN|SVK|GBR|NOR|SUI|RUS|FRA|ESP|BEL|NED|SWE|FIN|CZE|HUN)\b.{10,300}?(\d{1}:\d{2}\.\d{3})/g;
-  let m;
-  while ((m = blockRe.exec(raceText)) !== null) {
-    const rank   = parseInt(m[1]);
-    const name   = m[3].trim().replace(/\s+/g,' ');
-    const nation = m[4];
-    const total  = m[5];
-    const timeParts = total.split(':');
-    const secs = timeParts.length === 2
-      ? parseInt(timeParts[0]) * 60 + parseFloat(timeParts[1])
-      : parseFloat(total);
-    const block = raceText.slice(Math.max(0, m.index), m.index + m[0].length + 20);
-    const timeRe = /\b4\d\.\d{3}\b/g;
-    const runTimes = [];
-    let tm;
-    while ((tm = timeRe.exec(block)) !== null) runTimes.push(parseFloat(tm[0]));
-    const pts = FIL_POINTS[rank] || 0;
-    results.push({ rank, name, nation, run1: runTimes[0]||null, run2: runTimes[1]||null, total: secs, totalStr: total, pts });
-  }
-
-  const dnfRe = /\b(\d{1,2})\s+([A-ZÄÖÜ][A-Za-zÄÖÜäöüß\s]{2,35?})\s+(AUT|GER|ITA|LAT|ROU|THA|UKR|POL|USA|CAN|SVK|GBR|NOR|SUI)\b.+?DNF/g;
-  while ((m = dnfRe.exec(raceText)) !== null) {
-    const name = m[2].trim().replace(/\s+/g,' ');
-    if (!results.find(r => r.name.toLowerCase().includes(name.split(' ')[0].toLowerCase()))) {
-      results.push({ rank: 999, name, nation: m[3], run1: null, run2: null, total: null, totalStr: 'DNF', pts: 0 });
-    }
-  }
-
-  if (results.length === 0) {
-    window.showStatus('⚠️ Could not parse any results. Make sure this is a FIL Junior Women results PDF.', true);
-    return;
-  }
-  window.parsedResults = results;
-  window.showStatus('');
-  window.renderPreview();
-}
-
-function renderPreview() {
-  document.getElementById('importStatus').style.display  = 'none';
-  document.getElementById('importPreview').style.display = 'block';
-  document.getElementById('importMeta').textContent =
-    `${window.parsedVenue} · Lauf ${window.parsedRun} · ${window.parsedResults.length} athletes`;
-  if (!document.getElementById('importDate').value)
-    document.getElementById('importDate').value = new Date().toISOString().slice(0,10);
-
-  const ellieNames = ['kleinheinz','elizabeth','ellie'];
-  document.getElementById('importTableBody').innerHTML = window.parsedResults.map(r => {
-    const isEllie = ellieNames.some(n => r.name.toLowerCase().includes(n));
-    const ptsColor = r.pts > 0 ? 'color:#22D46E;font-weight:500;' : 'color:var(--text-muted);';
-    const rankBadge = r.rank<=3?['badge-gold','badge-silver','badge-bronze'][r.rank-1]:r.rank<900?'badge-blue':'';
-    return `<tr style="${isEllie?'background:rgba(91,184,245,0.08);':''}">
-      <td>${r.rank<900?`<span class="badge ${rankBadge}">#${r.rank}</span>`:'—'}</td>
-      <td style="${isEllie?'color:#5BB8F5;font-weight:500;':''}">${r.name}${isEllie?' ⭐':''}</td>
-      <td>${window.natBadge(r.nation,false)}</td>
-      <td style="font-variant-numeric:tabular-nums;font-size:11px;color:var(--text-muted);">${r.run1?r.run1.toFixed(3)+'s':'—'}</td>
-      <td style="font-variant-numeric:tabular-nums;font-size:11px;color:var(--text-muted);">${r.run2?r.run2.toFixed(3)+'s':r.totalStr==='DNF'?'<span style="color:#f87171">DNF</span>':'—'}</td>
-      <td style="font-variant-numeric:tabular-nums;font-weight:500;">${r.totalStr!=='DNF'?r.totalStr:'<span style="color:#f87171">DNF</span>'}</td>
-      <td style="${ptsColor}">${r.pts||(r.totalStr==='DNF'?'0':'—')}</td>
-      <td style="font-size:10px;color:var(--text-muted);">${isEllie?'✅ Will update':''}</td>
-    </tr>`;
-  }).join('');
-}
-// Override window.renderPreview with local version
-window.renderPreview = renderPreview;
-
-function showStatus(msg, isError) {
-  const el = document.getElementById('importStatus');
-  const tx = document.getElementById('importStatusText');
-  if (!msg) { el.style.display='none'; return; }
-  el.style.display='block';
-  tx.style.color = isError ? '#f87171' : 'var(--text-muted)';
-  tx.textContent = msg;
-}
-window.showStatus = showStatus;
-
-function cancelImport() {
-  document.getElementById('importPreview').style.display = 'none';
-  document.getElementById('importStatus').style.display  = 'none';
-  document.getElementById('pdfFileInput').value = '';
-  window.parsedResults = [];
-}
-window.cancelImport = cancelImport;
-</script>
-
 </body>
 </html>
