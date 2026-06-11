@@ -381,37 +381,37 @@ const TRACKS = [
 let runData = [];
 
 const ALL_ATHLETES = [
-  { name:"Oberstolz Alexandra",       flag:"🇮🇹", pts:0, pos:1  },
-  { name:"Pietschmann Antonia",       flag:"🇩🇪", pts:0, pos:2  },
-  { name:"Koch Laura",                flag:"🇩🇪", pts:0, pos:3  },
-  { name:"Buse Josephine",            flag:"🇩🇪", pts:0, pos:4  },
-  { name:"Schmidt Mona",              flag:"🇦🇹", pts:0, pos:5  },
-  { name:"Jänicke Anka",              flag:"🇩🇪", pts:0, pos:6  },
-  { name:"Sirsnina Margita",          flag:"🇱🇻", pts:0, pos:7  },
-  { name:"Kofler Katharina Sofie",    flag:"🇮🇹", pts:0, pos:8  },
-  { name:"Riedl Marie",               flag:"🇦🇹", pts:0, pos:9  },
-  { name:"Hartmann Lara",             flag:"🇩🇪", pts:0, pos:10 },
-  { name:"Grundböck Annina",          flag:"🇦🇹", pts:0, pos:11 },
-  { name:"Zimmermann Lena",           flag:"🇦🇹", pts:0, pos:12 },
-  { name:"Bleiner Lina",              flag:"🇦🇹", pts:0, pos:13 },
-  { name:"Zimmermann Lara",           flag:"🇦🇹", pts:0, pos:14 },
-  { name:"Dobrean Ionela Madalina",   flag:"🇷🇴", pts:0, pos:15 },
-  { name:"Chaiyapantho Sunita",       flag:"🇹🇭", pts:0, pos:16 },
-  { name:"Panchuk Khrystyna",         flag:"🇺🇦", pts:0, pos:17 },
-  { name:"Nosal Emilia",              flag:"🇵🇱", pts:0, pos:18 },
-  { name:"Kleinheinz Elizabeth",      flag:"🇺🇸", pts:0, pos:19, me:true },
-  { name:"Gosnell Brianna",           flag:"🇺🇸", pts:0, pos:20 },
-  { name:"Zvilna Selina",             flag:"🇱🇻", pts:0, pos:21 },
-  { name:"Richardson Margaret",       flag:"🇺🇸", pts:0, pos:22 },
-  { name:"Dawidowska Oliwia",         flag:"🇵🇱", pts:0, pos:23 },
-  { name:"Kadziolka Marlena",         flag:"🇵🇱", pts:0, pos:24 },
-  { name:"Yuen Maya",                 flag:"🇨🇦", pts:0, pos:25 },
-  { name:"Micková Mia",               flag:"🇸🇰", pts:0, pos:26 },
-  { name:"Meier Leana",               flag:"🇩🇪", pts:0, pos:27 },
-  { name:"Hatton Kaia",               flag:"🇬🇧", pts:0, pos:28 },
-  { name:"Parfenkova Katrina",        flag:"🇱🇻", pts:0, pos:29 },
-  { name:"Pernarovska Erika",         flag:"🇺🇦", pts:0, pos:30 },
-  { name:"Smoronska Nikola",          flag:"🇵🇱", pts:0, pos:31 },
+  { name:"Oberstolz Alexandra",       flag:"🇮🇹", nat:"ITA", pts:0, pos:1  },
+  { name:"Pietschmann Antonia",       flag:"🇩🇪", nat:"GER", pts:0, pos:2  },
+  { name:"Koch Laura",                flag:"🇩🇪", nat:"GER", pts:0, pos:3  },
+  { name:"Buse Josephine",            flag:"🇩🇪", nat:"GER", pts:0, pos:4  },
+  { name:"Schmidt Mona",              flag:"🇦🇹", nat:"AUT", pts:0, pos:5  },
+  { name:"Jänicke Anka",              flag:"🇩🇪", nat:"GER", pts:0, pos:6  },
+  { name:"Sirsnina Margita",          flag:"🇱🇻", nat:"LAT", pts:0, pos:7  },
+  { name:"Kofler Katharina Sofie",    flag:"🇮🇹", nat:"ITA", pts:0, pos:8  },
+  { name:"Riedl Marie",               flag:"🇦🇹", nat:"AUT", pts:0, pos:9  },
+  { name:"Hartmann Lara",             flag:"🇩🇪", nat:"GER", pts:0, pos:10 },
+  { name:"Grundböck Annina",          flag:"🇦🇹", nat:"AUT", pts:0, pos:11 },
+  { name:"Zimmermann Lena",           flag:"🇦🇹", nat:"AUT", pts:0, pos:12 },
+  { name:"Bleiner Lina",              flag:"🇦🇹", nat:"AUT", pts:0, pos:13 },
+  { name:"Zimmermann Lara",           flag:"🇦🇹", nat:"AUT", pts:0, pos:14 },
+  { name:"Dobrean Ionela Madalina",   flag:"🇷🇴", nat:"ROU", pts:0, pos:15 },
+  { name:"Chaiyapantho Sunita",       flag:"🇹🇭", nat:"THA", pts:0, pos:16 },
+  { name:"Panchuk Khrystyna",         flag:"🇺🇦", nat:"UKR", pts:0, pos:17 },
+  { name:"Nosal Emilia",              flag:"🇵🇱", nat:"POL", pts:0, pos:18 },
+  { name:"Kleinheinz Elizabeth",      flag:"🇺🇸", nat:"USA", pts:0, pos:19, me:true },
+  { name:"Gosnell Brianna",           flag:"🇺🇸", nat:"USA", pts:0, pos:20 },
+  { name:"Zvilna Selina",             flag:"🇱🇻", nat:"LAT", pts:0, pos:21 },
+  { name:"Richardson Margaret",       flag:"🇺🇸", nat:"USA", pts:0, pos:22 },
+  { name:"Dawidowska Oliwia",         flag:"🇵🇱", nat:"POL", pts:0, pos:23 },
+  { name:"Kadziolka Marlena",         flag:"🇵🇱", nat:"POL", pts:0, pos:24 },
+  { name:"Yuen Maya",                 flag:"🇨🇦", nat:"CAN", pts:0, pos:25 },
+  { name:"Micková Mia",               flag:"🇸🇰", nat:"SVK", pts:0, pos:26 },
+  { name:"Meier Leana",               flag:"🇩🇪", nat:"GER", pts:0, pos:27 },
+  { name:"Hatton Kaia",               flag:"🇬🇧", nat:"GBR", pts:0, pos:28 },
+  { name:"Parfenkova Katrina",        flag:"🇱🇻", nat:"LAT", pts:0, pos:29 },
+  { name:"Pernarovska Erika",         flag:"🇺🇦", nat:"UKR", pts:0, pos:30 },
+  { name:"Smoronska Nikola",          flag:"🇵🇱", nat:"POL", pts:0, pos:31 },
 ];
 
 const STANDINGS = {
@@ -425,11 +425,11 @@ const STANDINGS = {
 };
 
 const USA_ATHLETES = [
-  { name:"Kleinheinz Elizabeth", flag:"🇺🇸", pts:0, pos:1, diff:"", me:true },
-  { name:"Talia Tonn",           flag:"🇺🇸", pts:0, pos:2, diff:"" },
-  { name:"Gosnell Brianna",      flag:"🇺🇸", pts:0, pos:3, diff:"" },
-  { name:"Kendall Achen",        flag:"🇺🇸", pts:0, pos:4, diff:"" },
-  { name:"Breckan Luedke",       flag:"🇺🇸", pts:0, pos:5, diff:"" },
+  { name:"Kleinheinz Elizabeth", flag:"🇺🇸", nat:"USA", pts:0, pos:1, diff:"", me:true },
+  { name:"Gosnell Brianna",      flag:"🇺🇸", nat:"USA", pts:0, pos:2, diff:"" },
+  { name:"Richardson Margaret",  flag:"🇺🇸", nat:"USA", pts:0, pos:3, diff:"" },
+  { name:"Kendall Achen",        flag:"🇺🇸", nat:"USA", pts:0, pos:4, diff:"" },
+  { name:"Breckan Luedke",       flag:"🇺🇸", nat:"USA", pts:0, pos:5, diff:"" },
 ];
 
 const USA_STANDINGS = {
@@ -572,10 +572,11 @@ function buildLbRows(rows) {
   return rows.map(r => {
     const pc    = r.pos===1?'p1':r.pos===2?'p2':r.pos===3?'p3':'';
     const medal = r.pos===1?'🥇':r.pos===2?'🥈':r.pos===3?'🥉':r.pos;
+    const natCode = r.nat ? `<span style="font-size:10px;color:var(--text-muted);margin-left:1px;">${r.nat}</span>` : '';
     return `<div class="lb-row ${r.me?'me':''}">
       <div class="lb-pos ${pc}">${medal}</div>
-      <div class="lb-name"><span style="font-size:15px;margin-right:4px">${r.flag}</span>${r.name}${r.me?' <span style="font-size:10px;color:#5BB8F5">(Ellie)</span>':''}</div>
-      <div class="lb-pts">${r.pts} pts<span class="lb-diff">${r.diff}</span></div>
+      <div class="lb-name"><span style="font-size:15px;margin-right:3px">${r.flag}</span>${natCode} ${r.name}${r.me?' <span style="font-size:10px;color:#5BB8F5">(Ellie)</span>':''}</div>
+      <div class="lb-pts">${r.pts} pts<span class="lb-diff">${r.diff||''}</span></div>
     </div>`;
   }).join('');
 }
