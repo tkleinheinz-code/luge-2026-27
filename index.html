@@ -159,6 +159,10 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
     <div style="font-size:11px;color:var(--text-muted);text-align:right;line-height:1.5;">4× National Champion<br>2024 Youth Olympian</div>
     <div style="width:1px;height:32px;background:var(--card-border);"></div>
     <div style="font-size:11px;color:var(--text-muted);text-align:right;line-height:1.5;">2025–26 Season<br><span style="color:var(--ice)">Junior World Cup</span></div>
+    <div style="display:flex;align-items:center;gap:5px;margin-left:10px;" title="Firebase sync status">
+      <div id="syncDot" style="width:8px;height:8px;border-radius:50%;background:#F0B429;transition:background 0.4s;flex-shrink:0;"></div>
+      <span id="syncLabel" style="font-size:10px;color:var(--text-muted);">connecting…</span>
+    </div>
   </div>
 </div>
 
@@ -170,6 +174,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   <button class="nav-btn" onclick="showView('map',this)"><i class="ti ti-map-pin"></i> Tracks</button>
   <button class="nav-btn" onclick="showView('photos',this)"><i class="ti ti-camera"></i> Photos</button>
   <button class="nav-btn" onclick="showView('log',this)"><i class="ti ti-circle-plus"></i> Add Run</button>
+  <button class="nav-btn" onclick="showView('import',this)"><i class="ti ti-file-upload"></i> Import PDF</button>
 </div>
 
 <!-- OVERVIEW -->
@@ -380,6 +385,59 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   </div>
 </div>
 
+<!-- IMPORT PDF -->
+<div id="view-import" class="view">
+  <div class="card" style="margin-bottom:14px;">
+    <div class="card-title">Import FIL results PDF</div>
+    <p style="font-size:12px;color:var(--text-muted);margin-bottom:14px;">Drop a FIL Junior Women's results PDF (e.g. Winterberg Lauf 2) and the app will parse all finish times, calculate World Cup points, update the standings, and optionally add Ellie's run to the log.</p>
+    <div id="pdfDropZone" style="border:1.5px dashed var(--card-border);border-radius:var(--radius-lg);padding:32px;text-align:center;cursor:pointer;transition:border-color 0.15s;background:rgba(91,184,245,0.03);"
+      onclick="document.getElementById('pdfFileInput').click()"
+      ondragover="event.preventDefault();this.style.borderColor='#5BB8F5'"
+      ondragleave="this.style.borderColor=''"
+      ondrop="handlePdfDrop(event)">
+      <div style="font-size:32px;margin-bottom:8px;">📄</div>
+      <div style="font-size:13px;color:var(--text-main);margin-bottom:4px;">Click or drag a PDF here</div>
+      <div style="font-size:11px;color:var(--text-muted);">FIL Junior World Cup results — any venue</div>
+    </div>
+    <input type="file" id="pdfFileInput" accept=".pdf" style="display:none" onchange="handlePdfFile(this.files[0])">
+  </div>
+
+  <!-- Parse status -->
+  <div id="importStatus" style="display:none;" class="card" style="margin-bottom:14px;">
+    <div id="importStatusText" style="font-size:13px;color:var(--text-muted);"></div>
+  </div>
+
+  <!-- Preview table -->
+  <div id="importPreview" style="display:none;">
+    <div class="card" style="padding:0;overflow:hidden;margin-bottom:14px;">
+      <div style="padding:12px 16px;border-bottom:0.5px solid var(--card-border);display:flex;align-items:center;justify-content:space-between;">
+        <div>
+          <div class="card-title" style="margin-bottom:2px;">Parsed results</div>
+          <div id="importMeta" style="font-size:11px;color:var(--text-muted);"></div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <label style="font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:5px;">
+            <input type="checkbox" id="addEllieRun" checked style="accent-color:#5BB8F5;">
+            Add Ellie's run to Run Log
+          </label>
+          <input type="date" id="importDate" class="form-input" style="width:140px;">
+        </div>
+      </div>
+      <table class="run-table">
+        <thead><tr>
+          <th>Rank</th><th>Name</th><th>Nation</th><th>Run 1</th><th>Run 2</th><th>Total</th><th>WC Pts</th><th>Status</th>
+        </tr></thead>
+        <tbody id="importTableBody"></tbody>
+      </table>
+    </div>
+    <div style="display:flex;gap:10px;">
+      <button class="btn-primary" onclick="applyImport()"><i class="ti ti-check"></i> Apply to standings &amp; log</button>
+      <button class="btn-secondary" onclick="cancelImport()">Cancel</button>
+    </div>
+    <div id="importMsg" style="font-size:12px;color:var(--green);margin-top:10px;"></div>
+  </div>
+</div>
+
 <!-- EDIT MODAL -->
 <div class="modal-overlay" id="editModal">
   <div class="modal">
@@ -441,7 +499,40 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
-<script>
+<script type="module">
+/* ── Firebase ── */
+import { initializeApp }                          from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import { getFirestore, collection, doc,
+         setDoc, deleteDoc, onSnapshot, getDoc }  from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject }
+                                                   from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js';
+
+const firebaseConfig = {
+  apiKey:            "AIzaSyDqQ4D7t8JJ1vik-waNaNjKIA302moxeGw",
+  authDomain:        "ellie-luge-tracker-26-27.firebaseapp.com",
+  projectId:         "ellie-luge-tracker-26-27",
+  storageBucket:     "ellie-luge-tracker-26-27.firebasestorage.app",
+  messagingSenderId: "283966248849",
+  appId:             "1:283966248849:web:c38e04d9929b51f3b86c30"
+};
+
+const fbApp   = initializeApp(firebaseConfig);
+const db      = getFirestore(fbApp);
+const storage = getStorage(fbApp);
+
+const RUNS_COL    = collection(db, 'runs');
+const STAND_DOC   = doc(db, 'meta', 'standings');
+const PHOTOS_COL  = collection(db, 'photos');
+
+// ── sync status indicator ──
+function setSyncStatus(state) {
+  // state: 'syncing' | 'ok' | 'error'
+  const el = document.getElementById('syncDot');
+  if (!el) return;
+  el.title = state === 'ok' ? 'Synced' : state === 'syncing' ? 'Syncing…' : 'Sync error';
+  el.style.background = state === 'ok' ? '#22D46E' : state === 'syncing' ? '#F0B429' : '#f87171';
+}
+
 const TRACKS = [
   { name:"Lillehammer", country:"Norway",   lat:61.11,  lon:10.46,   myBest:"—", rank:"—", races:0 },
   { name:"Sigulda",     country:"Latvia",   lat:57.15,  lon:24.86,   myBest:"—", rank:"—", races:0 },
@@ -477,16 +568,15 @@ const ALL_ATHLETES = [
   { name:"Kleinheinz Elizabeth",      nat:"USA", pts:0, pos:19, me:true },
   { name:"Gosnell Brianna",           nat:"USA", pts:0, pos:20 },
   { name:"Zvilna Selina",             nat:"LAT", pts:0, pos:21 },
-  { name:"Richardson Margaret",       nat:"USA", pts:0, pos:22 },
-  { name:"Dawidowska Oliwia",         nat:"POL", pts:0, pos:23 },
-  { name:"Kadziolka Marlena",         nat:"POL", pts:0, pos:24 },
-  { name:"Yuen Maya",                 nat:"CAN", pts:0, pos:25 },
-  { name:"Micková Mia",               nat:"SVK", pts:0, pos:26 },
-  { name:"Meier Leana",               nat:"GER", pts:0, pos:27 },
-  { name:"Hatton Kaia",               nat:"GBR", pts:0, pos:28 },
-  { name:"Parfenkova Katrina",        nat:"LAT", pts:0, pos:29 },
-  { name:"Pernarovska Erika",         nat:"UKR", pts:0, pos:30 },
-  { name:"Smoronska Nikola",          nat:"POL", pts:0, pos:31 },
+  { name:"Dawidowska Oliwia",         nat:"POL", pts:0, pos:22 },
+  { name:"Kadziolka Marlena",         nat:"POL", pts:0, pos:23 },
+  { name:"Yuen Maya",                 nat:"CAN", pts:0, pos:24 },
+  { name:"Micková Mia",               nat:"SVK", pts:0, pos:25 },
+  { name:"Meier Leana",               nat:"GER", pts:0, pos:26 },
+  { name:"Hatton Kaia",               nat:"GBR", pts:0, pos:27 },
+  { name:"Parfenkova Katrina",        nat:"LAT", pts:0, pos:28 },
+  { name:"Pernarovska Erika",         nat:"UKR", pts:0, pos:29 },
+  { name:"Smoronska Nikola",          nat:"POL", pts:0, pos:30 },
 ];
 
 const STANDINGS = {
@@ -502,9 +592,8 @@ const STANDINGS = {
 const USA_ATHLETES = [
   { name:"Kleinheinz Elizabeth", nat:"USA", pts:0, pos:1, diff:"", me:true },
   { name:"Gosnell Brianna",      nat:"USA", pts:0, pos:2, diff:"" },
-  { name:"Richardson Margaret",  nat:"USA", pts:0, pos:3, diff:"" },
-  { name:"Achen",                nat:"USA", pts:0, pos:4, diff:"" },
-  { name:"Luedke",               nat:"USA", pts:0, pos:5, diff:"" },
+  { name:"Kendall Achen",                nat:"USA", pts:0, pos:3, diff:"" },
+  { name:"Breckan Luedke",               nat:"USA", pts:0, pos:4, diff:"" },
 ];
 
 const USA_STANDINGS = {
@@ -527,6 +616,7 @@ function showView(id, btn) {
   if (id === 'runs')       renderRunTable('all');
   if (id === 'standings')  { renderLeaderboard('overall'); renderUSALeaderboard('overall'); setTimeout(initPointsChart, 50); }
   if (id === 'map')        setTimeout(initMap, 50);
+  if (id === 'import')     { document.getElementById('importPreview').style.display='none'; document.getElementById('importStatus').style.display='none'; }
 }
 
 /* ── Overview charts ── */
@@ -653,6 +743,15 @@ function filterStandings(el, key) {
   renderLeaderboard(key);
   renderUSALeaderboard(key);
 }
+const NAT_TO_ISO = {
+  USA:'us', GER:'de', AUT:'at', ITA:'it', LAT:'lv', ROU:'ro',
+  THA:'th', UKR:'ua', POL:'pl', CAN:'ca', SVK:'sk', GBR:'gb',
+};
+function flagImg(nat) {
+  const iso = NAT_TO_ISO[nat];
+  if (!iso) return '';
+  return `<img src="https://flagcdn.com/20x15/${iso}.png" width="20" height="15" alt="${nat}" style="vertical-align:middle;margin-left:7px;border-radius:2px;box-shadow:0 0 0 1px rgba(255,255,255,0.12);">`;
+}
 function natBadge(nat, me) {
   const colors = {
     USA:'#B22234', GER:'#000000', AUT:'#ED2939', ITA:'#009246',
@@ -670,7 +769,7 @@ function buildLbRows(rows) {
     const medal = r.pos===1?'🥇':r.pos===2?'🥈':r.pos===3?'🥉':r.pos;
     return `<div class="lb-row ${r.me?'me':''}">
       <div class="lb-pos ${pc}">${medal}</div>
-      <div class="lb-name">${natBadge(r.nat, r.me)}${r.name}${r.me?' <span style="font-size:10px;color:#5BB8F5">(Ellie)</span>':''}</div>
+      <div class="lb-name">${natBadge(r.nat, r.me)}${r.name}${flagImg(r.nat)}${r.me?' <span style="font-size:10px;color:#5BB8F5;margin-left:6px;">(Ellie)</span>':''}</div>
       <div class="lb-pts">${r.pts} pts<span class="lb-diff">${r.diff||''}</span></div>
     </div>`;
   }).join('');
@@ -806,7 +905,7 @@ document.getElementById('photoInput').addEventListener('change', function () {
 });
 
 /* ── Add run ── */
-function addRun() {
+async function addRun() {
   const track = document.getElementById('logTrack').value;
   const date  = document.getElementById('logDate').value;
   const run   = parseInt(document.getElementById('logRun').value) || 1;
@@ -817,18 +916,25 @@ function addRun() {
   const rank  = parseInt(document.getElementById('logRank').value) || 99;
   const notes = document.getElementById('logNotes').value;
   if (!date || !time) { document.getElementById('logMsg').textContent = 'Please fill in date and time.'; return; }
-  runData.push({ date, track, run, time, s1, s2, s3, rank, notes });
-  ovDone = false; ptsDone = false;
 
-  // refresh stat cards
-  const pb       = Math.min(...runData.map(r => r.time));
-  const statVals = document.querySelectorAll('.stat-value');
-  statVals[0].textContent = pb.toFixed(3) + 's';
-  statVals[0].style.color = '#22D46E';
-  statVals[2].textContent = runData.length;
+  const runObj = { date, track, run, time, s1, s2, s3, rank, notes };
+  const id = `${date}_${track.replace(/\s/g,'_')}_run${run}_${Date.now()}`;
 
-  document.getElementById('logMsg').textContent = 'Run saved! ✓';
-  setTimeout(() => { document.getElementById('logMsg').textContent = ''; }, 2500);
+  try {
+    setSyncStatus('syncing');
+    document.getElementById('logMsg').textContent = 'Saving…';
+    await setDoc(doc(db, 'runs', id), runObj);
+    document.getElementById('logMsg').textContent = 'Run saved & synced! ✓';
+    setSyncStatus('ok');
+  } catch(e) {
+    // fallback: save locally
+    runData.push({...runObj, _id: id});
+    ovDone = false;
+    refreshStatCards();
+    document.getElementById('logMsg').textContent = 'Saved locally (offline). Will sync when reconnected.';
+    setSyncStatus('error');
+  }
+  setTimeout(() => { document.getElementById('logMsg').textContent = ''; }, 3000);
 }
 
 /* ── Edit / Delete modal ── */
@@ -855,12 +961,12 @@ function closeModal() {
   editingIdx = null;
 }
 
-function saveEdit() {
+async function saveEdit() {
   if (editingIdx === null) return;
   const time = parseFloat(document.getElementById('editTime').value);
   const date = document.getElementById('editDate').value;
   if (!date || !time) { alert('Please fill in date and time.'); return; }
-  runData[editingIdx] = {
+  const updated = {
     track: document.getElementById('editTrack').value,
     date,
     run:   parseInt(document.getElementById('editRun').value) || 1,
@@ -871,18 +977,36 @@ function saveEdit() {
     rank:  parseInt(document.getElementById('editRank').value) || 99,
     notes: document.getElementById('editNotes').value,
   };
+  const firestoreId = runData[editingIdx]._id;
   closeModal();
-  ovDone = false;
-  renderRunTable(currentFilter);
-  refreshStatCards();
+  try {
+    setSyncStatus('syncing');
+    await setDoc(doc(db, 'runs', firestoreId), updated);
+    setSyncStatus('ok');
+  } catch(e) {
+    // update locally as fallback
+    runData[editingIdx] = {...updated, _id: firestoreId};
+    ovDone = false;
+    renderRunTable(currentFilter);
+    refreshStatCards();
+    setSyncStatus('error');
+  }
 }
 
-function deleteRun(idx) {
+async function deleteRun(idx) {
   if (!confirm('Delete this run? This cannot be undone.')) return;
-  runData.splice(idx, 1);
-  ovDone = false;
-  renderRunTable(currentFilter);
-  refreshStatCards();
+  const firestoreId = runData[idx]._id;
+  try {
+    setSyncStatus('syncing');
+    await deleteDoc(doc(db, 'runs', firestoreId));
+    setSyncStatus('ok');
+  } catch(e) {
+    runData.splice(idx, 1);
+    ovDone = false;
+    renderRunTable(currentFilter);
+    refreshStatCards();
+    setSyncStatus('error');
+  }
 }
 
 function confirmDelete() {
@@ -903,15 +1027,234 @@ function refreshStatCards() {
   }
 }
 
-// close modal on overlay click
-document.getElementById('editModal').addEventListener('click', function(e) {
-  if (e.target === this) closeModal();
+/* ── Firebase real-time listeners & init ── */
+
+// Runs: listen for any change across all devices
+onSnapshot(RUNS_COL, (snap) => {
+  runData = snap.docs.map(d => ({ _id: d.id, ...d.data() }));
+  ovDone  = false;
+  renderRunTable(currentFilter || 'all');
+  refreshStatCards();
+  const el = document.getElementById('syncLabel');
+  if (el) { el.textContent = 'synced'; setSyncStatus('ok'); }
+}, (err) => {
+  console.error('Runs sync error:', err);
+  setSyncStatus('error');
+  const el = document.getElementById('syncLabel');
+  if (el) el.textContent = 'offline';
 });
 
+// Standings: listen for any change across all devices
+onSnapshot(STAND_DOC, (snap) => {
+  if (snap.exists()) {
+    const data = snap.data();
+    if (data.STANDINGS)     Object.assign(STANDINGS, data.STANDINGS);
+    if (data.USA_STANDINGS) Object.assign(USA_STANDINGS, data.USA_STANDINGS);
+    renderLeaderboard('overall');
+    renderUSALeaderboard('overall');
+  }
+});
+
+// Photos: listen and render from Firebase Storage URLs
+onSnapshot(PHOTOS_COL, (snap) => {
+  const grid = document.getElementById('photoGrid');
+  // Remove previously synced photos (keep add-new slots)
+  grid.querySelectorAll('.photo-slot:not(.add-new)').forEach(el => el.remove());
+  snap.docs.forEach(d => {
+    const { url, caption } = d.data();
+    const slot = document.createElement('div');
+    slot.className = 'photo-slot';
+    slot.dataset.firestoreId = d.id;
+    slot.innerHTML = `<img src="${url}" alt="${caption||''}">
+      <div class="photo-caption">${caption||''}</div>
+      <button onclick="deletePhoto('${d.id}','${d.data().storagePath||''}')" style="position:absolute;top:4px;right:4px;background:rgba(220,53,69,0.8);border:none;color:#fff;border-radius:4px;font-size:10px;padding:2px 5px;cursor:pointer;">✕</button>`;
+    const adds = grid.querySelectorAll('.add-new');
+    if (adds.length) grid.insertBefore(slot, adds[0]); else grid.appendChild(slot);
+  });
+});
+
+// Photo upload → Firebase Storage + Firestore metadata
+document.getElementById('photoInput').addEventListener('change', async function() {
+  for (const file of Array.from(this.files)) {
+    try {
+      setSyncStatus('syncing');
+      const path      = `photos/${Date.now()}_${file.name}`;
+      const storageRef = ref(storage, path);
+      await uploadBytes(storageRef, file);
+      const url = await getDownloadURL(storageRef);
+      await setDoc(doc(PHOTOS_COL), { url, caption: file.name.slice(0,30), storagePath: path, uploadedAt: Date.now() });
+      setSyncStatus('ok');
+    } catch(e) {
+      console.error('Photo upload failed:', e);
+      setSyncStatus('error');
+    }
+  }
+  this.value = '';
+});
+
+window.deletePhoto = async (firestoreId, storagePath) => {
+  if (!confirm('Remove this photo?')) return;
+  try {
+    await deleteDoc(doc(db, 'photos', firestoreId));
+    if (storagePath) await deleteObject(ref(storage, storagePath));
+  } catch(e) { console.error('Delete photo error:', e); }
+};
 
 initOverview();
 renderLeaderboard('overall');
 renderUSALeaderboard('overall');
+
+// Modal close on overlay click
+document.getElementById('editModal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+// Expose functions needed by non-module scripts (PDF importer)
+window.applyImport  = applyImport;
+window.cancelImport = cancelImport;
+window.showStatus   = showStatus;
+window.natBadge     = natBadge;
+window.STANDINGS        = STANDINGS;
+window.USA_STANDINGS    = USA_STANDINGS;
+window.ALL_ATHLETES     = ALL_ATHLETES;
+window.runData          = runData;
+window.parsedResults    = [];
+window.parsedVenue      = '';
+window.parsedRun        = '';
+window.renderPreview    = renderPreview;
+window.renderLeaderboard     = renderLeaderboard;
+window.renderUSALeaderboard  = renderUSALeaderboard;
+
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+// FIL World Cup points table (position → points)
+const FIL_POINTS = {
+  1:100, 2:85, 3:70, 4:60, 5:55, 6:50, 7:46, 8:42, 9:39, 10:36,
+  11:34, 12:32, 13:30, 14:28, 15:26, 16:25, 17:24, 18:23, 19:22, 20:21,
+  21:20, 22:19, 23:18, 24:17, 25:16, 26:15, 27:14, 28:13, 29:12, 30:11,
+};
+
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+  'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+function handlePdfDrop(e) {
+  e.preventDefault();
+  document.getElementById('pdfDropZone').style.borderColor = '';
+  const file = e.dataTransfer.files[0];
+  if (file && file.type === 'application/pdf') handlePdfFile(file);
+}
+
+async function handlePdfFile(file) {
+  if (!file) return;
+  window.showStatus('Reading PDF…');
+  try {
+    const buf  = await file.arrayBuffer();
+    const pdf  = await pdfjsLib.getDocument({ data: buf }).promise;
+    let fullText = '';
+    for (let p = 1; p <= pdf.numPages; p++) {
+      const page  = await pdf.getPage(p);
+      const items = (await page.getTextContent()).items;
+      fullText += items.map(i => i.str).join(' ') + '\n';
+    }
+    parseResults(fullText);
+  } catch (err) {
+    window.showStatus('❌ Could not read PDF: ' + err.message, true);
+  }
+}
+
+function parseResults(text) {
+  const knownTracks = ['Winterberg','Lillehammer','Sigulda','Oberhof','Lake Placid','Park City','Bludenz','Königssee'];
+  window.parsedVenue = knownTracks.find(t => text.includes(t)) || 'Unknown';
+  const runMatch = text.match(/Lauf\s*(\d+)/i) || text.match(/Run\s*(\d+)/i);
+  window.parsedRun = runMatch ? runMatch[1] : '?';
+
+  const raceText = text.replace(/\s+/g, ' ');
+  const results  = [];
+
+  const blockRe = /\b(\d{1,2})\s+(\d{1,3})\s+([A-ZÄÖÜ][A-Za-zÄÖÜäöüß\s]{2,35?})\s+(AUT|GER|ITA|LAT|ROU|THA|UKR|POL|USA|CAN|SVK|GBR|NOR|SUI|RUS|FRA|ESP|BEL|NED|SWE|FIN|CZE|HUN)\b.{10,300}?(\d{1}:\d{2}\.\d{3})/g;
+  let m;
+  while ((m = blockRe.exec(raceText)) !== null) {
+    const rank   = parseInt(m[1]);
+    const name   = m[3].trim().replace(/\s+/g,' ');
+    const nation = m[4];
+    const total  = m[5];
+    const timeParts = total.split(':');
+    const secs = timeParts.length === 2
+      ? parseInt(timeParts[0]) * 60 + parseFloat(timeParts[1])
+      : parseFloat(total);
+    const block = raceText.slice(Math.max(0, m.index), m.index + m[0].length + 20);
+    const timeRe = /\b4\d\.\d{3}\b/g;
+    const runTimes = [];
+    let tm;
+    while ((tm = timeRe.exec(block)) !== null) runTimes.push(parseFloat(tm[0]));
+    const pts = FIL_POINTS[rank] || 0;
+    results.push({ rank, name, nation, run1: runTimes[0]||null, run2: runTimes[1]||null, total: secs, totalStr: total, pts });
+  }
+
+  const dnfRe = /\b(\d{1,2})\s+([A-ZÄÖÜ][A-Za-zÄÖÜäöüß\s]{2,35?})\s+(AUT|GER|ITA|LAT|ROU|THA|UKR|POL|USA|CAN|SVK|GBR|NOR|SUI)\b.+?DNF/g;
+  while ((m = dnfRe.exec(raceText)) !== null) {
+    const name = m[2].trim().replace(/\s+/g,' ');
+    if (!results.find(r => r.name.toLowerCase().includes(name.split(' ')[0].toLowerCase()))) {
+      results.push({ rank: 999, name, nation: m[3], run1: null, run2: null, total: null, totalStr: 'DNF', pts: 0 });
+    }
+  }
+
+  if (results.length === 0) {
+    window.showStatus('⚠️ Could not parse any results. Make sure this is a FIL Junior Women results PDF.', true);
+    return;
+  }
+  window.parsedResults = results;
+  window.showStatus('');
+  window.renderPreview();
+}
+
+function renderPreview() {
+  document.getElementById('importStatus').style.display  = 'none';
+  document.getElementById('importPreview').style.display = 'block';
+  document.getElementById('importMeta').textContent =
+    `${window.parsedVenue} · Lauf ${window.parsedRun} · ${window.parsedResults.length} athletes`;
+  if (!document.getElementById('importDate').value)
+    document.getElementById('importDate').value = new Date().toISOString().slice(0,10);
+
+  const ellieNames = ['kleinheinz','elizabeth','ellie'];
+  document.getElementById('importTableBody').innerHTML = window.parsedResults.map(r => {
+    const isEllie = ellieNames.some(n => r.name.toLowerCase().includes(n));
+    const ptsColor = r.pts > 0 ? 'color:#22D46E;font-weight:500;' : 'color:var(--text-muted);';
+    const rankBadge = r.rank<=3?['badge-gold','badge-silver','badge-bronze'][r.rank-1]:r.rank<900?'badge-blue':'';
+    return `<tr style="${isEllie?'background:rgba(91,184,245,0.08);':''}">
+      <td>${r.rank<900?`<span class="badge ${rankBadge}">#${r.rank}</span>`:'—'}</td>
+      <td style="${isEllie?'color:#5BB8F5;font-weight:500;':''}">${r.name}${isEllie?' ⭐':''}</td>
+      <td>${window.natBadge(r.nation,false)}</td>
+      <td style="font-variant-numeric:tabular-nums;font-size:11px;color:var(--text-muted);">${r.run1?r.run1.toFixed(3)+'s':'—'}</td>
+      <td style="font-variant-numeric:tabular-nums;font-size:11px;color:var(--text-muted);">${r.run2?r.run2.toFixed(3)+'s':r.totalStr==='DNF'?'<span style="color:#f87171">DNF</span>':'—'}</td>
+      <td style="font-variant-numeric:tabular-nums;font-weight:500;">${r.totalStr!=='DNF'?r.totalStr:'<span style="color:#f87171">DNF</span>'}</td>
+      <td style="${ptsColor}">${r.pts||(r.totalStr==='DNF'?'0':'—')}</td>
+      <td style="font-size:10px;color:var(--text-muted);">${isEllie?'✅ Will update':''}</td>
+    </tr>`;
+  }).join('');
+}
+// Override window.renderPreview with local version
+window.renderPreview = renderPreview;
+
+function showStatus(msg, isError) {
+  const el = document.getElementById('importStatus');
+  const tx = document.getElementById('importStatusText');
+  if (!msg) { el.style.display='none'; return; }
+  el.style.display='block';
+  tx.style.color = isError ? '#f87171' : 'var(--text-muted)';
+  tx.textContent = msg;
+}
+window.showStatus = showStatus;
+
+function cancelImport() {
+  document.getElementById('importPreview').style.display = 'none';
+  document.getElementById('importStatus').style.display  = 'none';
+  document.getElementById('pdfFileInput').value = '';
+  window.parsedResults = [];
+}
+window.cancelImport = cancelImport;
+</script>
+
 </body>
 </html>
