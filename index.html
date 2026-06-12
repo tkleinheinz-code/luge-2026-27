@@ -433,6 +433,14 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
         <div class="form-group" style="margin-bottom:9px;"><label class="form-label">Date</label>
           <input type="date" class="form-input" id="evDate">
         </div>
+        <div class="form-row" style="margin-bottom:9px;">
+          <div class="form-group"><label class="form-label">Start time (optional)</label>
+            <input type="time" class="form-input" id="evStartTime">
+          </div>
+          <div class="form-group"><label class="form-label">End time (optional)</label>
+            <input type="time" class="form-input" id="evEndTime">
+          </div>
+        </div>
         <div class="form-group" style="margin-bottom:9px;"><label class="form-label">End date (optional)</label>
           <input type="date" class="form-input" id="evEndDate">
         </div>
@@ -1371,12 +1379,21 @@ function renderUpcoming() {
     .slice(0,8);
   const el = document.getElementById('upcomingList');
   if (!upcoming.length) { el.innerHTML='<p style="font-size:12px;color:var(--text-muted);">No upcoming events.</p>'; return; }
-  el.innerHTML = upcoming.map(e => `
+  el.innerHTML = upcoming.map(e => {
+    function fmtTime(t) {
+      if (!t) return null;
+      const [h,m] = t.split(':').map(Number);
+      const ampm = h >= 12 ? 'PM' : 'AM';
+      return `${h%12||12}:${String(m).padStart(2,'0')} ${ampm}`;
+    }
+    const timeLabel = e.startTime ? ` · ${fmtTime(e.startTime)}` : '';
+    return `
     <div class="upcoming-event" onclick="openEventModal('${e._id}')" style="cursor:pointer;">
-      <div class="upcoming-date">${e.date}</div>
+      <div class="upcoming-date">${e.date}${timeLabel}</div>
       <div class="upcoming-title">${e.title}</div>
       <div class="upcoming-type" style="background:${EV_BADGE[e.type]||EV_BADGE.other};color:${EV_COLOR[e.type]||EV_COLOR.other};">${EV_LABELS[e.type]||'Other'}</div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 
 function selectEvType(type) {
@@ -1389,18 +1406,22 @@ function selectEvType(type) {
 }
 
 async function addCalEvent() {
-  const title   = document.getElementById('evTitle').value.trim();
-  const date    = document.getElementById('evDate').value;
-  const endDate = document.getElementById('evEndDate').value;
-  const notes   = document.getElementById('evNotes').value;
+  const title     = document.getElementById('evTitle').value.trim();
+  const date      = document.getElementById('evDate').value;
+  const startTime = document.getElementById('evStartTime').value;
+  const endTime   = document.getElementById('evEndTime').value;
+  const endDate   = document.getElementById('evEndDate').value;
+  const notes     = document.getElementById('evNotes').value;
   if (!title||!date) { document.getElementById('evMsg').textContent='Please add a title and date.'; return; }
-  const evObj = { title, date, endDate:endDate||'', type:selectedEvType, notes, createdAt:Date.now() };
+  const evObj = { title, date, startTime:startTime||'', endTime:endTime||'', endDate:endDate||'', type:selectedEvType, notes, createdAt:Date.now() };
   try {
     setSyncStatus('syncing');
     await db.collection('calEvents').add(evObj);
-    document.getElementById('evTitle').value   = '';
-    document.getElementById('evEndDate').value = '';
-    document.getElementById('evNotes').value   = '';
+    document.getElementById('evTitle').value     = '';
+    document.getElementById('evStartTime').value = '';
+    document.getElementById('evEndTime').value   = '';
+    document.getElementById('evEndDate').value   = '';
+    document.getElementById('evNotes').value     = '';
     document.getElementById('evMsg').textContent = 'Event added ✓';
     setSyncStatus('ok');
     setTimeout(()=>{ document.getElementById('evMsg').textContent=''; },2000);
@@ -1417,10 +1438,33 @@ function openEventModal(id) {
   if (!e) return;
   viewingEventId = id;
   document.getElementById('eventModalTitle').textContent = e.title;
+
+  // Format time nicely e.g. "14:30" → "2:30 PM"
+  function fmtTime(t) {
+    if (!t) return null;
+    const [h,m] = t.split(':').map(Number);
+    const ampm = h >= 12 ? 'PM' : 'AM';
+    const hr   = h % 12 || 12;
+    return `${hr}:${String(m).padStart(2,'0')} ${ampm}`;
+  }
+
+  const timeStr = e.startTime
+    ? (e.endTime
+        ? `${fmtTime(e.startTime)} – ${fmtTime(e.endTime)}`
+        : fmtTime(e.startTime))
+    : null;
+
+  const dateStr = e.endDate && e.endDate !== e.date
+    ? `${e.date} → ${e.endDate}`
+    : e.date;
+
   document.getElementById('eventModalBody').innerHTML = `
-    <div style="margin-bottom:6px;"><span style="padding:2px 9px;border-radius:8px;font-size:11px;font-weight:500;background:${EV_BADGE[e.type]||EV_BADGE.other};color:${EV_COLOR[e.type]||EV_COLOR.other};">${EV_LABELS[e.type]||'Other'}</span></div>
-    <div><b style="color:var(--text-main)">Date:</b> ${e.date}${e.endDate?' → '+e.endDate:''}</div>
-    ${e.notes?`<div style="margin-top:6px;"><b style="color:var(--text-main)">Notes:</b> ${e.notes}</div>`:''}`;
+    <div style="margin-bottom:8px;">
+      <span style="padding:2px 9px;border-radius:8px;font-size:11px;font-weight:500;background:${EV_BADGE[e.type]||EV_BADGE.other};color:${EV_COLOR[e.type]||EV_COLOR.other};">${EV_LABELS[e.type]||'Other'}</span>
+    </div>
+    <div style="margin-bottom:4px;"><b style="color:var(--text-main)">Date:</b> ${dateStr}</div>
+    ${timeStr ? `<div style="margin-bottom:4px;"><b style="color:var(--text-main)">Time:</b> <span style="color:var(--ice)">${timeStr}</span></div>` : ''}
+    ${e.notes ? `<div style="margin-top:6px;"><b style="color:var(--text-main)">Notes:</b> ${e.notes}</div>` : ''}`;
   document.getElementById('eventModal').classList.add('open');
 }
 
