@@ -3,10 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Ellie Luge">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <title>Ellie Kleinheinz — US Luge Tracker</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
 <style>
@@ -181,6 +177,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 <div class="nav">
   <button class="nav-btn active" onclick="showView('overview',this)"><i class="ti ti-layout-dashboard"></i> Overview</button>
   <button class="nav-btn" onclick="showView('runs',this)"><i class="ti ti-list"></i> Run Log</button>
+  <button class="nav-btn" onclick="showView('starts',this)"><i class="ti ti-stopwatch"></i> Starts</button>
   <button class="nav-btn" onclick="showView('standings',this)"><i class="ti ti-trophy"></i> WC Standings</button>
   <button class="nav-btn" onclick="showView('map',this)"><i class="ti ti-map-pin"></i> Tracks</button>
   <button class="nav-btn" onclick="showView('photos',this)"><i class="ti ti-camera"></i> Photos</button>
@@ -234,6 +231,23 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
       <thead><tr><th>Date</th><th>Track</th><th>Run</th><th>Time</th><th>S1 | S2 | S3</th><th>Rank</th><th>Notes</th><th>Actions</th></tr></thead>
       <tbody id="runTableBody"></tbody>
     </table>
+  </div>
+</div>
+
+<!-- STARTS -->
+<div id="view-starts" class="view">
+  <div class="card" style="padding:0;overflow:hidden;margin-bottom:14px;">
+    <table class="run-table">
+      <thead><tr><th>Date</th><th>Start Time</th><th>Notes</th><th>Actions</th></tr></thead>
+      <tbody id="startsTableBody"></tbody>
+    </table>
+  </div>
+  <div class="card">
+    <div class="section-header">
+      <div class="card-title">Start time trend</div>
+      <div class="section-tag" id="startsPBTag">PB: —</div>
+    </div>
+    <div id="startsChartWrap" style="position:relative;height:200px;"><canvas id="startsChart"></canvas></div>
   </div>
 </div>
 
@@ -305,31 +319,50 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 <!-- ADD RUN -->
 <div id="view-log" class="view">
   <div class="card">
-    <div class="card-title">Log a new run</div>
-    <div class="form-row">
-      <div class="form-group"><label class="form-label">Track</label>
-        <select class="form-select" id="logTrack">
-          <option>Lillehammer</option><option>Sigulda</option><option>Oberhof</option>
-          <option>Winterberg</option><option>Lake Placid</option><option>Park City</option><option>Bludenz</option><option>Königssee</option>
-        </select>
+    <div class="card-title">Log a new entry</div>
+    <div style="display:flex;gap:6px;margin-bottom:16px;">
+      <button class="event-type-btn sel-training" id="logModeRunBtn" onclick="setLogMode('run')" style="font-size:12px;padding:6px 16px;">🛷 New Run</button>
+      <button class="event-type-btn" id="logModeStartBtn" onclick="setLogMode('start')" style="font-size:12px;padding:6px 16px;">⏱ New Start</button>
+    </div>
+
+    <!-- RUN FORM -->
+    <div id="logFormRun">
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Track</label>
+          <select class="form-select" id="logTrack">
+            <option>Lillehammer</option><option>Sigulda</option><option>Oberhof</option>
+            <option>Winterberg</option><option>Lake Placid</option><option>Park City</option><option>Bludenz</option><option>Königssee</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Date</label><input type="date" class="form-input" id="logDate"></div>
       </div>
-      <div class="form-group"><label class="form-label">Date</label><input type="date" class="form-input" id="logDate"></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Run #</label><input type="number" class="form-input" id="logRun" placeholder="1" min="1"></div>
+        <div class="form-group"><label class="form-label">Total time (s)</label><input type="number" class="form-input" id="logTime" placeholder="46.850" step="0.001"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Sector 1 (s)</label><input type="number" class="form-input" id="logS1" placeholder="12.10" step="0.001"></div>
+        <div class="form-group"><label class="form-label">Sector 2 (s)</label><input type="number" class="form-input" id="logS2" placeholder="11.95" step="0.001"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Sector 3 (s)</label><input type="number" class="form-input" id="logS3" placeholder="22.77" step="0.001"></div>
+        <div class="form-group"><label class="form-label">Finish rank</label><input type="number" class="form-input" id="logRank" placeholder="16" min="1"></div>
+      </div>
+      <div class="form-group" style="margin-bottom:12px;"><label class="form-label">Notes</label><input type="text" class="form-input" id="logNotes" placeholder="Ice conditions, start timing, equipment changes..."></div>
+      <button class="btn-primary" onclick="addRun()">Save run</button>
+      <span id="logMsg" style="font-size:12px;color:var(--green);margin-left:10px;"></span>
     </div>
-    <div class="form-row">
-      <div class="form-group"><label class="form-label">Run #</label><input type="number" class="form-input" id="logRun" placeholder="1" min="1"></div>
-      <div class="form-group"><label class="form-label">Total time (s)</label><input type="number" class="form-input" id="logTime" placeholder="46.850" step="0.001"></div>
+
+    <!-- START FORM -->
+    <div id="logFormStart" style="display:none;">
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Date</label><input type="date" class="form-input" id="startDate"></div>
+        <div class="form-group"><label class="form-label">Start time (s)</label><input type="number" class="form-input" id="startTime" placeholder="4.350" step="0.001"></div>
+      </div>
+      <div class="form-group" style="margin-bottom:12px;"><label class="form-label">Notes</label><input type="text" class="form-input" id="startNotes" placeholder="Push technique, handle release, ice conditions..."></div>
+      <button class="btn-primary" onclick="addStart()">Save start</button>
+      <span id="startMsg" style="font-size:12px;color:var(--green);margin-left:10px;"></span>
     </div>
-    <div class="form-row">
-      <div class="form-group"><label class="form-label">Sector 1 (s)</label><input type="number" class="form-input" id="logS1" placeholder="12.10" step="0.001"></div>
-      <div class="form-group"><label class="form-label">Sector 2 (s)</label><input type="number" class="form-input" id="logS2" placeholder="11.95" step="0.001"></div>
-    </div>
-    <div class="form-row">
-      <div class="form-group"><label class="form-label">Sector 3 (s)</label><input type="number" class="form-input" id="logS3" placeholder="22.77" step="0.001"></div>
-      <div class="form-group"><label class="form-label">Finish rank</label><input type="number" class="form-input" id="logRank" placeholder="16" min="1"></div>
-    </div>
-    <div class="form-group" style="margin-bottom:12px;"><label class="form-label">Notes</label><input type="text" class="form-input" id="logNotes" placeholder="Ice conditions, start timing, equipment changes..."></div>
-    <button class="btn-primary" onclick="addRun()">Save run</button>
-    <span id="logMsg" style="font-size:12px;color:var(--green);margin-left:10px;"></span>
   </div>
 </div>
 
@@ -621,10 +654,9 @@ const STANDINGS = {
 
 const USA_ATHLETES = [
   { name:"Kleinheinz Elizabeth", nat:"USA", pts:0, pos:1, diff:"", me:true },
-  { name:"Talia Tonn",           nat:"USA", pts:0, pos:2, diff:"" },
-  { name:"Gosnell Brianna",      nat:"USA", pts:0, pos:3, diff:"" },
-  { name:"Kendall Achen",        nat:"USA", pts:0, pos:4, diff:"" },
-  { name:"Breckan Luedke",       nat:"USA", pts:0, pos:5, diff:"" },
+  { name:"Gosnell Brianna",      nat:"USA", pts:0, pos:2, diff:"" },
+  { name:"Kendall Achen",        nat:"USA", pts:0, pos:3, diff:"" },
+  { name:"Breckan Luedke",       nat:"USA", pts:0, pos:4, diff:"" },
 ];
 
 const USA_STANDINGS = {
@@ -647,6 +679,7 @@ function showView(id, btn) {
   btn.classList.add('active');
   if (id === 'overview')  setTimeout(initOverview, 50);
   if (id === 'runs')      renderRunTable(currentFilter);
+  if (id === 'starts')    { renderStartsTable(); setTimeout(initStartsChart, 50); }
   if (id === 'standings') { renderLeaderboard('overall'); renderUSALeaderboard('overall'); setTimeout(initPointsChart, 50); }
   if (id === 'map')       setTimeout(initMap, 50);
   if (id === 'notes')     renderNotesList(currentNoteFilter);
@@ -940,6 +973,141 @@ async function addRun() {
   }
   setTimeout(()=>{ document.getElementById('logMsg').textContent=''; },3000);
 }
+
+// ─────────────────────────────────────────────
+// ADD RUN / ADD START TOGGLE
+// ─────────────────────────────────────────────
+function setLogMode(mode) {
+  const runBtn   = document.getElementById('logModeRunBtn');
+  const startBtn = document.getElementById('logModeStartBtn');
+  const runForm  = document.getElementById('logFormRun');
+  const startForm= document.getElementById('logFormStart');
+  if (mode === 'run') {
+    runBtn.className   = 'event-type-btn sel-training';
+    startBtn.className = 'event-type-btn';
+    runForm.style.display   = 'block';
+    startForm.style.display = 'none';
+  } else {
+    runBtn.className   = 'event-type-btn';
+    startBtn.className = 'event-type-btn sel-training';
+    runForm.style.display   = 'none';
+    startForm.style.display = 'block';
+  }
+}
+
+// ─────────────────────────────────────────────
+// STARTS
+// ─────────────────────────────────────────────
+let startsData = [];   // [{_id, date, time, notes}]
+
+async function addStart() {
+  const date  = document.getElementById('startDate').value;
+  const time  = parseFloat(document.getElementById('startTime').value);
+  const notes = document.getElementById('startNotes').value;
+  if (!date||!time) { document.getElementById('startMsg').textContent='Please fill in date and start time.'; return; }
+  const startObj = { date, time, notes, createdAt:Date.now() };
+  const id = `${date}_start_${Date.now()}`;
+  try {
+    setSyncStatus('syncing');
+    document.getElementById('startMsg').textContent='Saving…';
+    await db.collection('starts').doc(id).set(startObj);
+    document.getElementById('startMsg').textContent='Start saved & synced! ✓';
+    document.getElementById('startTime').value='';
+    document.getElementById('startNotes').value='';
+    setSyncStatus('ok');
+  } catch(e) {
+    startsData.push({...startObj,_id:id});
+    document.getElementById('startMsg').textContent='Saved locally (offline).';
+    setSyncStatus('error');
+  }
+  setTimeout(()=>{ document.getElementById('startMsg').textContent=''; },3000);
+}
+
+function renderStartsTable() {
+  const sorted = [...startsData].sort((a,b) => b.date.localeCompare(a.date));
+  const pb = startsData.length ? Math.min(...startsData.map(s=>s.time)) : null;
+  document.getElementById('startsTableBody').innerHTML = sorted.length===0
+    ? `<tr><td colspan="4" style="text-align:center;color:var(--text-muted);padding:24px;">No starts logged yet.</td></tr>`
+    : sorted.map(s => {
+        const isPB = pb !== null && s.time === pb;
+        return `<tr>
+          <td>${s.date}</td>
+          <td style="font-variant-numeric:tabular-nums;color:${isPB?'#22D46E':'inherit'};font-weight:${isPB?'600':'400'}">${s.time.toFixed(3)}s${isPB?' <span class="pb-tag">PB</span>':''}</td>
+          <td style="font-size:11px;color:#7BA7CC">${s.notes||''}</td>
+          <td style="white-space:nowrap;">
+            <button class="action-btn del" onclick="deleteStart('${s._id}')">🗑</button>
+          </td></tr>`;
+      }).join('');
+}
+
+async function deleteStart(id) {
+  if (!confirm('Delete this start? This cannot be undone.')) return;
+  try {
+    setSyncStatus('syncing');
+    await db.collection('starts').doc(id).delete();
+    setSyncStatus('ok');
+  } catch(e) {
+    startsData = startsData.filter(s=>s._id!==id);
+    renderStartsTable();
+    setSyncStatus('error');
+  }
+}
+
+let startsChartInst = null;
+
+function initStartsChart() {
+  const wrap = document.getElementById('startsChartWrap');
+  const pbTag = document.getElementById('startsPBTag');
+
+  if (startsData.length === 0) {
+    if (!document.getElementById('startsChart')) wrap.innerHTML = '<canvas id="startsChart"></canvas>';
+    wrap.innerHTML = '<p style="color:var(--text-muted);font-size:13px;padding:40px 0;text-align:center;">No starts logged yet — add your first start to see the trend.</p>';
+    pbTag.textContent = 'PB: —';
+    return;
+  }
+
+  const sorted = [...startsData].sort((a,b) => a.date.localeCompare(b.date));
+  const labels = sorted.map(s => s.date.slice(5));
+  const times  = sorted.map(s => s.time);
+  const pb     = Math.min(...times);
+  const pbIdx  = times.indexOf(pb);
+  pbTag.textContent = `PB: ${pb.toFixed(3)}s`;
+
+  if (!document.getElementById('startsChart')) {
+    wrap.innerHTML = '<canvas id="startsChart"></canvas>';
+  }
+  if (startsChartInst) { startsChartInst.destroy(); startsChartInst = null; }
+
+  const minT = Math.min(...times), maxT = Math.max(...times);
+  const pointColors = times.map((t,i) => i===pbIdx ? '#22D46E' : '#5BB8F5');
+  const pointRadii  = times.map((t,i) => i===pbIdx ? 7 : 4);
+
+  startsChartInst = new Chart(document.getElementById('startsChart'), {
+    type: 'line',
+    data: { labels, datasets: [{
+      data: times,
+      borderColor: '#5BB8F5',
+      backgroundColor: 'rgba(91,184,245,0.07)',
+      pointBackgroundColor: pointColors,
+      pointBorderColor: pointColors,
+      pointRadius: pointRadii,
+      pointHoverRadius: pointRadii.map(r=>r+2),
+      tension: 0.35,
+      borderWidth: 2,
+    }]},
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{display:false},
+        tooltip:{ callbacks:{ label: (ctx) => ctx.parsed.y===pb ? `${ctx.parsed.y.toFixed(3)}s ⭐ PB` : `${ctx.parsed.y.toFixed(3)}s` } } },
+      scales: {
+        y:{ min:Math.floor(minT*10)/10-0.1, max:Math.ceil(maxT*10)/10+0.1, ticks:{color:'#7BA7CC',font:{size:10}}, grid:{color:'rgba(91,184,245,0.07)'} },
+        x:{ ticks:{color:'#7BA7CC',font:{size:9},maxRotation:40,autoSkip:true}, grid:{display:false} }
+      }
+    }
+  });
+}
+
+
 
 // ─────────────────────────────────────────────
 // EDIT / DELETE MODAL
@@ -1498,6 +1666,19 @@ db.collection('runs').onSnapshot(snap => {
   setSyncStatus('ok');
 }, err => {
   console.error('Runs listener error:', err);
+  setSyncStatus('error');
+});
+
+db.collection('starts').onSnapshot(snap => {
+  startsData = snap.docs.map(d => ({_id:d.id,...d.data()}));
+  if (document.getElementById('view-starts').classList.contains('active')) {
+    renderStartsTable();
+    startsChartInst = null; // force rebuild with fresh data
+    initStartsChart();
+  }
+  setSyncStatus('ok');
+}, err => {
+  console.error('Starts listener error:', err);
   setSyncStatus('error');
 });
 
