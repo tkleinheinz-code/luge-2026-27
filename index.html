@@ -159,6 +159,11 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .upcoming-date { font-size:11px; color:var(--text-muted); min-width:70px; }
 .upcoming-title { font-size:13px; flex:1; }
 .upcoming-type { font-size:10px; padding:1px 7px; border-radius:8px; font-weight:500; }
+/* Start session rows */
+.start-row { display:grid; grid-template-columns:36px 1fr 2fr auto; gap:8px; align-items:center; margin-bottom:7px; }
+.start-row-num { width:36px; height:36px; background:rgba(91,184,245,0.08); border:0.5px solid var(--card-border); border-radius:var(--radius-md); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:600; color:var(--ice); flex-shrink:0; }
+.start-row-del { background:none; border:0.5px solid rgba(220,53,69,0.3); color:#f87171; border-radius:var(--radius-md); width:32px; height:32px; cursor:pointer; font-size:16px; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:background 0.15s; font-family:inherit; }
+.start-row-del:hover { background:rgba(220,53,69,0.15); }
 </style>
 </head>
 <body>
@@ -363,13 +368,40 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 
     <!-- START FORM -->
     <div id="logFormStart" style="display:none;">
-      <div class="form-row">
-        <div class="form-group"><label class="form-label">Date</label><input type="date" class="form-input" id="startDate"></div>
-        <div class="form-group"><label class="form-label">Start time (s)</label><input type="number" class="form-input" id="startTime" placeholder="4.350" step="0.001"></div>
+      <div class="form-row" style="margin-bottom:14px;">
+        <div class="form-group">
+          <label class="form-label">Session date</label>
+          <input type="date" class="form-input" id="startDate">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Session notes (optional)</label>
+          <input type="text" class="form-input" id="startSessionNotes" placeholder="Ice conditions, equipment, location…">
+        </div>
       </div>
-      <div class="form-group" style="margin-bottom:12px;"><label class="form-label">Notes</label><input type="text" class="form-input" id="startNotes" placeholder="Push technique, handle release, ice conditions..."></div>
-      <button class="btn-primary" onclick="addStart()">Save start</button>
-      <span id="startMsg" style="font-size:12px;color:var(--green);margin-left:10px;"></span>
+
+      <!-- Column headers -->
+      <div style="display:grid;grid-template-columns:36px 1fr 2fr auto;gap:8px;align-items:center;margin-bottom:6px;padding:0 2px;">
+        <div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.4px;">#</div>
+        <div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.4px;">Time (s)</div>
+        <div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.4px;">Notes</div>
+        <div></div>
+      </div>
+
+      <!-- Dynamic rows -->
+      <div id="startRows"></div>
+
+      <div style="display:flex;align-items:center;gap:10px;margin-top:10px;">
+        <button class="btn-secondary" onclick="addStartRow()" style="display:flex;align-items:center;gap:5px;font-size:12px;">
+          <i class="ti ti-plus"></i> Add another start
+        </button>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:10px;margin-top:14px;padding-top:14px;border-top:0.5px solid var(--card-border);">
+        <button class="btn-primary" onclick="saveAllStarts()" style="display:flex;align-items:center;gap:5px;">
+          <i class="ti ti-device-floppy"></i> Save all starts
+        </button>
+        <span id="startMsg" style="font-size:12px;color:var(--green);"></span>
+      </div>
     </div>
   </div>
 </div>
@@ -986,10 +1018,10 @@ async function addRun() {
 // ADD RUN / ADD START TOGGLE
 // ─────────────────────────────────────────────
 function setLogMode(mode) {
-  const runBtn   = document.getElementById('logModeRunBtn');
-  const startBtn = document.getElementById('logModeStartBtn');
-  const runForm  = document.getElementById('logFormRun');
-  const startForm= document.getElementById('logFormStart');
+  const runBtn    = document.getElementById('logModeRunBtn');
+  const startBtn  = document.getElementById('logModeStartBtn');
+  const runForm   = document.getElementById('logFormRun');
+  const startForm = document.getElementById('logFormStart');
   if (mode === 'run') {
     runBtn.className   = 'event-type-btn sel-training';
     startBtn.className = 'event-type-btn';
@@ -1000,35 +1032,135 @@ function setLogMode(mode) {
     startBtn.className = 'event-type-btn sel-training';
     runForm.style.display   = 'none';
     startForm.style.display = 'block';
+    // Pre-fill today's date and ensure at least 4 rows are ready
+    if (!document.getElementById('startDate').value)
+      document.getElementById('startDate').value = new Date().toISOString().slice(0,10);
+    if (document.getElementById('startRows').children.length === 0) initStartRows();
   }
 }
 
 // ─────────────────────────────────────────────
-// STARTS
+// STARTS — MULTI-ROW SESSION ENTRY
 // ─────────────────────────────────────────────
-let startsData = [];   // [{_id, date, time, notes}]
+let startsData = [];
+let startRowCount = 0;
 
-async function addStart() {
-  const date  = document.getElementById('startDate').value;
-  const time  = parseFloat(document.getElementById('startTime').value);
-  const notes = document.getElementById('startNotes').value;
-  if (!date||!time) { document.getElementById('startMsg').textContent='Please fill in date and start time.'; return; }
-  const startObj = { date, time, notes, createdAt:Date.now() };
-  const id = `${date}_start_${Date.now()}`;
+function initStartRows() {
+  document.getElementById('startRows').innerHTML = '';
+  startRowCount = 0;
+  // Start with 4 blank rows — typical session count
+  for (let i = 0; i < 4; i++) addStartRow();
+}
+
+function addStartRow() {
+  startRowCount++;
+  const idx = startRowCount;
+  const row = document.createElement('div');
+  row.className = 'start-row';
+  row.id = `startRow_${idx}`;
+  row.innerHTML = `
+    <div class="start-row-num">${idx}</div>
+    <input type="number" class="form-input" id="startTime_${idx}" placeholder="4.350" step="0.001"
+      style="height:34px;"
+      onkeydown="if(event.key==='Enter'||event.key==='Tab'){event.preventDefault();focusNextStartRow(${idx});}">
+    <input type="text"   class="form-input" id="startNote_${idx}" placeholder="Notes (optional)"
+      style="height:34px;"
+      onkeydown="if(event.key==='Enter'){event.preventDefault();addStartRow();setTimeout(()=>focusNextStartRow(${idx}),50);}">
+    <button class="start-row-del" onclick="removeStartRow(${idx})" title="Remove">×</button>`;
+  document.getElementById('startRows').appendChild(row);
+  // Focus the new row's time field
+  setTimeout(() => {
+    const el = document.getElementById(`startTime_${idx}`);
+    if (el) el.focus();
+  }, 30);
+}
+
+function focusNextStartRow(currentIdx) {
+  // Find the next time input after this one
+  const rows = document.getElementById('startRows').querySelectorAll('.start-row');
+  let found = false;
+  for (const row of rows) {
+    if (found) {
+      const inp = row.querySelector('input[type="number"]');
+      if (inp) { inp.focus(); return; }
+    }
+    if (row.id === `startRow_${currentIdx}`) found = true;
+  }
+  // No next row — add one
+  addStartRow();
+}
+
+function removeStartRow(idx) {
+  const row = document.getElementById(`startRow_${idx}`);
+  if (row) row.remove();
+  renumberStartRows();
+}
+
+function renumberStartRows() {
+  const rows = document.getElementById('startRows').querySelectorAll('.start-row');
+  rows.forEach((row, i) => {
+    const numEl = row.querySelector('.start-row-num');
+    if (numEl) numEl.textContent = i + 1;
+  });
+}
+
+async function saveAllStarts() {
+  const date         = document.getElementById('startDate').value;
+  const sessionNotes = document.getElementById('startSessionNotes').value.trim();
+  if (!date) { document.getElementById('startMsg').textContent = 'Please set a session date.'; return; }
+
+  const rows   = document.getElementById('startRows').querySelectorAll('.start-row');
+  const toSave = [];
+
+  rows.forEach((row, i) => {
+    const timeEl = row.querySelector('input[type="number"]');
+    const noteEl = row.querySelector('input[type="text"]');
+    const time   = timeEl ? parseFloat(timeEl.value) : NaN;
+    const note   = noteEl ? noteEl.value.trim() : '';
+    if (!isNaN(time) && time > 0) {
+      toSave.push({
+        date,
+        time,
+        notes: note || sessionNotes || '',
+        sessionNotes,
+        startNum: i + 1,
+        createdAt: Date.now() + i   // slight offset so ordering is stable
+      });
+    }
+  });
+
+  if (toSave.length === 0) {
+    document.getElementById('startMsg').textContent = 'No start times entered.';
+    return;
+  }
+
+  document.getElementById('startMsg').textContent = `Saving ${toSave.length} start${toSave.length > 1 ? 's' : ''}…`;
+  setSyncStatus('syncing');
+
   try {
-    setSyncStatus('syncing');
-    document.getElementById('startMsg').textContent='Saving…';
-    await db.collection('starts').doc(id).set(startObj);
-    document.getElementById('startMsg').textContent='Start saved & synced! ✓';
-    document.getElementById('startTime').value='';
-    document.getElementById('startNotes').value='';
+    const batch = db.batch();
+    toSave.forEach(s => {
+      const id  = `${s.date}_start${s.startNum}_${s.createdAt}`;
+      const ref = db.collection('starts').doc(id);
+      batch.set(ref, s);
+    });
+    await batch.commit();
+
+    document.getElementById('startMsg').textContent = `✓ ${toSave.length} start${toSave.length > 1 ? 's' : ''} saved & synced!`;
     setSyncStatus('ok');
+
+    // Clear rows and reset to 4 fresh ones
+    initStartRows();
+    document.getElementById('startSessionNotes').value = '';
+    setTimeout(() => { document.getElementById('startMsg').textContent = ''; }, 3000);
   } catch(e) {
-    startsData.push({...startObj,_id:id});
-    document.getElementById('startMsg').textContent='Saved locally (offline).';
+    console.error('Save starts error:', e);
+    // Fallback: save locally
+    toSave.forEach(s => { startsData.push({...s, _id:`${s.date}_start${s.startNum}_${s.createdAt}`}); });
+    document.getElementById('startMsg').textContent = `Saved locally (offline). Will sync when reconnected.`;
+    document.getElementById('startMsg').style.color = '#f87171';
     setSyncStatus('error');
   }
-  setTimeout(()=>{ document.getElementById('startMsg').textContent=''; },3000);
 }
 
 function renderStartsTable() {
